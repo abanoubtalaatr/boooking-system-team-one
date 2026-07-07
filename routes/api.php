@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Patient\PatientAuthController;
 use App\Http\Controllers\Api\Patient\PatientPasswordResetController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('patient')
@@ -35,3 +36,5 @@ Route::prefix('patient')
             ->middleware('auth:sanctum')
             ->name('logout');
     });
+
+    Route::get('/', [HomeController::class, 'index']);
