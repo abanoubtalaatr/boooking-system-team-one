@@ -5,22 +5,25 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\PatientOtpType;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable([
-    'patient_id',
-    'phone',
-    'code',
-    'type',
-    'expires_at',
-    'used_at',
-])]
 class PatientOtp extends Model
 {
     use HasFactory;
+
+    /**
+     * @var list<string>
+     */
+    protected $fillable = [
+        'patient_id',
+        'phone',
+        'code',
+        'type',
+        'expires_at',
+        'used_at',
+    ];
 
     public function patient(): BelongsTo
     {

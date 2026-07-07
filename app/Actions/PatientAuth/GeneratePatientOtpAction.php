@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\PatientAuth;
 
-use App\Contracts\Sms\SmsSender;
+use App\Contracts\Sms\SmsSenderInterface;
 use App\Enums\PatientOtpType;
 use App\Models\Patient;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 class GeneratePatientOtpAction
 {
     public function __construct(
-        private readonly SmsSender $smsSender,
+        private readonly SmsSenderInterface $smsSender,
     ) {}
 
     public function __invoke(Patient $patient, PatientOtpType $type): void

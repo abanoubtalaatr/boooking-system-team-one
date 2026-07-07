@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Contracts\Sms\SmsSender;
+use App\Contracts\Sms\SmsSenderInterface;
 use App\Models\Patient;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -13,8 +13,8 @@ uses(RefreshDatabase::class);
 beforeEach(function (): void {
     $this->sentMessages = [];
 
-    $this->app->bind(SmsSender::class, function () {
-        return new class($this->sentMessages) implements SmsSender
+    $this->app->bind(SmsSenderInterface::class, function () {
+        return new class($this->sentMessages) implements SmsSenderInterface
         {
             /**
              * @param  array<int, array{phone: string, message: string}>  $messages
@@ -43,8 +43,8 @@ it('registers a patient and sends account verification otp', function (): void {
 
     $response
         ->assertCreated()
-        ->assertJsonPath('data.phone', '01012345678')
-        ->assertJsonPath('data.is_verified', false);
+        ->assertJsonPath('data.patient.phone', '01012345678')
+        ->assertJsonPath('data.patient.is_verified', false);
 
     $this->assertDatabaseHas('patients', [
         'phone' => '01012345678',
@@ -74,7 +74,7 @@ it('verifies a patient account with otp', function (): void {
 
     $response
         ->assertOk()
-        ->assertJsonPath('data.is_verified', true);
+        ->assertJsonPath('data.patient.is_verified', true);
 
     expect(Patient::where('phone', '01012345678')->first()->isVerified())->toBeTrue();
 });
@@ -115,6 +115,17 @@ it('rejects login for an unverified patient', function (): void {
         'phone' => '01012345678',
         'password' => 'Password123',
     ])->assertUnprocessable();
+});
+
+it('rejects unsupported phone numbers', function (): void {
+    $this->postJson('/api/patient/register', [
+        'name' => 'Ahmed Ali',
+        'phone' => '447700900123',
+        'email' => 'ahmed@example.com',
+        'password' => 'Password123',
+        'password_confirmation' => 'Password123',
+    ])->assertUnprocessable()
+        ->assertJsonValidationErrors('phone');
 });
 
 it('sends password reset otp and resets the password', function (): void {

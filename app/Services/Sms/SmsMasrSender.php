@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services\Sms;
 
-use App\Contracts\Sms\SmsSender;
+use App\Contracts\Sms\SmsSenderInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use RuntimeException;
 
-class SmsMasrSender implements SmsSender
+class SmsMasrSender implements SmsSenderInterface
 {
     public function send(string $phone, string $message): void
     {

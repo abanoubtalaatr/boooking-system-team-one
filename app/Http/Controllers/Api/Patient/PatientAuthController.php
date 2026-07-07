@@ -4,20 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Patient;
 
-use App\Actions\PatientAuth\ForgotPatientPasswordAction;
 use App\Actions\PatientAuth\GeneratePatientOtpAction;
 use App\Actions\PatientAuth\LoginPatientAction;
 use App\Actions\PatientAuth\LogoutPatientAction;
 use App\Actions\PatientAuth\RegisterPatientAction;
-use App\Actions\PatientAuth\ResetPatientPasswordAction;
 use App\Actions\PatientAuth\VerifyPatientAccountAction;
 use App\Enums\PatientOtpType;
+use App\Http\Concerns\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PatientAuth\ForgotPatientPasswordRequest;
 use App\Http\Requests\PatientAuth\LoginPatientRequest;
 use App\Http\Requests\PatientAuth\RegisterPatientRequest;
 use App\Http\Requests\PatientAuth\ResendPatientOtpRequest;
-use App\Http\Requests\PatientAuth\ResetPatientPasswordRequest;
 use App\Http\Requests\PatientAuth\VerifyPatientOtpRequest;
 use App\Http\Resources\PatientResource;
 use App\Models\Patient;
@@ -26,16 +23,19 @@ use Illuminate\Http\Request;
 
 class PatientAuthController extends Controller
 {
+    use ApiResponse;
+
     public function register(
         RegisterPatientRequest $request,
         RegisterPatientAction $registerPatient,
     ): JsonResponse {
         $patient = $registerPatient($request->validated());
 
-        return response()->json([
-            'message' => __('Patient registered successfully. Please verify your phone number.'),
-            'data' => new PatientResource($patient),
-        ], 201);
+        return $this->successResponse(
+            __('Patient registered successfully. Please verify your phone number.'),
+            ['patient' => new PatientResource($patient)],
+            201,
+        );
     }
 
     public function verifyOtp(
@@ -48,10 +48,10 @@ class PatientAuthController extends Controller
 
         $patient = $verifyPatientAccount($patient, $request->validated('otp'));
 
-        return response()->json([
-            'message' => __('Patient account verified successfully.'),
-            'data' => new PatientResource($patient),
-        ]);
+        return $this->successResponse(
+            __('Patient account verified successfully.'),
+            ['patient' => new PatientResource($patient)],
+        );
     }
 
     public function resendOtp(
@@ -66,9 +66,7 @@ class PatientAuthController extends Controller
             $generatePatientOtp($patient, PatientOtpType::AccountVerification);
         }
 
-        return response()->json([
-            'message' => __('OTP sent successfully.'),
-        ]);
+        return $this->successResponse(__('OTP sent successfully.'));
     }
 
     public function login(
@@ -80,45 +78,14 @@ class PatientAuthController extends Controller
             $request->validated('password'),
         );
 
-        return response()->json([
-            'message' => __('Logged in successfully.'),
-            'data' => [
+        return $this->successResponse(
+            __('Logged in successfully.'),
+            [
                 'patient' => new PatientResource($result['patient']),
                 'token' => $result['token'],
                 'token_type' => 'Bearer',
             ],
-        ]);
-    }
-
-    public function forgotPassword(
-        ForgotPatientPasswordRequest $request,
-        ForgotPatientPasswordAction $forgotPatientPassword,
-    ): JsonResponse {
-        $forgotPatientPassword($request->validated('phone'));
-
-        return response()->json([
-            'message' => __('Password reset OTP sent successfully.'),
-        ]);
-    }
-
-    public function resetPassword(
-        ResetPatientPasswordRequest $request,
-        ResetPatientPasswordAction $resetPatientPassword,
-    ): JsonResponse {
-        $patient = Patient::query()
-            ->where('phone', $request->validated('phone'))
-            ->firstOrFail();
-
-        $patient = $resetPatientPassword(
-            $patient,
-            $request->validated('otp'),
-            $request->validated('password'),
         );
-
-        return response()->json([
-            'message' => __('Password reset successfully.'),
-            'data' => new PatientResource($patient),
-        ]);
     }
 
     public function logout(Request $request, LogoutPatientAction $logoutPatient): JsonResponse
@@ -128,8 +95,6 @@ class PatientAuthController extends Controller
 
         $logoutPatient($patient);
 
-        return response()->json([
-            'message' => __('Logged out successfully.'),
-        ]);
+        return $this->successResponse(__('Logged out successfully.'));
     }
 }

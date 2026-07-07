@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\PatientAuth;
 
+use App\Rules\SupportedPhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginPatientRequest extends FormRequest
@@ -19,7 +20,7 @@ class LoginPatientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => ['required', 'string'],
+            'phone' => ['required', 'string', new SupportedPhoneNumber],
             'password' => ['required', 'string'],
         ];
     }

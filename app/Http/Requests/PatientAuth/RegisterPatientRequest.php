@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\PatientAuth;
 
+use App\Rules\SupportedPhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
@@ -21,7 +22,7 @@ class RegisterPatientRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'regex:/^\+?[0-9]{10,15}$/', 'unique:patients,phone'],
+            'phone' => ['required', 'string', new SupportedPhoneNumber, 'unique:patients,phone'],
             'email' => ['required', 'email:rfc', 'max:255', 'unique:patients,email'],
             'password' => ['required', 'confirmed', Password::min(8)->letters()->numbers()],
         ];

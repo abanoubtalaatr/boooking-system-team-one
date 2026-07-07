@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Patient\PatientAuthController;
+use App\Http\Controllers\Api\Patient\PatientPasswordResetController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('patient')
@@ -22,11 +23,11 @@ Route::prefix('patient')
             ->middleware('throttle:10,1')
             ->name('login');
 
-        Route::post('forgot-password', [PatientAuthController::class, 'forgotPassword'])
+        Route::post('forgot-password', [PatientPasswordResetController::class, 'forgotPassword'])
             ->middleware('throttle:3,1')
             ->name('forgot-password');
 
-        Route::post('reset-password', [PatientAuthController::class, 'resetPassword'])
+        Route::post('reset-password', [PatientPasswordResetController::class, 'resetPassword'])
             ->middleware('throttle:6,1')
             ->name('reset-password');
 

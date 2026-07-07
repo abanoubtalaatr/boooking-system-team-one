@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Contracts\Sms\SmsSender;
+use App\Contracts\Sms\SmsSenderInterface;
 use App\Services\Sms\SmsMasrSender;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(SmsSender::class, SmsMasrSender::class);
+        $this->app->bind(SmsSenderInterface::class, SmsMasrSender::class);
     }
 
     /**
