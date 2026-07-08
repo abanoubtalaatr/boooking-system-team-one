@@ -8,6 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (Schema::hasTable('patients') && Schema::hasColumn('patients', 'birthdate')) {
+            return;
+        }
+
+        Schema::disableForeignKeyConstraints();
+
+        Schema::dropIfExists('patients');
+
         Schema::create('patients', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
@@ -22,10 +30,14 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('patients');
+        Schema::enableForeignKeyConstraints();
     }
 };
