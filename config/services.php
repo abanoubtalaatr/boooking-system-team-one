@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'sms_masr' => [
+        'endpoint' => env('SMS_MASR_ENDPOINT', 'https://smsmisr.com/api/SMS/'),
+        'username' => env('SMS_MASR_USERNAME'),
+        'password' => env('SMS_MASR_PASSWORD'),
+        'sender' => env('SMS_MASR_SENDER'),
+        'language' => env('SMS_MASR_LANGUAGE', '1'),
+        'environment' => env('SMS_MASR_ENVIRONMENT', '1'),
+    ],
+
 ];
