@@ -17,6 +17,7 @@ class ReviewsController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
         $reviews = Review::all();
         return response()->json([
             'status' => true,
@@ -41,6 +42,7 @@ class ReviewsController extends Controller
     /**
      * Display the specified resource.
      */
+
     public function show(string $id)
     {
         $review = Review::findOrFail($id);
@@ -77,4 +79,26 @@ class ReviewsController extends Controller
             'message' => 'Review deleted successfully'
         ]);
     }
+
+    public function getReviewsByPatient($patientId)
+    {
+        $reviews = Review::where('patient_id', $patientId)->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Reviews retrieved successfully',
+            'data' => $reviews
+        ]);
+    }
+
+    public function getReviewsUser($userId)
+    {
+        $reviews = Review::where('user_id', $userId)->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Reviews retrieved successfully',
+            'data' => $reviews
+        ]);
+    }
+
+
 }
