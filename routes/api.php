@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\SearchHistoryController;
 use App\Http\Controllers\Api\FavoriteController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
@@ -11,14 +12,17 @@ Route::get('/user', function (Request $request) {
 
 
 
-Route::middleware('auth:sanctum')->group( function () {
+// Route::middleware('auth:sanctum')->group( function () {
 
     // favorites: (get, add to favorites, remove from favorites, toggle favorites) 
+    Route::get('/users', function () {
+        return User::all();
+    });
     Route::get('/favorites', [FavoriteController::class, 'index']);
     Route::post('/favorites', [FavoriteController::class, 'store']);
-    Route::delete('/favorites/{favorite}', [FavoriteController::class, 'destroy']);
+    Route::delete('/favorites', [FavoriteController::class, 'destroy']);
 
     // Search history: (get, delete): 
     Route::get('/search-history', [SearchHistoryController::class, 'index']);
     Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
-});
+// });

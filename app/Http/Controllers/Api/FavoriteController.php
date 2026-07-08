@@ -3,26 +3,47 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Favorite;
+use App\Http\Requests\Api\DeleteFavoriteRequest;
+use App\Http\Requests\Api\CreateFavoriteRequest;
+use App\Http\Resources\FavoriteResource;    
+use App\Services\FavoriteService;
 
 
 class FavoriteController extends Controller
 {
-    public function index() 
+
+    public function __construct(private FavoriteService $favoriteService)
     {
-        // return all the favorites for the user
-        //
     }
 
-
-    public function store(Request $request) 
+    /**
+     * Get all favorites for the user
+     */
+    public function index()
     {
-        // add a new favorite for the user
+        $favorites = $this->favoriteService->getFavorites();
+
+        return FavoriteResource::collection($favorites);
     }
 
-    public function destroy(Favorite $favorite) 
+    /**
+     * Add a new favorite for the user
+     */
+    public function store(CreateFavoriteRequest $request) 
     {
-        // remove a favorite for the user
+        $this->favoriteService->addFavorite($request->doctor_id);
+        return response()->json(['message' => 'Favorite added successfully']);
+    }
+
+    /**
+     * Remove a favorite for the user
+     */
+    public function destroy(DeleteFavoriteRequest $request) 
+    {
+        $isDeleted = $this->favoriteService->removeFavorite($request->doctor_id);
+        $message = $isDeleted ? 'Favorite removed successfully' : 'Favorite not found';
+        return response()->json([
+            'message' => $message,
+        ], $isDeleted ? 200 : 404);
     }
 }
