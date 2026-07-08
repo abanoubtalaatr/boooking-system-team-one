@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Api\Faq;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Faq\FaqIndexRequest;
+use App\Http\Resources\FaqResource;
+use App\Services\FaqService;
 
 class FaqController extends Controller
 {
-    public function index()
-    {
-        $test = 'Hello';
+    public function __construct(private readonly FaqService $faqService,) {}
 
-        return response()->json([
-            'message' => 'Welcome to the API',
-            'test' => $test,
-        ]);
+    public function index(FaqIndexRequest $request)
+    {
+        return FaqResource::collection(
+            $this->faqService->index($request)
+        );
     }
 }
