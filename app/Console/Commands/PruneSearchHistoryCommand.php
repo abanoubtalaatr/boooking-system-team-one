@@ -31,7 +31,7 @@ class PruneSearchHistoryCommand extends Command
 
         $deleted = SearchHistory::query()
             ->where('user_id', $userId)
-            ->whereNotIn('id', $idsToKeep)
+            ->whereNotIn('id', $idsToKeep->all(), 'and')
             ->delete();
             
         $deletedTotal += $deleted; 

@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('search_histories', function (Blueprint $table) {
             $table->id();
+            $table->string('query');
+            $table->string('source'); // chat, search,  favorite
             $table->timestamps();
 
-            // Relationships 
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('doctor_id')->constrained('users')->onDelete('cascade');
+            // Relationships: 
+            $table->foreignId('user_id')->constrained('users'); 
+
+            // constraints:
+            $table->unique(['user_id', 'query', 'source']);
         });
     }
 

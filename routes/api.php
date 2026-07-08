@@ -22,7 +22,7 @@ Route::get('/user', function (Request $request) {
     Route::post('/favorites', [FavoriteController::class, 'store']);
     Route::delete('/favorites', [FavoriteController::class, 'destroy']);
 
-    // Search history: (get, delete): 
+    // Search history: (get, delete):     
     Route::get('/search-history', [SearchHistoryController::class, 'index']);
     Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
 // });
