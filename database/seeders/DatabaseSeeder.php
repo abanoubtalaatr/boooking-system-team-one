@@ -19,8 +19,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Specialization::factory()->count(20)->create();
-
         $users = User::factory(10)->create();
 
         foreach ($users as $user) {

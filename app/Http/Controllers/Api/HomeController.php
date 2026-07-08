@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\DoctorProfile;
-use App\Models\FaqCategory;
-use App\Models\Promotion;
-use App\Models\Specialization;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Home\HomeIndexRequest;
+use App\Services\HomeService;
+use App\Http\Resources\HomeResource;
 
 class HomeController extends Controller
 {
-    public function index()
-    {
-        $test = 'Hello';
 
-        return response()->json([
-            'message' => 'Welcome to the API',
-            'test' => $test,
-        ]);
+    public function __construct(private readonly HomeService $homeService,) {}
+
+    public function index(HomeIndexRequest $request): HomeResource
+    {
+        return new HomeResource(
+            $this->homeService->index($request)
+        );
     }
+
 }

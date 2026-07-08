@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\Policy;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PolicyController extends Controller
 {

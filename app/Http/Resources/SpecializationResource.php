@@ -14,5 +14,4 @@ class SpecializationResource extends JsonApiResource
         'name',
         'description',
     ];
-
 }

@@ -35,9 +35,9 @@ class DoctorProfileFactory extends Factory
 
             'address' => fake()->address(),
 
-            'latitude' => fake()->latitude(),
+            'latitude' => fake()->randomFloat(7, 29.90, 30.20),
 
-            'longitude' => fake()->longitude(),
+            'longitude' => fake()->randomFloat(7, 31.10, 31.40),
 
             'image' => null,
 

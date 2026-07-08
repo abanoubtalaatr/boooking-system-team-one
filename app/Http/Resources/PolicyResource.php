@@ -15,11 +15,4 @@ class PolicyResource extends JsonApiResource
         'content',
         'is_active',
     ];
-
-    /**
-     * The resource's relationships.
-     */
-    public $relationships = [
-        // ...
-    ];
 }

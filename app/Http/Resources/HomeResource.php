@@ -1,23 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\JsonApi\JsonApiResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class HomeResource extends JsonApiResource
+/**
+ * @mixin \App\Data\HomeData
+ */
+class HomeResource extends JsonResource
 {
-    /**
-     * The resource's attributes.
-     */
-    public $attributes = [
-        // ...
-    ];
+    public function toArray(Request $request): array
+    {
+        return [
+            'nearby_doctors' => DoctorResource::collection(
+                $this->nearbyDoctors
+            ),
 
-    /**
-     * The resource's relationships.
-     */
-    public $relationships = [
-        // ...
-    ];
+            'top_rated_doctors' => DoctorResource::collection(
+                $this->topRatedDoctors
+            ),
+
+            'specializations' => SpecializationResource::collection(
+                $this->specializations
+            ),
+
+            'promotions' => PromotionResource::collection(
+                $this->promotions
+            ),
+        ];
+    }
 }
