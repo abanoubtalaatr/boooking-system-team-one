@@ -1,33 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Patient;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+
 /**
  * @extends Factory<Patient>
  */
 class PatientFactory extends Factory
 {
+    protected $model = Patient::class;
 
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'phone' => $this->faker->phoneNumber(),
-            'address' => $this->faker->address(),
-            'date_of_birth' => $this->faker->date(),
-            'gender' => $this->faker->randomElement(['Male', 'Female']),
-            'medical_history' => $this->faker->text(),
-            'emergency_contact' => $this->faker->name(),
-            'password' => Hash::make('password'),
+            'name' => fake()->name(),
+            'phone' => fake()->unique()->numerify('010########'),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => Hash::make('Password123'),
+            'verified_at' => now(),
         ];
+    }
+
+    public function unverified(): static
+    {
+        return $this->state(fn (): array => [
+            'verified_at' => null,
+        ]);
     }
 }
