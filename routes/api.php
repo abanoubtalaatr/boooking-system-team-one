@@ -1,5 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ReviewsController;
+
+
+
+Route::apiResource('reviews', ReviewsController::class);
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\SearchHistoryController;
 use App\Http\Controllers\Api\FavoriteController;
