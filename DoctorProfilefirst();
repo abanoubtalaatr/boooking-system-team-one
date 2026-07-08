@@ -1,0 +1,54 @@
+[90m= [39m[34;4mIlluminate\Database\Eloquent\Collection[39;24m {#8268
+    [34mall[39m: [
+      [34;4mApp\Models\DoctorProfile[39;24m {#8258
+        [34mid[39m: [35m1[39m,
+        [34mlatitude[39m: [32m"[39m[32m50.6660320[39m[32m"[39m,
+        [34mlongitude[39m: [32m"[39m[32m-161.8856300[39m[32m"[39m,
+      },
+      [34;4mApp\Models\DoctorProfile[39;24m {#8257
+        [34mid[39m: [35m2[39m,
+        [34mlatitude[39m: [32m"[39m[32m33.7543350[39m[32m"[39m,
+        [34mlongitude[39m: [32m"[39m[32m-142.0938330[39m[32m"[39m,
+      },
+      [34;4mApp\Models\DoctorProfile[39;24m {#8260
+        [34mid[39m: [35m3[39m,
+        [34mlatitude[39m: [32m"[39m[32m-14.6475410[39m[32m"[39m,
+        [34mlongitude[39m: [32m"[39m[32m88.8323700[39m[32m"[39m,
+      },
+      [34;4mApp\Models\DoctorProfile[39;24m {#8261
+        [34mid[39m: [35m4[39m,
+        [34mlatitude[39m: [32m"[39m[32m21.9562450[39m[32m"[39m,
+        [34mlongitude[39m: [32m"[39m[32m127.6760080[39m[32m"[39m,
+      },
+      [34;4mApp\Models\DoctorProfile[39;24m {#8262
+        [34mid[39m: [35m5[39m,
+        [34mlatitude[39m: [32m"[39m[32m32.6048020[39m[32m"[39m,
+        [34mlongitude[39m: [32m"[39m[32m57.4993320[39m[32m"[39m,
+      },
+      [34;4mApp\Models\DoctorProfile[39;24m {#8263
+        [34mid[39m: [35m6[39m,
+        [34mlatitude[39m: [32m"[39m[32m14.9905850[39m[32m"[39m,
+        [34mlongitude[39m: [32m"[39m[32m-148.1342650[39m[32m"[39m,
+      },
+      [34;4mApp\Models\DoctorProfile[39;24m {#8264
+        [34mid[39m: [35m7[39m,
+        [34mlatitude[39m: [32m"[39m[32m20.6238430[39m[32m"[39m,
+        [34mlongitude[39m: [32m"[39m[32m-74.0898660[39m[32m"[39m,
+      },
+      [34;4mApp\Models\DoctorProfile[39;24m {#8265
+        [34mid[39m: [35m8[39m,
+        [34mlatitude[39m: [32m"[39m[32m-47.2038940[39m[32m"[39m,
+        [34mlongitude[39m: [32m"[39m[32m77.5753230[39m[32m"[39m,
+      },
+      [34;4mApp\Models\DoctorProfile[39;24m {#8266
+        [34mid[39m: [35m9[39m,
+        [34mlatitude[39m: [32m"[39m[32m-33.8443790[39m[32m"[39m,
+        [34mlongitude[39m: [32m"[39m[32m43.6585460[39m[32m"[39m,
+      },
+      [34;4mApp\Models\DoctorProfile[39;24m {#8267
+        [34mid[39m: [35m10[39m,
+        [34mlatitude[39m: [32m"[39m[32m61.1121800[39m[32m"[39m,
+        [34mlongitude[39m: [32m"[39m[32m104.4160520[39m[32m"[39m,
+      },
+    ],
+  }
