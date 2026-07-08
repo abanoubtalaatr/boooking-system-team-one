@@ -11,6 +11,9 @@ class DoctorResource extends JsonApiResource
      * The resource's attributes.
      */
     public $attributes = [
+        'name', 
+        'email',
+        'created_at'
         'experience_years',
         'consultation_fee',
         'rating',
@@ -25,6 +28,7 @@ class DoctorResource extends JsonApiResource
      * The resource's relationships.
      */
     public $relationships = [
+        // ...
         'user',
         'specialization',
     ];

@@ -1,5 +1,17 @@
 <?php
 
+use Illuminate\Http\Request;
+use App\Http\Controllers\Api\SearchHistoryController;
+use App\Http\Controllers\Api\FavoriteController;
+use App\Models\User;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Patient\PatientAuthController;
+use App\Http\Controllers\Api\Patient\PatientPasswordResetController;
+
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
 use App\Http\Controllers\Api\Faq\FaqController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\Patient\PatientAuthController;
@@ -39,6 +51,18 @@ Route::prefix('patient')
             ->name('logout');
     });
 
+
+// Favorites & Search History Routes: 
+// ---------------------------------
+Route::middleware('auth:sanctum')->group( function () {
+    Route::get('/favorites', [FavoriteController::class, 'index']);
+    Route::post('/favorites', [FavoriteController::class, 'store']);
+    Route::delete('/favorites', [FavoriteController::class, 'destroy']);
+
+    // Search history: (get, delete):     
+    Route::get('/search-history', [SearchHistoryController::class, 'index']);
+    Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
+});
     // Home, FAQ, and Policy routes
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/faqs', [FaqController::class, 'index']);
