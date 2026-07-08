@@ -14,6 +14,14 @@ class DoctorResource extends JsonApiResource
         'name', 
         'email',
         'created_at'
+        'experience_years',
+        'consultation_fee',
+        'rating',
+        'address',
+        'latitude',
+        'longitude',
+        'image',
+        'is_available',
     ];
 
     /**
@@ -21,5 +29,7 @@ class DoctorResource extends JsonApiResource
      */
     public $relationships = [
         // ...
+        'user',
+        'specialization',
     ];
 }
