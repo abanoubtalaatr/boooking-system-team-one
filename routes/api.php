@@ -1,12 +1,15 @@
 <?php
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Api\SearchHistoryController;
+use App\Http\Controllers\Api\Faq\FaqController;
 use App\Http\Controllers\Api\FavoriteController;
-use App\Models\User;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\Patient\PatientAuthController;
 use App\Http\Controllers\Api\Patient\PatientPasswordResetController;
+use App\Http\Controllers\Api\Policy\PolicyController;
+use App\Http\Controllers\Api\ReviewsController;
+use App\Http\Controllers\Api\SearchHistoryController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 
 Route::get('/user', function (Request $request) {
@@ -45,15 +48,18 @@ Route::prefix('patient')
             ->name('logout');
     });
 
-
-// Favorites & Search History Routes: 
-// ---------------------------------
-Route::middleware('auth:sanctum')->group( function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index']);
     Route::post('/favorites', [FavoriteController::class, 'store']);
     Route::delete('/favorites', [FavoriteController::class, 'destroy']);
 
-    // Search history: (get, delete):     
     Route::get('/search-history', [SearchHistoryController::class, 'index']);
     Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
+
+    Route::get('/', [HomeController::class, 'index']);
+    Route::get('/faqs', [FaqController::class, 'index']);
+    Route::get('/privacy-policy', [PolicyController::class, 'privacy']);
+    Route::get('/terms', [PolicyController::class, 'terms']);
+
+    Route::apiResource('reviews', ReviewsController::class);
 });
