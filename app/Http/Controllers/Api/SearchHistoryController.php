@@ -23,8 +23,9 @@ class SearchHistoryController extends Controller
      */
     public function index() 
     {
+        $source = request()->query('source');
         // $this->authorize('viewAny', SearchHistory::class);
-        $searchHistory = $this->searchHistoryService->getSearchHistory(Auth::user()); 
+        $searchHistory = $this->searchHistoryService->getSearchHistory($source ?? null); 
         return new SearchHistoryCollection($searchHistory);
 
     }
@@ -36,7 +37,7 @@ class SearchHistoryController extends Controller
     public function destroy(SearchHistory $searchHistory) 
     {
         $this->authorize('delete', $searchHistory);
-        $searchHistory = $this->searchHistoryService->deleteSearchHistory(Auth::user(), $searchHistory->id); 
+        $searchHistory = $this->searchHistoryService->deleteSearchHistory( $searchHistory->id); 
         return response()->json(['message' => 'Search history deleted successfully']);
     }
 
