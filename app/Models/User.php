@@ -3,12 +3,8 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
-use App\Enums\UserStatus;
 //use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,15 +18,11 @@ class User extends Authenticatable
     // use HasRolesAndPermissions;
 
     protected $fillable = [
-        "created_by",
         "name",
         "email",
-        "phone",
+       // "phone",
         "password",
-        "provider",
-        "provider_id",
         "role",
-        "status",
     ];
 
     protected $hidden = [
@@ -41,22 +33,11 @@ class User extends Authenticatable
     protected $casts = [
         "email_verified_at" => "datetime",
         "role" => UserRole::class,
-        "status" => UserStatus::class,
     ];
 
-    // --- Account provenance -------------------------------------------------
+   
 
-    /** The admin who created this account (doctors/admins are never self-registered). */
-    public function creator(): BelongsTo
-    {
-        return $this->belongsTo(User::class, "created_by");
-    }
-
-    /** Accounts this user (an admin) has created. */
-    public function createdUsers(): HasMany
-    {
-        return $this->hasMany(User::class, "created_by");
-    }
+    
 
     // --- Doctor module -------------------------------------------------------
 
@@ -65,9 +46,19 @@ class User extends Authenticatable
         return $this->hasOne(DoctorProfile::class);
     }
 
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'doctor_id', 'user_id');
+    }
+    
+    public function messages()
+    {
+        return $this->morphMany(Message::class, 'sender');
+    }
+
     // --- Chat module ---------------------------------------------------------
 
-    public function conversationsAsPatient(): HasMany
+  /*  public function conversationsAsPatient(): HasMany
     {
         return $this->hasMany(Conversation::class, "patient_id");
     }
@@ -81,22 +72,5 @@ class User extends Authenticatable
     {
         return $this->hasMany(Message::class, "sender_id");
     }
-
-    // --- Booking module (model owned elsewhere; relations declared here for convenience) ---
-
-    public function bookingsAsPatient(): HasMany
-    {
-        return $this->hasMany(Booking::class, "patient_id");
+*/
     }
-
-    /** bookings.doctor_id points at doctor_profiles.id, not users.id directly. */
-    public function bookingsAsDoctor(): HasManyThrough
-    {
-        return $this->hasManyThrough(
-            Booking::class,
-            DoctorProfile::class,
-            "user_id",   // FK on doctor_profiles referencing this user
-            "doctor_id", // FK on bookings referencing doctor_profiles
-        );
-    }
-}

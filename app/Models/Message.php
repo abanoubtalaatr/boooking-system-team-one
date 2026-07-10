@@ -2,24 +2,22 @@
 
 namespace App\Models;
 
-use App\Enums\MessageStatus;
-use App\Enums\MessageType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+//use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Message extends Model implements HasMedia
 {
-    use  HasFactory, SoftDeletes, InteractsWithMedia;
+    use HasFactory, InteractsWithMedia;
 
-    protected $fillable = ["conversation_id", "sender_id", "type", "content", "status"];
+    protected $fillable = ['conversation_id', 'sender_id', 'sender_type', 'type', 'body', 'read_at'];
 
     protected $casts = [
-        "type" => MessageType::class,
-        "status" => MessageStatus::class,
+        'read_at' => 'datetime',
     ];
 
     public function conversation(): BelongsTo
@@ -27,15 +25,20 @@ class Message extends Model implements HasMedia
         return $this->belongsTo(Conversation::class);
     }
 
-    public function sender(): BelongsTo
+    // sender ممكن يكون Patient أو User (doctor)
+    public function sender(): MorphTo
     {
-        return $this->belongsTo(User::class, "sender_id");
+        return $this->morphTo();
     }
 
+    // كل رسالة بيبقى ليها مرفق واحد بس (singleFile) - كافي للـ MVP
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection("image");
-        $this->addMediaCollection("file");
-        $this->addMediaCollection("voice");
+        $this->addMediaCollection('attachment')->singleFile();
+    }
+
+    public function getAttachmentUrlAttribute(): ?string
+    {
+        return $this->getFirstMediaUrl('attachment') ?: null;
     }
 }

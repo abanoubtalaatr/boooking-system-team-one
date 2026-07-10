@@ -19,8 +19,7 @@ class DoctorSeeder extends Seeder
                 "user_id" => User::factory()->create([
                     "password" => Hash::make("password"),
                     "role" => "doctor",
-                    "status" => "active",
-                    "created_by" => $admin->id,
+                  
                 ])->id,
             ])
             ->create();

@@ -3,21 +3,12 @@
 namespace App\Repositories\Contracts;
 
 use App\Models\AvailabilitySlot;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 interface AvailabilitySlotRepositoryInterface
 {
-    public function find(string $id): ?AvailabilitySlot;
+    public function forDoctor(int $doctorId, Request $request): Collection;
 
-    public function create(array $data): AvailabilitySlot;
-
-    public function update(AvailabilitySlot $slot, array $data): AvailabilitySlot;
-
-    public function delete(AvailabilitySlot $slot): bool;
-
-    public function paginate(string $doctorId, int $perPage = 15): LengthAwarePaginator;
-
-    /** Slots for a doctor on a given day, used to check overlaps and list availability. */
-    public function findAvailableSlotsForDoctor(string $doctorId, string $day): Collection;
+    public function findById(int $id): ?AvailabilitySlot;
 }

@@ -3,15 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Policies\DoctorPolicy;
-use App\Policies\AvailabilitySlotPolicy;
-use App\Policies\ConversationPolicy;
-use App\Policies\MessagePolicy;
-use Illuminate\Support\Facades\Gate;
-use App\Models\DoctorProfile;
-use App\Models\AvailabilitySlot;
-use App\Models\Conversation;
-use App\Models\Message;
+use App\Repositories\Contracts\DoctorRepositoryInterface;
+use App\Repositories\Contracts\AvailabilitySlotRepositoryInterface;
+use App\Repositories\DoctorRepository;
+use App\Repositories\AvailabilitySlotRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(AvailabilitySlotRepositoryInterface::class, AvailabilitySlotRepository::class);
+        $this->app->bind(DoctorRepositoryInterface::class, DoctorRepository::class);
+
     }
 
     /**
@@ -28,10 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // polices
-        Gate::policy(DoctorProfile::class, DoctorPolicy::class);
-        Gate::policy(AvailabilitySlot::class, AvailabilitySlotPolicy::class);
-        Gate::policy(Conversation::class, ConversationPolicy::class);
-        Gate::policy(Message::class, MessagePolicy::class);
+
     }
 }

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Conversation;
+use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -13,9 +14,10 @@ class ConversationFactory extends Factory
     public function definition(): array
     {
         return [
-            "patient_id" => User::factory()->state(["role" => "patient"]),
-            "doctor_id" => User::factory()->state(["role" => "doctor"]),
-            "last_message_at" => fake()->dateTimeBetween("-1 week", "now"),
+            'patient_id' => Patient::factory(),
+            'doctor_id' => User::factory(),
+            'status' => 'active',
+            'last_message_at' => now(),
         ];
     }
 }

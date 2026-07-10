@@ -12,14 +12,28 @@ class MessageFactory extends Factory
 
     public function definition(): array
     {
-        $conversation = Conversation::factory()->create();
-
         return [
-            "conversation_id" => $conversation->id,
-            "sender_id" => fake()->boolean() ? $conversation->patient_id : $conversation->doctor_id,
-            "type" => "text",
-            "content" => fake()->sentence(),
-            "status" => fake()->randomElement(["sent", "delivered", "seen"]),
+            'conversation_id' => Conversation::factory(),
+            'type' => 'text',
+            'body' => $this->faker->sentence(),
         ];
+    }
+
+    // استخدام: Message::factory()->fromPatient($patient)->create([...])
+    public function fromPatient($patient): static
+    {
+        return $this->state(fn () => [
+            'sender_id' => $patient->id,
+            'sender_type' => get_class($patient),
+        ]);
+    }
+
+    // استخدام: Message::factory()->fromDoctor($doctor)->create([...])
+    public function fromDoctor($doctor): static
+    {
+        return $this->state(fn () => [
+            'sender_id' => $doctor->id,
+            'sender_type' => get_class($doctor),
+        ]);
     }
 }

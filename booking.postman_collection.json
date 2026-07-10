@@ -1,0 +1,2393 @@
+{
+  "info": {
+    "_postman_id": "cbc56e9e-c8f5-4319-863b-79cf36a8f735",
+    "name": "booking",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "44160942",
+    "_collection_link": "https://go.postman.co/collection/44160942-cbc56e9e-c8f5-4319-863b-79cf36a8f735?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "if (response.data.token) {\r",
+                  "    pm.environment.set(\"token\", response.data.token);\r",
+                  "    console.log(\"Token saved:\", response.data.token);\r",
+                  "} else {\r",
+                  "    console.log(\"No token found in response\");\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "phone",
+                  "value": "01034180968",
+                  "type": "text",
+                  "uuid": "63e7ef0e-b42b-403c-9bc3-2672a6c588af"
+                },
+                {
+                  "key": "password",
+                  "value": "Password123",
+                  "type": "text",
+                  "uuid": "d3888195-a394-4d51-872e-219419269f13"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/patient/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "patient",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Login",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "phone",
+                      "value": "01034180968",
+                      "type": "text",
+                      "uuid": "63e7ef0e-b42b-403c-9bc3-2672a6c588af"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Password123",
+                      "type": "text",
+                      "uuid": "d3888195-a394-4d51-872e-219419269f13"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/patient/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "patient",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 11:11:51 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "X-RateLimit-Limit",
+                  "value": "10"
+                },
+                {
+                  "key": "X-RateLimit-Remaining",
+                  "value": "8"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Logged in successfully.\",\n    \"data\": {\n        \"patient\": {\n            \"id\": 7,\n            \"name\": \"Candido Kuphal\",\n            \"phone\": \"01034180968\",\n            \"email\": \"jerde.emanuel@example.org\",\n            \"birthdate\": null,\n            \"profile_photo\": null,\n            \"location\": {\n                \"latitude\": null,\n                \"longitude\": null\n            },\n            \"is_verified\": true,\n            \"verified_at\": \"2026-07-10T10:49:56.000000Z\",\n            \"created_at\": \"2026-07-10T10:49:57.000000Z\"\n        },\n        \"token\": \"10|hFhJtVe9QBc4tcEMc0VHqI0UZ7nFUSExxGav0jR83f541c05\",\n        \"token_type\": \"Bearer\"\n    }\n}"
+            },
+            {
+              "name": "Login",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "phone",
+                      "value": "01093163487",
+                      "type": "text",
+                      "uuid": "63e7ef0e-b42b-403c-9bc3-2672a6c588af"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Password123",
+                      "type": "text",
+                      "uuid": "d3888195-a394-4d51-872e-219419269f13"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/patient/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "patient",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 22:58:09 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "X-RateLimit-Limit",
+                  "value": "10"
+                },
+                {
+                  "key": "X-RateLimit-Remaining",
+                  "value": "9"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Logged in successfully.\",\n    \"data\": {\n        \"patient\": {\n            \"id\": 1,\n            \"name\": \"Piper Robel\",\n            \"phone\": \"01093163487\",\n            \"email\": \"brekke.kory@example.net\",\n            \"birthdate\": null,\n            \"profile_photo\": null,\n            \"location\": {\n                \"latitude\": null,\n                \"longitude\": null\n            },\n            \"is_verified\": true,\n            \"verified_at\": \"2026-07-10T22:25:28.000000Z\",\n            \"created_at\": \"2026-07-10T22:25:31.000000Z\"\n        },\n        \"token\": \"3|ZbJeKCAp09g2HBSYWJxfrFnLy3diphtfzKExlDmg899ea980\",\n        \"token_type\": \"Bearer\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "me",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "me",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 16:12:10 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"id\": 7,\n    \"name\": \"Candido Kuphal\",\n    \"phone\": \"01034180968\",\n    \"email\": \"jerde.emanuel@example.org\",\n    \"birthdate\": null,\n    \"profile_photo\": null,\n    \"latitude\": null,\n    \"longitude\": null,\n    \"verified_at\": \"2026-07-10T10:49:56.000000Z\",\n    \"created_at\": \"2026-07-10T10:49:57.000000Z\",\n    \"updated_at\": \"2026-07-10T10:49:57.000000Z\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Doctor",
+      "item": [
+        {
+          "name": "Doctor Details",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/doctors/8",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "doctors",
+                "8"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Doctor Details",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"admin@cure.test\",\n  \"password\": \"password\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors/2",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors",
+                    "2"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 11:57:15 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Gaylord Christiansen\",\n        \"avatar\": \"https://via.placeholder.com/200x200.png/00ccee?text=people+et\",\n        \"specialty\": \"Ophthalmology\",\n        \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n        \"price\": \"295.52\",\n        \"experience_years\": 15,\n        \"latitude\": \"29.9388990\",\n        \"longitude\": \"31.3175900\",\n        \"gender\": \"female\",\n        \"is_active\": true,\n        \"rating\": 2,\n        \"reviews_count\": 1\n    }\n}"
+            },
+            {
+              "name": "Doctor Details",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors/8",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors",
+                    "8"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 16:30:35 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"id\": 8,\n        \"user_id\": 9,\n        \"name\": \"Mr. Markus O'Connell\",\n        \"avatar\": \"https://via.placeholder.com/200x200.png/00aa66?text=people+quae\",\n        \"bio\": \"Et dignissimos iste molestiae voluptates at. Dicta porro molestias omnis possimus voluptatum animi harum et.\",\n        \"specialty\": \"Orthopedics\",\n        \"hospital\": \"Abbott LLC Hospital\",\n        \"address\": \"768 Jacobs Shoals Apt. 117\\nWest Maidastad, WY 26492-9585\",\n        \"price\": \"301.30\",\n        \"experience_years\": 22,\n        \"education\": \"Alexandria University - Faculty of Medicine\",\n        \"certificates\": [\n            {\n                \"title\": \"Board Certified Cardiologist\",\n                \"issuer\": \"AMA\",\n                \"year\": 2024\n            },\n            {\n                \"title\": \"Laravel Professional\",\n                \"issuer\": \"Coursera\",\n                \"year\": 2018\n            },\n            {\n                \"title\": \"Pediatric Emergency Medicine\",\n                \"issuer\": \"Udemy\",\n                \"year\": 2023\n            }\n        ],\n        \"language\": \"arabic\",\n        \"gender\": \"female\",\n        \"latitude\": \"29.9144400\",\n        \"longitude\": \"31.3779830\",\n        \"is_active\": true,\n        \"is_favorite\": true,\n        \"rating\": 3,\n        \"reviews_count\": 3,\n        \"reviews\": [\n            {\n                \"id\": 8,\n                \"rating\": 4,\n                \"comment\": \"Velit voluptas maiores libero accusamus vel.\",\n                \"patient_name\": \"Laury Daugherty DVM\",\n                \"patient_photo\": null,\n                \"created_at\": \"5 hours ago\"\n            },\n            {\n                \"id\": 17,\n                \"rating\": 1,\n                \"comment\": \"Quos id laudantium tempora qui illo doloremque quaerat reiciendis.\",\n                \"patient_name\": \"Dr. Christopher Franecki PhD\",\n                \"patient_photo\": null,\n                \"created_at\": \"5 hours ago\"\n            },\n            {\n                \"id\": 20,\n                \"rating\": 4,\n                \"comment\": \"Itaque blanditiis et quam consequatur.\",\n                \"patient_name\": \"Lorna Pacocha\",\n                \"patient_photo\": null,\n                \"created_at\": \"5 hours ago\"\n            }\n        ],\n        \"available_slots\": [\n            {\n                \"id\": 401,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-11\",\n                \"start_time\": \"09:00\",\n                \"end_time\": \"10:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 403,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-11\",\n                \"start_time\": \"11:00\",\n                \"end_time\": \"12:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 405,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-11\",\n                \"start_time\": \"13:00\",\n                \"end_time\": \"14:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 406,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-11\",\n                \"start_time\": \"14:00\",\n                \"end_time\": \"15:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 407,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-11\",\n                \"start_time\": \"15:00\",\n                \"end_time\": \"16:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 408,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-11\",\n                \"start_time\": \"16:00\",\n                \"end_time\": \"17:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 409,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-12\",\n                \"start_time\": \"09:00\",\n                \"end_time\": \"10:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 410,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-12\",\n                \"start_time\": \"10:00\",\n                \"end_time\": \"11:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 412,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-12\",\n                \"start_time\": \"12:00\",\n                \"end_time\": \"13:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 413,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-12\",\n                \"start_time\": \"13:00\",\n                \"end_time\": \"14:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 414,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-12\",\n                \"start_time\": \"14:00\",\n                \"end_time\": \"15:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 415,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-12\",\n                \"start_time\": \"15:00\",\n                \"end_time\": \"16:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 416,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-12\",\n                \"start_time\": \"16:00\",\n                \"end_time\": \"17:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 418,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-13\",\n                \"start_time\": \"10:00\",\n                \"end_time\": \"11:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 419,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-13\",\n                \"start_time\": \"11:00\",\n                \"end_time\": \"12:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 421,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-13\",\n                \"start_time\": \"13:00\",\n                \"end_time\": \"14:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 422,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-13\",\n                \"start_time\": \"14:00\",\n                \"end_time\": \"15:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 423,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-13\",\n                \"start_time\": \"15:00\",\n                \"end_time\": \"16:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 424,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-13\",\n                \"start_time\": \"16:00\",\n                \"end_time\": \"17:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 425,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-14\",\n                \"start_time\": \"09:00\",\n                \"end_time\": \"10:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 426,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-14\",\n                \"start_time\": \"10:00\",\n                \"end_time\": \"11:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 427,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-14\",\n                \"start_time\": \"11:00\",\n                \"end_time\": \"12:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 428,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-14\",\n                \"start_time\": \"12:00\",\n                \"end_time\": \"13:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 430,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-14\",\n                \"start_time\": \"14:00\",\n                \"end_time\": \"15:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 433,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-15\",\n                \"start_time\": \"09:00\",\n                \"end_time\": \"10:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 434,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-15\",\n                \"start_time\": \"10:00\",\n                \"end_time\": \"11:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 435,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-15\",\n                \"start_time\": \"11:00\",\n                \"end_time\": \"12:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 436,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-15\",\n                \"start_time\": \"12:00\",\n                \"end_time\": \"13:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 437,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-15\",\n                \"start_time\": \"13:00\",\n                \"end_time\": \"14:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 438,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-15\",\n                \"start_time\": \"14:00\",\n                \"end_time\": \"15:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 441,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-16\",\n                \"start_time\": \"09:00\",\n                \"end_time\": \"10:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 442,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-16\",\n                \"start_time\": \"10:00\",\n                \"end_time\": \"11:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 443,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-16\",\n                \"start_time\": \"11:00\",\n                \"end_time\": \"12:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 444,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-16\",\n                \"start_time\": \"12:00\",\n                \"end_time\": \"13:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 445,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-16\",\n                \"start_time\": \"13:00\",\n                \"end_time\": \"14:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 446,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-16\",\n                \"start_time\": \"14:00\",\n                \"end_time\": \"15:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 447,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-16\",\n                \"start_time\": \"15:00\",\n                \"end_time\": \"16:00\",\n                \"is_booked\": false\n            },\n            {\n                \"id\": 448,\n                \"doctor_id\": 9,\n                \"day\": \"2026-07-16\",\n                \"start_time\": \"16:00\",\n                \"end_time\": \"17:00\",\n                \"is_booked\": false\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Search",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/doctors?latitude=30.0131&longitude=31.2089&sort=rating",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "doctors"
+              ],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "30.0131"
+                },
+                {
+                  "key": "longitude",
+                  "value": "31.2089"
+                },
+                {
+                  "key": "sort",
+                  "value": "rating"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Search no result",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors?search=Ahmed",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "Ahmed"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 10:03:42 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?search=Ahmed&page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?search=Ahmed&page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": null,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?search=Ahmed&page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": null,\n        \"total\": 0\n    }\n}"
+            },
+            {
+              "name": "Search 2 by name",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors?search=ch",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "ch"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 11:53:19 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 2,\n            \"name\": \"Gaylord Christiansen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00ccee?text=people+et\",\n            \"specialty\": \"Ophthalmology\",\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"295.52\",\n            \"experience_years\": 15,\n            \"latitude\": \"29.9388990\",\n            \"longitude\": \"31.3175900\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Michale Kessler\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0044bb?text=people+nihil\",\n            \"specialty\": \"Neurology\",\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"price\": \"455.09\",\n            \"experience_years\": 24,\n            \"latitude\": \"30.0845440\",\n            \"longitude\": \"31.3919450\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 2.7,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Dr. Rollin Schoen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0011ee?text=people+aut\",\n            \"specialty\": \"Urology\",\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"636.92\",\n            \"experience_years\": 17,\n            \"latitude\": \"30.0153460\",\n            \"longitude\": \"31.3015820\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 3.3,\n            \"reviews_count\": 3\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?search=ch&page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?search=ch&page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?search=ch&page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": 3,\n        \"total\": 3\n    }\n}"
+            },
+            {
+              "name": "Search specialitization",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors?specialist_id=1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ],
+                  "query": [
+                    {
+                      "key": "specialist_id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 11:55:46 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 9,\n            \"name\": \"Mariela Weimann DDS\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00cc22?text=people+est\",\n            \"specialty\": \"Cardiology\",\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"price\": \"294.03\",\n            \"experience_years\": 23,\n            \"latitude\": \"30.0838070\",\n            \"longitude\": \"31.3571220\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 3,\n            \"reviews_count\": 1\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?specialist_id=1&page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?specialist_id=1&page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?specialist_id=1&page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": 1,\n        \"total\": 1\n    }\n}"
+            },
+            {
+              "name": "Search price range",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors?price_from=100&price_to=500",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ],
+                  "query": [
+                    {
+                      "key": "price_from",
+                      "value": "100"
+                    },
+                    {
+                      "key": "price_to",
+                      "value": "500"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 11:56:13 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 2,\n            \"name\": \"Gaylord Christiansen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00ccee?text=people+et\",\n            \"specialty\": \"Ophthalmology\",\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"295.52\",\n            \"experience_years\": 15,\n            \"latitude\": \"29.9388990\",\n            \"longitude\": \"31.3175900\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Kareem Wisozk\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00eeee?text=people+quod\",\n            \"specialty\": \"Dermatology\",\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"170.44\",\n            \"experience_years\": 10,\n            \"latitude\": \"29.9385060\",\n            \"longitude\": \"31.1325670\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 4,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Jodie Krajcik\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00bb77?text=people+a\",\n            \"specialty\": \"Orthopedics\",\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"370.57\",\n            \"experience_years\": 30,\n            \"latitude\": \"30.1780860\",\n            \"longitude\": \"31.2850010\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 2.5,\n            \"reviews_count\": 4\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Michale Kessler\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0044bb?text=people+nihil\",\n            \"specialty\": \"Neurology\",\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"price\": \"455.09\",\n            \"experience_years\": 24,\n            \"latitude\": \"30.0845440\",\n            \"longitude\": \"31.3919450\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 2.7,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Candida Tremblay Jr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00dd00?text=people+nihil\",\n            \"specialty\": \"Neurology\",\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"price\": \"457.69\",\n            \"experience_years\": 2,\n            \"latitude\": \"29.9389020\",\n            \"longitude\": \"31.3005630\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Mr. Markus O'Connell\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00aa66?text=people+quae\",\n            \"specialty\": \"Orthopedics\",\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"price\": \"301.30\",\n            \"experience_years\": 22,\n            \"latitude\": \"29.9144400\",\n            \"longitude\": \"31.3779830\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 3,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Mariela Weimann DDS\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00cc22?text=people+est\",\n            \"specialty\": \"Cardiology\",\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"price\": \"294.03\",\n            \"experience_years\": 23,\n            \"latitude\": \"30.0838070\",\n            \"longitude\": \"31.3571220\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 3,\n            \"reviews_count\": 1\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?price_from=100&price_to=500&page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?price_from=100&price_to=500&page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?price_from=100&price_to=500&page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": 7,\n        \"total\": 7\n    }\n}"
+            },
+            {
+              "name": "Search per page pagination",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors?per_page=5&page=2",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "5"
+                    },
+                    {
+                      "key": "page",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "",
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 10:15:45 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 6,\n            \"name\": \"Cornelius Hegmann MD\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0088aa?text=people+reprehenderit\",\n            \"specialty\": null,\n            \"hospital\": \"Kulas, Reynolds and Ernser Hospital\",\n            \"price\": \"683.35\",\n            \"experience_years\": 4,\n            \"latitude\": \"30.1700050\",\n            \"longitude\": \"31.1092750\"\n        },\n        {\n            \"id\": 7,\n            \"name\": \"Gerardo Buckridge DDS\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00eecc?text=people+sapiente\",\n            \"specialty\": null,\n            \"hospital\": \"Kulas, Reynolds and Ernser Hospital\",\n            \"price\": \"442.46\",\n            \"experience_years\": 19,\n            \"latitude\": \"30.1284800\",\n            \"longitude\": \"31.3717170\"\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Tomasa Windler\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0033ee?text=people+in\",\n            \"specialty\": null,\n            \"hospital\": \"Morar LLC Hospital\",\n            \"price\": \"628.99\",\n            \"experience_years\": 7,\n            \"latitude\": \"30.1865950\",\n            \"longitude\": \"31.1214450\"\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Cary Kertzmann\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/005533?text=people+atque\",\n            \"specialty\": null,\n            \"hospital\": \"Kulas, Reynolds and Ernser Hospital\",\n            \"price\": \"548.98\",\n            \"experience_years\": 6,\n            \"latitude\": \"30.0017450\",\n            \"longitude\": \"31.3210230\"\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Curtis Feil\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0044ee?text=people+illo\",\n            \"specialty\": null,\n            \"hospital\": \"Morar LLC Hospital\",\n            \"price\": \"191.11\",\n            \"experience_years\": 23,\n            \"latitude\": \"30.1334470\",\n            \"longitude\": \"31.1818660\"\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?per_page=5&page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?per_page=5&page=2\",\n        \"prev\": \"http://localhost:8000/api/doctors?per_page=5&page=1\",\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 2,\n        \"from\": 6,\n        \"last_page\": 2,\n        \"links\": [\n            {\n                \"url\": \"http://localhost:8000/api/doctors?per_page=5&page=1\",\n                \"label\": \"&laquo; Previous\",\n                \"page\": 1,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?per_page=5&page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?per_page=5&page=2\",\n                \"label\": \"2\",\n                \"page\": 2,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 5,\n        \"to\": 10,\n        \"total\": 10\n    }\n}"
+            },
+            {
+              "name": "Search by gender",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors?gender=male",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ],
+                  "query": [
+                    {
+                      "key": "gender",
+                      "value": "male"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 10:21:59 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Samanta Hauck\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00aa77?text=people+veritatis\",\n            \"specialty\": null,\n            \"hospital\": \"Simonis-Schaefer Hospital\",\n            \"price\": \"507.44\",\n            \"experience_years\": 3,\n            \"latitude\": \"29.9833020\",\n            \"longitude\": \"31.2955890\",\n            \"gender\": \"male\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Olin Crona\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00ffbb?text=people+sint\",\n            \"specialty\": null,\n            \"hospital\": \"Hickle and Sons Hospital\",\n            \"price\": \"622.97\",\n            \"experience_years\": 24,\n            \"latitude\": \"29.9325610\",\n            \"longitude\": \"31.1371230\",\n            \"gender\": \"male\"\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Cornelius Hegmann MD\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0088aa?text=people+reprehenderit\",\n            \"specialty\": null,\n            \"hospital\": \"Kulas, Reynolds and Ernser Hospital\",\n            \"price\": \"683.35\",\n            \"experience_years\": 4,\n            \"latitude\": \"30.1700050\",\n            \"longitude\": \"31.1092750\",\n            \"gender\": \"male\"\n        },\n        {\n            \"id\": 7,\n            \"name\": \"Gerardo Buckridge DDS\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00eecc?text=people+sapiente\",\n            \"specialty\": null,\n            \"hospital\": \"Kulas, Reynolds and Ernser Hospital\",\n            \"price\": \"442.46\",\n            \"experience_years\": 19,\n            \"latitude\": \"30.1284800\",\n            \"longitude\": \"31.3717170\",\n            \"gender\": \"male\"\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Curtis Feil\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0044ee?text=people+illo\",\n            \"specialty\": null,\n            \"hospital\": \"Morar LLC Hospital\",\n            \"price\": \"191.11\",\n            \"experience_years\": 23,\n            \"latitude\": \"30.1334470\",\n            \"longitude\": \"31.1818660\",\n            \"gender\": \"male\"\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?gender=male&page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?gender=male&page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?gender=male&page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": 5,\n        \"total\": 5\n    }\n}"
+            },
+            {
+              "name": "Search nearest distance",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer{{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors?latitude=30.0131&longitude=31.2089",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ],
+                  "query": [
+                    {
+                      "key": "latitude",
+                      "value": "30.0131"
+                    },
+                    {
+                      "key": "longitude",
+                      "value": "31.2089"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 11:17:02 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 7,\n            \"name\": \"Geoffrey Medhurst Sr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/003300?text=people+quaerat\",\n            \"specialty\": null,\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"510.86\",\n            \"experience_years\": 18,\n            \"latitude\": \"29.9951340\",\n            \"longitude\": \"31.1940810\",\n            \"gender\": \"female\",\n            \"distance_km\": 2.46\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Dr. Rollin Schoen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0011ee?text=people+aut\",\n            \"specialty\": null,\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"636.92\",\n            \"experience_years\": 17,\n            \"latitude\": \"30.0153460\",\n            \"longitude\": \"31.3015820\",\n            \"gender\": \"female\",\n            \"distance_km\": 8.93\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Kareem Wisozk\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00eeee?text=people+quod\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"170.44\",\n            \"experience_years\": 10,\n            \"latitude\": \"29.9385060\",\n            \"longitude\": \"31.1325670\",\n            \"gender\": \"male\",\n            \"distance_km\": 11.08\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Candida Tremblay Jr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00dd00?text=people+nihil\",\n            \"specialty\": null,\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"price\": \"457.69\",\n            \"experience_years\": 2,\n            \"latitude\": \"29.9389020\",\n            \"longitude\": \"31.3005630\",\n            \"gender\": \"male\",\n            \"distance_km\": 12.08\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Gaylord Christiansen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00ccee?text=people+et\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"295.52\",\n            \"experience_years\": 15,\n            \"latitude\": \"29.9388990\",\n            \"longitude\": \"31.3175900\",\n            \"gender\": \"female\",\n            \"distance_km\": 13.33\n        },\n        {\n            \"id\": 1,\n            \"name\": \"Lon Nikolaus\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0022aa?text=people+sapiente\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"787.05\",\n            \"experience_years\": 27,\n            \"latitude\": \"29.9166850\",\n            \"longitude\": \"31.3105400\",\n            \"gender\": \"female\",\n            \"distance_km\": 14.52\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Mariela Weimann DDS\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00cc22?text=people+est\",\n            \"specialty\": null,\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"price\": \"294.03\",\n            \"experience_years\": 23,\n            \"latitude\": \"30.0838070\",\n            \"longitude\": \"31.3571220\",\n            \"gender\": \"female\",\n            \"distance_km\": 16.29\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Michale Kessler\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0044bb?text=people+nihil\",\n            \"specialty\": null,\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"price\": \"455.09\",\n            \"experience_years\": 24,\n            \"latitude\": \"30.0845440\",\n            \"longitude\": \"31.3919450\",\n            \"gender\": \"male\",\n            \"distance_km\": 19.33\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Mr. Markus O'Connell\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00aa66?text=people+quae\",\n            \"specialty\": null,\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"price\": \"301.30\",\n            \"experience_years\": 22,\n            \"latitude\": \"29.9144400\",\n            \"longitude\": \"31.3779830\",\n            \"gender\": \"female\",\n            \"distance_km\": 19.64\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Jodie Krajcik\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00bb77?text=people+a\",\n            \"specialty\": null,\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"370.57\",\n            \"experience_years\": 30,\n            \"latitude\": \"30.1780860\",\n            \"longitude\": \"31.2850010\",\n            \"gender\": \"male\",\n            \"distance_km\": 19.75\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?latitude=30.0131&longitude=31.2089&page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?latitude=30.0131&longitude=31.2089&page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?latitude=30.0131&longitude=31.2089&page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": 10,\n        \"total\": 10\n    }\n}"
+            },
+            {
+              "name": "Search rating",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer{{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors?sort=rating",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "rating"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 11:36:52 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 3,\n            \"name\": \"Kareem Wisozk\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00eeee?text=people+quod\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"170.44\",\n            \"experience_years\": 10,\n            \"latitude\": \"29.9385060\",\n            \"longitude\": \"31.1325670\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 4,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Dr. Rollin Schoen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0011ee?text=people+aut\",\n            \"specialty\": null,\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"636.92\",\n            \"experience_years\": 17,\n            \"latitude\": \"30.0153460\",\n            \"longitude\": \"31.3015820\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 3.3,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Mr. Markus O'Connell\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00aa66?text=people+quae\",\n            \"specialty\": null,\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"price\": \"301.30\",\n            \"experience_years\": 22,\n            \"latitude\": \"29.9144400\",\n            \"longitude\": \"31.3779830\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 3,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Mariela Weimann DDS\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00cc22?text=people+est\",\n            \"specialty\": null,\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"price\": \"294.03\",\n            \"experience_years\": 23,\n            \"latitude\": \"30.0838070\",\n            \"longitude\": \"31.3571220\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 3,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Michale Kessler\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0044bb?text=people+nihil\",\n            \"specialty\": null,\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"price\": \"455.09\",\n            \"experience_years\": 24,\n            \"latitude\": \"30.0845440\",\n            \"longitude\": \"31.3919450\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 2.7,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 7,\n            \"name\": \"Geoffrey Medhurst Sr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/003300?text=people+quaerat\",\n            \"specialty\": null,\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"510.86\",\n            \"experience_years\": 18,\n            \"latitude\": \"29.9951340\",\n            \"longitude\": \"31.1940810\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 2.7,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Jodie Krajcik\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00bb77?text=people+a\",\n            \"specialty\": null,\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"370.57\",\n            \"experience_years\": 30,\n            \"latitude\": \"30.1780860\",\n            \"longitude\": \"31.2850010\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 2.5,\n            \"reviews_count\": 4\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Gaylord Christiansen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00ccee?text=people+et\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"295.52\",\n            \"experience_years\": 15,\n            \"latitude\": \"29.9388990\",\n            \"longitude\": \"31.3175900\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Candida Tremblay Jr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00dd00?text=people+nihil\",\n            \"specialty\": null,\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"price\": \"457.69\",\n            \"experience_years\": 2,\n            \"latitude\": \"29.9389020\",\n            \"longitude\": \"31.3005630\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 1,\n            \"name\": \"Lon Nikolaus\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0022aa?text=people+sapiente\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"787.05\",\n            \"experience_years\": 27,\n            \"latitude\": \"29.9166850\",\n            \"longitude\": \"31.3105400\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": null,\n            \"reviews_count\": 0\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?sort=rating&page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?sort=rating&page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?sort=rating&page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": 10,\n        \"total\": 10\n    }\n}"
+            },
+            {
+              "name": "Search experience sort",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer{{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors?sort=experience",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "experience"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 11:40:13 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 4,\n            \"name\": \"Jodie Krajcik\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00bb77?text=people+a\",\n            \"specialty\": null,\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"370.57\",\n            \"experience_years\": 30,\n            \"latitude\": \"30.1780860\",\n            \"longitude\": \"31.2850010\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 2.5,\n            \"reviews_count\": 4\n        },\n        {\n            \"id\": 1,\n            \"name\": \"Lon Nikolaus\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0022aa?text=people+sapiente\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"787.05\",\n            \"experience_years\": 27,\n            \"latitude\": \"29.9166850\",\n            \"longitude\": \"31.3105400\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": null,\n            \"reviews_count\": 0\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Michale Kessler\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0044bb?text=people+nihil\",\n            \"specialty\": null,\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"price\": \"455.09\",\n            \"experience_years\": 24,\n            \"latitude\": \"30.0845440\",\n            \"longitude\": \"31.3919450\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 2.7,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Mariela Weimann DDS\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00cc22?text=people+est\",\n            \"specialty\": null,\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"price\": \"294.03\",\n            \"experience_years\": 23,\n            \"latitude\": \"30.0838070\",\n            \"longitude\": \"31.3571220\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 3,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Mr. Markus O'Connell\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00aa66?text=people+quae\",\n            \"specialty\": null,\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"price\": \"301.30\",\n            \"experience_years\": 22,\n            \"latitude\": \"29.9144400\",\n            \"longitude\": \"31.3779830\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 3,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 7,\n            \"name\": \"Geoffrey Medhurst Sr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/003300?text=people+quaerat\",\n            \"specialty\": null,\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"510.86\",\n            \"experience_years\": 18,\n            \"latitude\": \"29.9951340\",\n            \"longitude\": \"31.1940810\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 2.7,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Dr. Rollin Schoen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0011ee?text=people+aut\",\n            \"specialty\": null,\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"636.92\",\n            \"experience_years\": 17,\n            \"latitude\": \"30.0153460\",\n            \"longitude\": \"31.3015820\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 3.3,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Gaylord Christiansen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00ccee?text=people+et\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"295.52\",\n            \"experience_years\": 15,\n            \"latitude\": \"29.9388990\",\n            \"longitude\": \"31.3175900\",\n            \"gender\": \"female\",\n            \"is_active\": true,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Kareem Wisozk\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00eeee?text=people+quod\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"170.44\",\n            \"experience_years\": 10,\n            \"latitude\": \"29.9385060\",\n            \"longitude\": \"31.1325670\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 4,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Candida Tremblay Jr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00dd00?text=people+nihil\",\n            \"specialty\": null,\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"price\": \"457.69\",\n            \"experience_years\": 2,\n            \"latitude\": \"29.9389020\",\n            \"longitude\": \"31.3005630\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?sort=experience&page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?sort=experience&page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?sort=experience&page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": 10,\n        \"total\": 10\n    }\n}"
+            },
+            {
+              "name": "Search rating from",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer{{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors?rating_from=4",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ],
+                  "query": [
+                    {
+                      "key": "rating_from",
+                      "value": "4"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 11:41:25 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 3,\n            \"name\": \"Kareem Wisozk\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00eeee?text=people+quod\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"170.44\",\n            \"experience_years\": 10,\n            \"latitude\": \"29.9385060\",\n            \"longitude\": \"31.1325670\",\n            \"gender\": \"male\",\n            \"is_active\": true,\n            \"rating\": 4,\n            \"reviews_count\": 1\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?rating_from=4&page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?rating_from=4&page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?rating_from=4&page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": 1,\n        \"total\": 1\n    }\n}"
+            },
+            {
+              "name": "Search nearest and rating sort",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer{{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors?latitude=30.0131&longitude=31.2089&sort=rating",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ],
+                  "query": [
+                    {
+                      "key": "latitude",
+                      "value": "30.0131"
+                    },
+                    {
+                      "key": "longitude",
+                      "value": "31.2089"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "rating"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 11:44:08 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 3,\n            \"name\": \"Kareem Wisozk\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00eeee?text=people+quod\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"170.44\",\n            \"experience_years\": 10,\n            \"latitude\": \"29.9385060\",\n            \"longitude\": \"31.1325670\",\n            \"gender\": \"male\",\n            \"distance_km\": 11.08,\n            \"is_active\": true,\n            \"rating\": 4,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Dr. Rollin Schoen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0011ee?text=people+aut\",\n            \"specialty\": null,\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"636.92\",\n            \"experience_years\": 17,\n            \"latitude\": \"30.0153460\",\n            \"longitude\": \"31.3015820\",\n            \"gender\": \"female\",\n            \"distance_km\": 8.93,\n            \"is_active\": true,\n            \"rating\": 3.3,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Mr. Markus O'Connell\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00aa66?text=people+quae\",\n            \"specialty\": null,\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"price\": \"301.30\",\n            \"experience_years\": 22,\n            \"latitude\": \"29.9144400\",\n            \"longitude\": \"31.3779830\",\n            \"gender\": \"female\",\n            \"distance_km\": 19.64,\n            \"is_active\": true,\n            \"rating\": 3,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Mariela Weimann DDS\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00cc22?text=people+est\",\n            \"specialty\": null,\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"price\": \"294.03\",\n            \"experience_years\": 23,\n            \"latitude\": \"30.0838070\",\n            \"longitude\": \"31.3571220\",\n            \"gender\": \"female\",\n            \"distance_km\": 16.29,\n            \"is_active\": true,\n            \"rating\": 3,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Michale Kessler\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0044bb?text=people+nihil\",\n            \"specialty\": null,\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"price\": \"455.09\",\n            \"experience_years\": 24,\n            \"latitude\": \"30.0845440\",\n            \"longitude\": \"31.3919450\",\n            \"gender\": \"male\",\n            \"distance_km\": 19.33,\n            \"is_active\": true,\n            \"rating\": 2.7,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 7,\n            \"name\": \"Geoffrey Medhurst Sr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/003300?text=people+quaerat\",\n            \"specialty\": null,\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"510.86\",\n            \"experience_years\": 18,\n            \"latitude\": \"29.9951340\",\n            \"longitude\": \"31.1940810\",\n            \"gender\": \"female\",\n            \"distance_km\": 2.46,\n            \"is_active\": true,\n            \"rating\": 2.7,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Jodie Krajcik\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00bb77?text=people+a\",\n            \"specialty\": null,\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"price\": \"370.57\",\n            \"experience_years\": 30,\n            \"latitude\": \"30.1780860\",\n            \"longitude\": \"31.2850010\",\n            \"gender\": \"male\",\n            \"distance_km\": 19.75,\n            \"is_active\": true,\n            \"rating\": 2.5,\n            \"reviews_count\": 4\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Gaylord Christiansen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00ccee?text=people+et\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"295.52\",\n            \"experience_years\": 15,\n            \"latitude\": \"29.9388990\",\n            \"longitude\": \"31.3175900\",\n            \"gender\": \"female\",\n            \"distance_km\": 13.33,\n            \"is_active\": true,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Candida Tremblay Jr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00dd00?text=people+nihil\",\n            \"specialty\": null,\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"price\": \"457.69\",\n            \"experience_years\": 2,\n            \"latitude\": \"29.9389020\",\n            \"longitude\": \"31.3005630\",\n            \"gender\": \"male\",\n            \"distance_km\": 12.08,\n            \"is_active\": true,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 1,\n            \"name\": \"Lon Nikolaus\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0022aa?text=people+sapiente\",\n            \"specialty\": null,\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"price\": \"787.05\",\n            \"experience_years\": 27,\n            \"latitude\": \"29.9166850\",\n            \"longitude\": \"31.3105400\",\n            \"gender\": \"female\",\n            \"distance_km\": 14.52,\n            \"is_active\": true,\n            \"rating\": null,\n            \"reviews_count\": 0\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?latitude=30.0131&longitude=31.2089&sort=rating&page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?latitude=30.0131&longitude=31.2089&sort=rating&page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?latitude=30.0131&longitude=31.2089&sort=rating&page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": 10,\n        \"total\": 10\n    }\n}"
+            },
+            {
+              "name": "Search",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{base_url}}/doctors?latitude=30.0131&longitude=31.2089&sort=rating",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ],
+                  "query": [
+                    {
+                      "key": "latitude",
+                      "value": "30.0131"
+                    },
+                    {
+                      "key": "longitude",
+                      "value": "31.2089"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "rating"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 16:31:39 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 3,\n            \"user_id\": 4,\n            \"name\": \"Kareem Wisozk\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00eeee?text=people+quod\",\n            \"bio\": \"Est ea eveniet eos deleniti itaque ex. In alias sed est neque voluptatem sed natus. Ut facilis aut sequi provident animi voluptate. Praesentium itaque distinctio qui.\",\n            \"specialty\": \"Dermatology\",\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"address\": \"8738 Karley Stravenue\\nWeimannchester, WA 11792-7995\",\n            \"price\": \"170.44\",\n            \"experience_years\": 10,\n            \"education\": \"Alexandria University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"Advanced Cardiac Life Support\",\n                    \"issuer\": \"Coursera\",\n                    \"year\": 2024\n                },\n                {\n                    \"title\": \"Advanced Cardiac Life Support\",\n                    \"issuer\": \"Egyptian Medical Syndicate\",\n                    \"year\": 2019\n                }\n            ],\n            \"language\": \"english\",\n            \"gender\": \"male\",\n            \"latitude\": \"29.9385060\",\n            \"longitude\": \"31.1325670\",\n            \"distance_km\": 11.08,\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 4,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 10,\n            \"user_id\": 11,\n            \"name\": \"Dr. Rollin Schoen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0011ee?text=people+aut\",\n            \"bio\": \"Non dolorem aut qui optio. Velit maiores excepturi et doloribus consequuntur ut. Voluptatum ut voluptatibus et eum libero dolorum. Omnis sint quia qui deleniti et velit. Molestiae aspernatur maiores ut veniam quia cupiditate et sit.\",\n            \"specialty\": \"Urology\",\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"address\": \"352 Loraine Motorway Suite 980\\nEast Robbton, TN 23809\",\n            \"price\": \"636.92\",\n            \"experience_years\": 17,\n            \"education\": \"Harvard Medical School\",\n            \"certificates\": [\n                {\n                    \"title\": \"Advanced Cardiac Life Support\",\n                    \"issuer\": \"Udemy\",\n                    \"year\": 2016\n                },\n                {\n                    \"title\": \"Laravel Professional\",\n                    \"issuer\": \"Udemy\",\n                    \"year\": 2024\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"female\",\n            \"latitude\": \"30.0153460\",\n            \"longitude\": \"31.3015820\",\n            \"distance_km\": 8.93,\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 3.3,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 8,\n            \"user_id\": 9,\n            \"name\": \"Mr. Markus O'Connell\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00aa66?text=people+quae\",\n            \"bio\": \"Et dignissimos iste molestiae voluptates at. Dicta porro molestias omnis possimus voluptatum animi harum et.\",\n            \"specialty\": \"Orthopedics\",\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"address\": \"768 Jacobs Shoals Apt. 117\\nWest Maidastad, WY 26492-9585\",\n            \"price\": \"301.30\",\n            \"experience_years\": 22,\n            \"education\": \"Alexandria University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"Board Certified Cardiologist\",\n                    \"issuer\": \"AMA\",\n                    \"year\": 2024\n                },\n                {\n                    \"title\": \"Laravel Professional\",\n                    \"issuer\": \"Coursera\",\n                    \"year\": 2018\n                },\n                {\n                    \"title\": \"Pediatric Emergency Medicine\",\n                    \"issuer\": \"Udemy\",\n                    \"year\": 2023\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"female\",\n            \"latitude\": \"29.9144400\",\n            \"longitude\": \"31.3779830\",\n            \"distance_km\": 19.64,\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 3,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 9,\n            \"user_id\": 10,\n            \"name\": \"Mariela Weimann DDS\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00cc22?text=people+est\",\n            \"bio\": \"Quia voluptatem accusantium omnis vero aspernatur rem placeat dolor. Ipsam perferendis consequatur ea accusantium. Nihil illum quis in natus voluptatibus ut ut.\",\n            \"specialty\": \"Cardiology\",\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"address\": \"40545 Stamm Trace Suite 727\\nEast Anahiport, VT 93094-7791\",\n            \"price\": \"294.03\",\n            \"experience_years\": 23,\n            \"education\": \"Harvard Medical School\",\n            \"certificates\": [\n                {\n                    \"title\": \"Advanced Cardiac Life Support\",\n                    \"issuer\": \"AMA\",\n                    \"year\": 2018\n                },\n                {\n                    \"title\": \"Advanced Cardiac Life Support\",\n                    \"issuer\": \"Coursera\",\n                    \"year\": 2023\n                },\n                {\n                    \"title\": \"PHP Advanced\",\n                    \"issuer\": \"AMA\",\n                    \"year\": 2023\n                }\n            ],\n            \"language\": \"english\",\n            \"gender\": \"female\",\n            \"latitude\": \"30.0838070\",\n            \"longitude\": \"31.3571220\",\n            \"distance_km\": 16.29,\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 3,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 5,\n            \"user_id\": 6,\n            \"name\": \"Michale Kessler\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0044bb?text=people+nihil\",\n            \"bio\": \"Reiciendis recusandae cumque deleniti at ullam nihil. Delectus quasi ea sed quo odit totam voluptas. Doloremque aut saepe soluta. Sequi fugit necessitatibus perferendis corporis.\",\n            \"specialty\": \"Neurology\",\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"address\": \"40545 Stamm Trace Suite 727\\nEast Anahiport, VT 93094-7791\",\n            \"price\": \"455.09\",\n            \"experience_years\": 24,\n            \"education\": \"Cairo University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"Board Certified Cardiologist\",\n                    \"issuer\": \"Coursera\",\n                    \"year\": 2020\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"male\",\n            \"latitude\": \"30.0845440\",\n            \"longitude\": \"31.3919450\",\n            \"distance_km\": 19.33,\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 2.7,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 7,\n            \"user_id\": 8,\n            \"name\": \"Geoffrey Medhurst Sr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/003300?text=people+quaerat\",\n            \"bio\": \"Eius aut architecto optio voluptates porro enim consequuntur. Et minus cum tempore quas et debitis amet. Cupiditate quas assumenda omnis iusto.\",\n            \"specialty\": \"Dermatology\",\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"address\": \"352 Loraine Motorway Suite 980\\nEast Robbton, TN 23809\",\n            \"price\": \"510.86\",\n            \"experience_years\": 18,\n            \"education\": \"Ain Shams University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"Laravel Professional\",\n                    \"issuer\": \"Udemy\",\n                    \"year\": 2020\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"female\",\n            \"latitude\": \"29.9951340\",\n            \"longitude\": \"31.1940810\",\n            \"distance_km\": 2.46,\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 2.7,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 4,\n            \"user_id\": 5,\n            \"name\": \"Jodie Krajcik\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00bb77?text=people+a\",\n            \"bio\": \"Cupiditate tenetur voluptate non odio porro. Et asperiores repudiandae reprehenderit dignissimos.\",\n            \"specialty\": \"Orthopedics\",\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"address\": \"352 Loraine Motorway Suite 980\\nEast Robbton, TN 23809\",\n            \"price\": \"370.57\",\n            \"experience_years\": 30,\n            \"education\": \"Alexandria University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"PHP Advanced\",\n                    \"issuer\": \"AMA\",\n                    \"year\": 2017\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"male\",\n            \"latitude\": \"30.1780860\",\n            \"longitude\": \"31.2850010\",\n            \"distance_km\": 19.75,\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 2.5,\n            \"reviews_count\": 4\n        },\n        {\n            \"id\": 2,\n            \"user_id\": 3,\n            \"name\": \"Gaylord Christiansen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00ccee?text=people+et\",\n            \"bio\": \"Corrupti cupiditate quas unde eligendi blanditiis quia. Commodi sit laboriosam sint aut temporibus odio quia et. Quidem error sunt occaecati suscipit tempore qui libero. Perspiciatis facilis qui ut.\",\n            \"specialty\": \"Ophthalmology\",\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"address\": \"8738 Karley Stravenue\\nWeimannchester, WA 11792-7995\",\n            \"price\": \"295.52\",\n            \"experience_years\": 15,\n            \"education\": \"Alexandria University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"Board Certified Cardiologist\",\n                    \"issuer\": \"AMA\",\n                    \"year\": 2023\n                },\n                {\n                    \"title\": \"Board Certified Cardiologist\",\n                    \"issuer\": \"AMA\",\n                    \"year\": 2019\n                },\n                {\n                    \"title\": \"Board Certified Cardiologist\",\n                    \"issuer\": \"Udemy\",\n                    \"year\": 2016\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"female\",\n            \"latitude\": \"29.9388990\",\n            \"longitude\": \"31.3175900\",\n            \"distance_km\": 13.33,\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 6,\n            \"user_id\": 7,\n            \"name\": \"Candida Tremblay Jr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00dd00?text=people+nihil\",\n            \"bio\": \"Ullam dolores dicta totam similique tempora. Qui ipsa ex similique sunt recusandae et.\",\n            \"specialty\": \"Neurology\",\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"address\": \"768 Jacobs Shoals Apt. 117\\nWest Maidastad, WY 26492-9585\",\n            \"price\": \"457.69\",\n            \"experience_years\": 2,\n            \"education\": \"Cairo University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"Pediatric Emergency Medicine\",\n                    \"issuer\": \"Egyptian Medical Syndicate\",\n                    \"year\": 2021\n                }\n            ],\n            \"language\": \"english\",\n            \"gender\": \"male\",\n            \"latitude\": \"29.9389020\",\n            \"longitude\": \"31.3005630\",\n            \"distance_km\": 12.08,\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 1,\n            \"user_id\": 2,\n            \"name\": \"Lon Nikolaus\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0022aa?text=people+sapiente\",\n            \"bio\": \"Doloribus laudantium ratione rem rerum accusantium expedita. Laudantium quasi rerum consequuntur ut. Odit nulla reprehenderit enim earum et.\",\n            \"specialty\": \"Orthopedics\",\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"address\": \"8738 Karley Stravenue\\nWeimannchester, WA 11792-7995\",\n            \"price\": \"787.05\",\n            \"experience_years\": 27,\n            \"education\": \"Harvard Medical School\",\n            \"certificates\": [\n                {\n                    \"title\": \"Advanced Cardiac Life Support\",\n                    \"issuer\": \"Egyptian Medical Syndicate\",\n                    \"year\": 2016\n                },\n                {\n                    \"title\": \"PHP Advanced\",\n                    \"issuer\": \"Coursera\",\n                    \"year\": 2019\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"female\",\n            \"latitude\": \"29.9166850\",\n            \"longitude\": \"31.3105400\",\n            \"distance_km\": 14.52,\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": null,\n            \"reviews_count\": 0\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?latitude=30.0131&longitude=31.2089&sort=rating&page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?latitude=30.0131&longitude=31.2089&sort=rating&page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?latitude=30.0131&longitude=31.2089&sort=rating&page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": 10,\n        \"total\": 10\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "All Doctors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/doctors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "doctors"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "All Doctors",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/doctors",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 10:01:30 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Samanta Hauck\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00aa77?text=people+veritatis\",\n            \"specialty\": null,\n            \"hospital\": \"Simonis-Schaefer Hospital\",\n            \"price\": \"507.44\",\n            \"experience_years\": 3,\n            \"latitude\": \"29.9833020\",\n            \"longitude\": \"31.2955890\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Arvel Crona\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00dd99?text=people+excepturi\",\n            \"specialty\": null,\n            \"hospital\": \"Barrows, Grimes and Ziemann Hospital\",\n            \"price\": \"633.95\",\n            \"experience_years\": 1,\n            \"latitude\": \"29.9253860\",\n            \"longitude\": \"31.3417000\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Edmond Rogahn PhD\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/006600?text=people+at\",\n            \"specialty\": null,\n            \"hospital\": \"Barrows, Grimes and Ziemann Hospital\",\n            \"price\": \"245.73\",\n            \"experience_years\": 22,\n            \"latitude\": \"30.1742800\",\n            \"longitude\": \"31.1125130\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Olin Crona\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00ffbb?text=people+sint\",\n            \"specialty\": null,\n            \"hospital\": \"Hickle and Sons Hospital\",\n            \"price\": \"622.97\",\n            \"experience_years\": 24,\n            \"latitude\": \"29.9325610\",\n            \"longitude\": \"31.1371230\"\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Arnold Quigley III\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0077dd?text=people+neque\",\n            \"specialty\": null,\n            \"hospital\": \"Morar LLC Hospital\",\n            \"price\": \"691.70\",\n            \"experience_years\": 7,\n            \"latitude\": \"29.9394560\",\n            \"longitude\": \"31.2370810\"\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Cornelius Hegmann MD\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0088aa?text=people+reprehenderit\",\n            \"specialty\": null,\n            \"hospital\": \"Kulas, Reynolds and Ernser Hospital\",\n            \"price\": \"683.35\",\n            \"experience_years\": 4,\n            \"latitude\": \"30.1700050\",\n            \"longitude\": \"31.1092750\"\n        },\n        {\n            \"id\": 7,\n            \"name\": \"Gerardo Buckridge DDS\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00eecc?text=people+sapiente\",\n            \"specialty\": null,\n            \"hospital\": \"Kulas, Reynolds and Ernser Hospital\",\n            \"price\": \"442.46\",\n            \"experience_years\": 19,\n            \"latitude\": \"30.1284800\",\n            \"longitude\": \"31.3717170\"\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Tomasa Windler\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0033ee?text=people+in\",\n            \"specialty\": null,\n            \"hospital\": \"Morar LLC Hospital\",\n            \"price\": \"628.99\",\n            \"experience_years\": 7,\n            \"latitude\": \"30.1865950\",\n            \"longitude\": \"31.1214450\"\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Cary Kertzmann\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/005533?text=people+atque\",\n            \"specialty\": null,\n            \"hospital\": \"Kulas, Reynolds and Ernser Hospital\",\n            \"price\": \"548.98\",\n            \"experience_years\": 6,\n            \"latitude\": \"30.0017450\",\n            \"longitude\": \"31.3210230\"\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Curtis Feil\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0044ee?text=people+illo\",\n            \"specialty\": null,\n            \"hospital\": \"Morar LLC Hospital\",\n            \"price\": \"191.11\",\n            \"experience_years\": 23,\n            \"latitude\": \"30.1334470\",\n            \"longitude\": \"31.1818660\"\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": 10,\n        \"total\": 10\n    }\n}"
+            },
+            {
+              "name": "All Doctors",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/doctors",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 16:48:11 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"user_id\": 2,\n            \"name\": \"Lon Nikolaus\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0022aa?text=people+sapiente\",\n            \"bio\": \"Doloribus laudantium ratione rem rerum accusantium expedita. Laudantium quasi rerum consequuntur ut. Odit nulla reprehenderit enim earum et.\",\n            \"specialty\": \"Orthopedics\",\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"address\": \"8738 Karley Stravenue\\nWeimannchester, WA 11792-7995\",\n            \"price\": \"787.05\",\n            \"experience_years\": 27,\n            \"education\": \"Harvard Medical School\",\n            \"certificates\": [\n                {\n                    \"title\": \"Advanced Cardiac Life Support\",\n                    \"issuer\": \"Egyptian Medical Syndicate\",\n                    \"year\": 2016\n                },\n                {\n                    \"title\": \"PHP Advanced\",\n                    \"issuer\": \"Coursera\",\n                    \"year\": 2019\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"female\",\n            \"latitude\": \"29.9166850\",\n            \"longitude\": \"31.3105400\",\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": null,\n            \"reviews_count\": 0\n        },\n        {\n            \"id\": 2,\n            \"user_id\": 3,\n            \"name\": \"Gaylord Christiansen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00ccee?text=people+et\",\n            \"bio\": \"Corrupti cupiditate quas unde eligendi blanditiis quia. Commodi sit laboriosam sint aut temporibus odio quia et. Quidem error sunt occaecati suscipit tempore qui libero. Perspiciatis facilis qui ut.\",\n            \"specialty\": \"Ophthalmology\",\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"address\": \"8738 Karley Stravenue\\nWeimannchester, WA 11792-7995\",\n            \"price\": \"295.52\",\n            \"experience_years\": 15,\n            \"education\": \"Alexandria University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"Board Certified Cardiologist\",\n                    \"issuer\": \"AMA\",\n                    \"year\": 2023\n                },\n                {\n                    \"title\": \"Board Certified Cardiologist\",\n                    \"issuer\": \"AMA\",\n                    \"year\": 2019\n                },\n                {\n                    \"title\": \"Board Certified Cardiologist\",\n                    \"issuer\": \"Udemy\",\n                    \"year\": 2016\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"female\",\n            \"latitude\": \"29.9388990\",\n            \"longitude\": \"31.3175900\",\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 3,\n            \"user_id\": 4,\n            \"name\": \"Kareem Wisozk\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00eeee?text=people+quod\",\n            \"bio\": \"Est ea eveniet eos deleniti itaque ex. In alias sed est neque voluptatem sed natus. Ut facilis aut sequi provident animi voluptate. Praesentium itaque distinctio qui.\",\n            \"specialty\": \"Dermatology\",\n            \"hospital\": \"Wuckert, Schamberger and Davis Hospital\",\n            \"address\": \"8738 Karley Stravenue\\nWeimannchester, WA 11792-7995\",\n            \"price\": \"170.44\",\n            \"experience_years\": 10,\n            \"education\": \"Alexandria University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"Advanced Cardiac Life Support\",\n                    \"issuer\": \"Coursera\",\n                    \"year\": 2024\n                },\n                {\n                    \"title\": \"Advanced Cardiac Life Support\",\n                    \"issuer\": \"Egyptian Medical Syndicate\",\n                    \"year\": 2019\n                }\n            ],\n            \"language\": \"english\",\n            \"gender\": \"male\",\n            \"latitude\": \"29.9385060\",\n            \"longitude\": \"31.1325670\",\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 4,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 4,\n            \"user_id\": 5,\n            \"name\": \"Jodie Krajcik\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00bb77?text=people+a\",\n            \"bio\": \"Cupiditate tenetur voluptate non odio porro. Et asperiores repudiandae reprehenderit dignissimos.\",\n            \"specialty\": \"Orthopedics\",\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"address\": \"352 Loraine Motorway Suite 980\\nEast Robbton, TN 23809\",\n            \"price\": \"370.57\",\n            \"experience_years\": 30,\n            \"education\": \"Alexandria University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"PHP Advanced\",\n                    \"issuer\": \"AMA\",\n                    \"year\": 2017\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"male\",\n            \"latitude\": \"30.1780860\",\n            \"longitude\": \"31.2850010\",\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 2.5,\n            \"reviews_count\": 4\n        },\n        {\n            \"id\": 5,\n            \"user_id\": 6,\n            \"name\": \"Michale Kessler\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0044bb?text=people+nihil\",\n            \"bio\": \"Reiciendis recusandae cumque deleniti at ullam nihil. Delectus quasi ea sed quo odit totam voluptas. Doloremque aut saepe soluta. Sequi fugit necessitatibus perferendis corporis.\",\n            \"specialty\": \"Neurology\",\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"address\": \"40545 Stamm Trace Suite 727\\nEast Anahiport, VT 93094-7791\",\n            \"price\": \"455.09\",\n            \"experience_years\": 24,\n            \"education\": \"Cairo University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"Board Certified Cardiologist\",\n                    \"issuer\": \"Coursera\",\n                    \"year\": 2020\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"male\",\n            \"latitude\": \"30.0845440\",\n            \"longitude\": \"31.3919450\",\n            \"is_active\": true,\n            \"is_favorite\": true,\n            \"rating\": 2.7,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 6,\n            \"user_id\": 7,\n            \"name\": \"Candida Tremblay Jr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00dd00?text=people+nihil\",\n            \"bio\": \"Ullam dolores dicta totam similique tempora. Qui ipsa ex similique sunt recusandae et.\",\n            \"specialty\": \"Neurology\",\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"address\": \"768 Jacobs Shoals Apt. 117\\nWest Maidastad, WY 26492-9585\",\n            \"price\": \"457.69\",\n            \"experience_years\": 2,\n            \"education\": \"Cairo University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"Pediatric Emergency Medicine\",\n                    \"issuer\": \"Egyptian Medical Syndicate\",\n                    \"year\": 2021\n                }\n            ],\n            \"language\": \"english\",\n            \"gender\": \"male\",\n            \"latitude\": \"29.9389020\",\n            \"longitude\": \"31.3005630\",\n            \"is_active\": true,\n            \"is_favorite\": true,\n            \"rating\": 2,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 7,\n            \"user_id\": 8,\n            \"name\": \"Geoffrey Medhurst Sr.\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/003300?text=people+quaerat\",\n            \"bio\": \"Eius aut architecto optio voluptates porro enim consequuntur. Et minus cum tempore quas et debitis amet. Cupiditate quas assumenda omnis iusto.\",\n            \"specialty\": \"Dermatology\",\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"address\": \"352 Loraine Motorway Suite 980\\nEast Robbton, TN 23809\",\n            \"price\": \"510.86\",\n            \"experience_years\": 18,\n            \"education\": \"Ain Shams University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"Laravel Professional\",\n                    \"issuer\": \"Udemy\",\n                    \"year\": 2020\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"female\",\n            \"latitude\": \"29.9951340\",\n            \"longitude\": \"31.1940810\",\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 2.7,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 8,\n            \"user_id\": 9,\n            \"name\": \"Mr. Markus O'Connell\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00aa66?text=people+quae\",\n            \"bio\": \"Et dignissimos iste molestiae voluptates at. Dicta porro molestias omnis possimus voluptatum animi harum et.\",\n            \"specialty\": \"Orthopedics\",\n            \"hospital\": \"Abbott LLC Hospital\",\n            \"address\": \"768 Jacobs Shoals Apt. 117\\nWest Maidastad, WY 26492-9585\",\n            \"price\": \"301.30\",\n            \"experience_years\": 22,\n            \"education\": \"Alexandria University - Faculty of Medicine\",\n            \"certificates\": [\n                {\n                    \"title\": \"Board Certified Cardiologist\",\n                    \"issuer\": \"AMA\",\n                    \"year\": 2024\n                },\n                {\n                    \"title\": \"Laravel Professional\",\n                    \"issuer\": \"Coursera\",\n                    \"year\": 2018\n                },\n                {\n                    \"title\": \"Pediatric Emergency Medicine\",\n                    \"issuer\": \"Udemy\",\n                    \"year\": 2023\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"female\",\n            \"latitude\": \"29.9144400\",\n            \"longitude\": \"31.3779830\",\n            \"is_active\": true,\n            \"is_favorite\": true,\n            \"rating\": 3,\n            \"reviews_count\": 3\n        },\n        {\n            \"id\": 9,\n            \"user_id\": 10,\n            \"name\": \"Mariela Weimann DDS\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/00cc22?text=people+est\",\n            \"bio\": \"Quia voluptatem accusantium omnis vero aspernatur rem placeat dolor. Ipsam perferendis consequatur ea accusantium. Nihil illum quis in natus voluptatibus ut ut.\",\n            \"specialty\": \"Cardiology\",\n            \"hospital\": \"Kub-Ryan Hospital\",\n            \"address\": \"40545 Stamm Trace Suite 727\\nEast Anahiport, VT 93094-7791\",\n            \"price\": \"294.03\",\n            \"experience_years\": 23,\n            \"education\": \"Harvard Medical School\",\n            \"certificates\": [\n                {\n                    \"title\": \"Advanced Cardiac Life Support\",\n                    \"issuer\": \"AMA\",\n                    \"year\": 2018\n                },\n                {\n                    \"title\": \"Advanced Cardiac Life Support\",\n                    \"issuer\": \"Coursera\",\n                    \"year\": 2023\n                },\n                {\n                    \"title\": \"PHP Advanced\",\n                    \"issuer\": \"AMA\",\n                    \"year\": 2023\n                }\n            ],\n            \"language\": \"english\",\n            \"gender\": \"female\",\n            \"latitude\": \"30.0838070\",\n            \"longitude\": \"31.3571220\",\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 3,\n            \"reviews_count\": 1\n        },\n        {\n            \"id\": 10,\n            \"user_id\": 11,\n            \"name\": \"Dr. Rollin Schoen\",\n            \"avatar\": \"https://via.placeholder.com/200x200.png/0011ee?text=people+aut\",\n            \"bio\": \"Non dolorem aut qui optio. Velit maiores excepturi et doloribus consequuntur ut. Voluptatum ut voluptatibus et eum libero dolorum. Omnis sint quia qui deleniti et velit. Molestiae aspernatur maiores ut veniam quia cupiditate et sit.\",\n            \"specialty\": \"Urology\",\n            \"hospital\": \"Lakin, Abbott and Bode Hospital\",\n            \"address\": \"352 Loraine Motorway Suite 980\\nEast Robbton, TN 23809\",\n            \"price\": \"636.92\",\n            \"experience_years\": 17,\n            \"education\": \"Harvard Medical School\",\n            \"certificates\": [\n                {\n                    \"title\": \"Advanced Cardiac Life Support\",\n                    \"issuer\": \"Udemy\",\n                    \"year\": 2016\n                },\n                {\n                    \"title\": \"Laravel Professional\",\n                    \"issuer\": \"Udemy\",\n                    \"year\": 2024\n                }\n            ],\n            \"language\": \"arabic\",\n            \"gender\": \"female\",\n            \"latitude\": \"30.0153460\",\n            \"longitude\": \"31.3015820\",\n            \"is_active\": true,\n            \"is_favorite\": false,\n            \"rating\": 3.3,\n            \"reviews_count\": 3\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://localhost:8000/api/doctors?page=1\",\n        \"last\": \"http://localhost:8000/api/doctors?page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"page\": null,\n                \"active\": false\n            },\n            {\n                \"url\": \"http://localhost:8000/api/doctors?page=1\",\n                \"label\": \"1\",\n                \"page\": 1,\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"page\": null,\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://localhost:8000/api/doctors\",\n        \"per_page\": 15,\n        \"to\": 10,\n        \"total\": 10\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "doctor available slot",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/doctors/2/availability-slots",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "doctors",
+                "2",
+                "availability-slots"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "doctor available slot",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/doctors/2/availability-slots",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors",
+                    "2",
+                    "availability-slots"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 13:06:10 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 6,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-10\",\n            \"start_time\": \"14:00\",\n            \"end_time\": \"15:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 7,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-10\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 8,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-10\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 9,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-11\",\n            \"start_time\": \"09:00\",\n            \"end_time\": \"10:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 12,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-11\",\n            \"start_time\": \"12:00\",\n            \"end_time\": \"13:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 13,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-11\",\n            \"start_time\": \"13:00\",\n            \"end_time\": \"14:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 14,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-11\",\n            \"start_time\": \"14:00\",\n            \"end_time\": \"15:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 15,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-11\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 16,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-11\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 17,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"09:00\",\n            \"end_time\": \"10:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 18,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"10:00\",\n            \"end_time\": \"11:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 19,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"11:00\",\n            \"end_time\": \"12:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 20,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"12:00\",\n            \"end_time\": \"13:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 21,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"13:00\",\n            \"end_time\": \"14:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 23,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 24,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 26,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"10:00\",\n            \"end_time\": \"11:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 27,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"11:00\",\n            \"end_time\": \"12:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 28,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"12:00\",\n            \"end_time\": \"13:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 29,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"13:00\",\n            \"end_time\": \"14:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 30,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"14:00\",\n            \"end_time\": \"15:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 31,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 32,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 34,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-14\",\n            \"start_time\": \"10:00\",\n            \"end_time\": \"11:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 35,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-14\",\n            \"start_time\": \"11:00\",\n            \"end_time\": \"12:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 36,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-14\",\n            \"start_time\": \"12:00\",\n            \"end_time\": \"13:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 37,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-14\",\n            \"start_time\": \"13:00\",\n            \"end_time\": \"14:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 39,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-14\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 40,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-14\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 41,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"09:00\",\n            \"end_time\": \"10:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 42,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"10:00\",\n            \"end_time\": \"11:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 43,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"11:00\",\n            \"end_time\": \"12:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 44,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"12:00\",\n            \"end_time\": \"13:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 45,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"13:00\",\n            \"end_time\": \"14:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 47,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 48,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 49,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"09:00\",\n            \"end_time\": \"10:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 51,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"11:00\",\n            \"end_time\": \"12:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 52,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"12:00\",\n            \"end_time\": \"13:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 53,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"13:00\",\n            \"end_time\": \"14:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 54,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"14:00\",\n            \"end_time\": \"15:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 55,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 56,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        }\n    ]\n}"
+            },
+            {
+              "name": "doctor available slot",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/doctors/2/availability-slots",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors",
+                    "2",
+                    "availability-slots"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 16:48:51 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 9,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-11\",\n            \"start_time\": \"09:00\",\n            \"end_time\": \"10:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 12,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-11\",\n            \"start_time\": \"12:00\",\n            \"end_time\": \"13:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 13,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-11\",\n            \"start_time\": \"13:00\",\n            \"end_time\": \"14:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 14,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-11\",\n            \"start_time\": \"14:00\",\n            \"end_time\": \"15:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 15,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-11\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 16,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-11\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 17,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"09:00\",\n            \"end_time\": \"10:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 18,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"10:00\",\n            \"end_time\": \"11:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 19,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"11:00\",\n            \"end_time\": \"12:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 20,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"12:00\",\n            \"end_time\": \"13:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 21,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"13:00\",\n            \"end_time\": \"14:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 23,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 24,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-12\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 26,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"10:00\",\n            \"end_time\": \"11:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 27,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"11:00\",\n            \"end_time\": \"12:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 28,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"12:00\",\n            \"end_time\": \"13:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 29,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"13:00\",\n            \"end_time\": \"14:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 30,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"14:00\",\n            \"end_time\": \"15:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 31,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 32,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-13\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 34,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-14\",\n            \"start_time\": \"10:00\",\n            \"end_time\": \"11:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 35,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-14\",\n            \"start_time\": \"11:00\",\n            \"end_time\": \"12:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 36,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-14\",\n            \"start_time\": \"12:00\",\n            \"end_time\": \"13:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 37,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-14\",\n            \"start_time\": \"13:00\",\n            \"end_time\": \"14:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 39,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-14\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 40,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-14\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 41,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"09:00\",\n            \"end_time\": \"10:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 42,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"10:00\",\n            \"end_time\": \"11:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 43,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"11:00\",\n            \"end_time\": \"12:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 44,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"12:00\",\n            \"end_time\": \"13:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 45,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"13:00\",\n            \"end_time\": \"14:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 47,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 48,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-15\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 49,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"09:00\",\n            \"end_time\": \"10:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 51,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"11:00\",\n            \"end_time\": \"12:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 52,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"12:00\",\n            \"end_time\": \"13:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 53,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"13:00\",\n            \"end_time\": \"14:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 54,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"14:00\",\n            \"end_time\": \"15:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 55,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"15:00\",\n            \"end_time\": \"16:00\",\n            \"is_booked\": false\n        },\n        {\n            \"id\": 56,\n            \"doctor_id\": 2,\n            \"day\": \"2026-07-16\",\n            \"start_time\": \"16:00\",\n            \"end_time\": \"17:00\",\n            \"is_booked\": false\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "available slot details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/doctors/availability-slots/2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "doctors",
+                "availability-slots",
+                "2"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "available slot details",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/doctors/availability-slots/2",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors",
+                    "availability-slots",
+                    "2"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 13:11:29 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"id\": 2,\n        \"doctor_id\": 2,\n        \"day\": \"2026-07-10\",\n        \"start_time\": \"10:00\",\n        \"end_time\": \"11:00\",\n        \"is_booked\": false\n    }\n}"
+            },
+            {
+              "name": "available slot details",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/doctors/availability-slots/2",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "doctors",
+                    "availability-slots",
+                    "2"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 16:50:21 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"id\": 2,\n        \"doctor_id\": 2,\n        \"day\": \"2026-07-10\",\n        \"start_time\": \"10:00\",\n        \"end_time\": \"11:00\",\n        \"is_booked\": false\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "conversations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/conversations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "conversations"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "conversations",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/conversations",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "conversations"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 23:25:28 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"current_page\": 1,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"patient_id\": 1,\n            \"doctor_id\": 2,\n            \"status\": \"active\",\n            \"last_message_at\": null,\n            \"created_at\": \"2026-07-10T22:32:58.000000Z\",\n            \"updated_at\": \"2026-07-10T22:32:58.000000Z\",\n            \"latest_message\": {\n                \"id\": 1,\n                \"conversation_id\": 1,\n                \"sender_type\": \"App\\\\Models\\\\Patient\",\n                \"sender_id\": 1,\n                \"type\": \"text\",\n                \"body\": \"رسالة تجربة\",\n                \"read_at\": null,\n                \"created_at\": \"2026-07-10T22:36:03.000000Z\",\n                \"updated_at\": \"2026-07-10T22:36:03.000000Z\"\n            },\n            \"patient\": {\n                \"id\": 1,\n                \"name\": \"Piper Robel\",\n                \"phone\": \"01093163487\",\n                \"email\": \"brekke.kory@example.net\",\n                \"birthdate\": null,\n                \"profile_photo\": null,\n                \"latitude\": null,\n                \"longitude\": null,\n                \"verified_at\": \"2026-07-10T22:25:28.000000Z\",\n                \"created_at\": \"2026-07-10T22:25:31.000000Z\",\n                \"updated_at\": \"2026-07-10T22:25:31.000000Z\"\n            },\n            \"doctor\": {\n                \"id\": 2,\n                \"name\": \"Aimee Bosco\",\n                \"email\": \"cpaucek@example.com\",\n                \"role\": \"doctor\",\n                \"email_verified_at\": \"2026-07-10T22:25:25.000000Z\",\n                \"created_at\": \"2026-07-10T22:25:25.000000Z\",\n                \"updated_at\": \"2026-07-10T22:25:25.000000Z\"\n            }\n        }\n    ],\n    \"first_page_url\": \"http://localhost:8000/api/conversations?page=1\",\n    \"from\": 1,\n    \"last_page\": 1,\n    \"last_page_url\": \"http://localhost:8000/api/conversations?page=1\",\n    \"links\": [\n        {\n            \"url\": null,\n            \"label\": \"&laquo; Previous\",\n            \"page\": null,\n            \"active\": false\n        },\n        {\n            \"url\": \"http://localhost:8000/api/conversations?page=1\",\n            \"label\": \"1\",\n            \"page\": 1,\n            \"active\": true\n        },\n        {\n            \"url\": null,\n            \"label\": \"Next &raquo;\",\n            \"page\": null,\n            \"active\": false\n        }\n    ],\n    \"next_page_url\": null,\n    \"path\": \"http://localhost:8000/api/conversations\",\n    \"per_page\": 20,\n    \"prev_page_url\": null,\n    \"to\": 1,\n    \"total\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "store messages",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"conversation_id\": 1,\r\n    \"type\": \"text\",\r\n    \"body\": \"رسالة من بوستمان\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/messages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "messages"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "store messages",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"conversation_id\": 1,\r\n    \"type\": \"text\",\r\n    \"body\": \"رسالة من بوستمان\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/messages",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "messages"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 23:28:07 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"sender_id\": 1,\n    \"sender_type\": \"App\\\\Models\\\\Patient\",\n    \"type\": \"text\",\n    \"body\": \"رسالة من بوستمان\",\n    \"conversation_id\": 1,\n    \"updated_at\": \"2026-07-10T23:28:07.000000Z\",\n    \"created_at\": \"2026-07-10T23:28:07.000000Z\",\n    \"id\": 4,\n    \"media\": []\n}"
+            }
+          ]
+        },
+        {
+          "name": "messages paginated",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/messages?conversation_id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "messages"
+              ],
+              "query": [
+                {
+                  "key": "conversation_id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "New Request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/messages?conversation_id=1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "messages"
+                  ],
+                  "query": [
+                    {
+                      "key": "conversation_id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 23:31:19 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"current_page\": 1,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"conversation_id\": 1,\n            \"sender_type\": \"App\\\\Models\\\\Patient\",\n            \"sender_id\": 1,\n            \"type\": \"text\",\n            \"body\": \"رسالة تجربة\",\n            \"read_at\": null,\n            \"created_at\": \"2026-07-10T22:36:03.000000Z\",\n            \"updated_at\": \"2026-07-10T22:36:03.000000Z\",\n            \"media\": []\n        },\n        {\n            \"id\": 4,\n            \"conversation_id\": 1,\n            \"sender_type\": \"App\\\\Models\\\\Patient\",\n            \"sender_id\": 1,\n            \"type\": \"text\",\n            \"body\": \"رسالة من بوستمان\",\n            \"read_at\": null,\n            \"created_at\": \"2026-07-10T23:28:07.000000Z\",\n            \"updated_at\": \"2026-07-10T23:28:07.000000Z\",\n            \"media\": []\n        }\n    ],\n    \"first_page_url\": \"http://localhost:8000/api/messages?page=1\",\n    \"from\": 1,\n    \"last_page\": 1,\n    \"last_page_url\": \"http://localhost:8000/api/messages?page=1\",\n    \"links\": [\n        {\n            \"url\": null,\n            \"label\": \"&laquo; Previous\",\n            \"page\": null,\n            \"active\": false\n        },\n        {\n            \"url\": \"http://localhost:8000/api/messages?page=1\",\n            \"label\": \"1\",\n            \"page\": 1,\n            \"active\": true\n        },\n        {\n            \"url\": null,\n            \"label\": \"Next &raquo;\",\n            \"page\": null,\n            \"active\": false\n        }\n    ],\n    \"next_page_url\": null,\n    \"path\": \"http://localhost:8000/api/messages\",\n    \"per_page\": 30,\n    \"prev_page_url\": null,\n    \"to\": 2,\n    \"total\": 2\n}"
+            },
+            {
+              "name": "messages paginated after delete message",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/messages?conversation_id=1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "messages"
+                  ],
+                  "query": [
+                    {
+                      "key": "conversation_id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 23:37:56 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"current_page\": 1,\n    \"data\": [\n        {\n            \"id\": 4,\n            \"conversation_id\": 1,\n            \"sender_type\": \"App\\\\Models\\\\Patient\",\n            \"sender_id\": 1,\n            \"type\": \"text\",\n            \"body\": \"رسالة من بوستمان\",\n            \"read_at\": null,\n            \"created_at\": \"2026-07-10T23:28:07.000000Z\",\n            \"updated_at\": \"2026-07-10T23:28:07.000000Z\",\n            \"media\": []\n        }\n    ],\n    \"first_page_url\": \"http://localhost:8000/api/messages?page=1\",\n    \"from\": 1,\n    \"last_page\": 1,\n    \"last_page_url\": \"http://localhost:8000/api/messages?page=1\",\n    \"links\": [\n        {\n            \"url\": null,\n            \"label\": \"&laquo; Previous\",\n            \"page\": null,\n            \"active\": false\n        },\n        {\n            \"url\": \"http://localhost:8000/api/messages?page=1\",\n            \"label\": \"1\",\n            \"page\": 1,\n            \"active\": true\n        },\n        {\n            \"url\": null,\n            \"label\": \"Next &raquo;\",\n            \"page\": null,\n            \"active\": false\n        }\n    ],\n    \"next_page_url\": null,\n    \"path\": \"http://localhost:8000/api/messages\",\n    \"per_page\": 30,\n    \"prev_page_url\": null,\n    \"to\": 1,\n    \"total\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "delete message",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/messages/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "messages",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "delete message",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/messages/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "messages",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Host",
+                  "value": "localhost:8000"
+                },
+                {
+                  "key": "Connection",
+                  "value": "close"
+                },
+                {
+                  "key": "X-Powered-By",
+                  "value": "PHP/8.2.12"
+                },
+                {
+                  "key": "Cache-Control",
+                  "value": "no-cache, private"
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 10 Jul 2026 23:37:20 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"تم حذف الرسالة\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

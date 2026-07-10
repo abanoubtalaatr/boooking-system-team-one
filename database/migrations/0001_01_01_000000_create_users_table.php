@@ -15,19 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('role');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string("password")->nullable(); // nullable to allow OAuth-only accounts
+            $table->string("password"); 
             $table->rememberToken();
-            $table->foreignid("created_by")->nullable()->constrained("users")->nullOnDelete();
-            $table->string("phone")->nullable()->unique(); 
-            // Social login (Google/Facebook/etc.), if used alongside password auth.
-            $table->string("provider")->nullable();
-            $table->string("provider_id")->nullable();
-            $table->string("role")->default('patient'); // patient | doctor | admin, backed by App\Enums\UserRole
-            $table->string("status")->default("active"); // active | pending_profile | suspended, backed by App\Enums\UserStatus
+           
             $table->timestamps();
 
-            $table->index(["role", "status"]);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

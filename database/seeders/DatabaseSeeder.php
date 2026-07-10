@@ -20,15 +20,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);*/
         $this->call([
-            AdminUserSeeder::class,
-            SpecialtySeeder::class,
+            SpecializationSeeder::class,
             HospitalSeeder::class,
             DoctorSeeder::class,
-            DoctorSpecialtySeeder::class,
-            DoctorHospitalSeeder::class,
+            PatientSeeder::class,
+            ReviewSeeder::class,
             AvailabilitySlotSeeder::class,
-            ConversationSeeder::class,
-            MessageSeeder::class,
+            FavoriteSeeder::class,
+           // ConversationSeeder::class,
+           // MessageSeeder::class,
         ]);
     }
 }
