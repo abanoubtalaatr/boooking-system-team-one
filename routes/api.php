@@ -12,9 +12,21 @@ require __DIR__ . '/doctor.php';
 require __DIR__ . '/chat.php';
 require __DIR__ . '/channels.php';
 require __DIR__ . '/admin_doctor.php';
+use App\Http\Controllers\Api\Faq\FaqController;
+use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\Patient\PatientAuthController;
 use App\Http\Controllers\Api\Patient\PatientPasswordResetController;
+use App\Http\Controllers\Api\Policy\PolicyController;
+use App\Http\Controllers\Api\ReviewsController;
+use App\Http\Controllers\Api\SearchHistoryController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
 
 Route::prefix('patient')
     ->name('patient.')
@@ -47,3 +59,19 @@ Route::prefix('patient')
             ->middleware('auth:sanctum')
             ->name('logout');
     });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/favorites', [FavoriteController::class, 'index']);
+    Route::post('/favorites', [FavoriteController::class, 'store']);
+    Route::delete('/favorites', [FavoriteController::class, 'destroy']);
+
+    Route::get('/search-history', [SearchHistoryController::class, 'index']);
+    Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
+
+    Route::get('/', [HomeController::class, 'index']);
+    Route::get('/faqs', [FaqController::class, 'index']);
+    Route::get('/privacy-policy', [PolicyController::class, 'privacy']);
+    Route::get('/terms', [PolicyController::class, 'terms']);
+
+    Route::apiResource('reviews', ReviewsController::class);
+});

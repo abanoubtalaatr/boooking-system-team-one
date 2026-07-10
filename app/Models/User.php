@@ -99,4 +99,9 @@ class User extends Authenticatable
             "doctor_id", // FK on bookings referencing doctor_profiles
         );
     }
+
+    public function doctorProfile(): HasOne
+    {
+        return $this->hasOne(DoctorProfile::class);
+    }
 }
