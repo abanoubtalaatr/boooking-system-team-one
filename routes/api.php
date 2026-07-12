@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Booking\BookingController;
 use App\Http\Controllers\Api\Faq\FaqController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\HomeController;
@@ -62,4 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/terms', [PolicyController::class, 'terms']);
 
     Route::apiResource('reviews', ReviewsController::class);
+
+    // Booking routes
+    Route::post('/bookings', [BookingController::class, 'store']);
 });

@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-use BookingStatus;
+use App\Enums\BookingStatus;
+use App\Enums\ConsultationType;
+use App\Enums\PaymentStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use PaymentStatus;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Booking extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'booking_number',
         'patient_id',
@@ -28,6 +31,7 @@ class Booking extends Model
         'price' => 'decimal:2',
         'status' => BookingStatus::class,
         'payment_status' => PaymentStatus::class,
+        'consultation_type' => ConsultationType::class,
     ];
 
     /**
@@ -35,7 +39,7 @@ class Booking extends Model
      */
     public function patient(): BelongsTo
     {
-        return $this->belongsTo(Patient::class, 'patient_id');
+        return $this->belongsTo(Patient::class);
     }
 
     /**

@@ -19,11 +19,7 @@ return new class extends Migration
             $table->string('booking_number')->unique();
             $table->decimal('price', 10, 2);
 
-            $table->enum('consultation_type', [
-                'online',
-                'clinic',
-                'home'
-            ]);
+            $table->string('consultation_type');
             $table->string('status')->default('pending');
             $table->string('payment_status')->default('pending');
 

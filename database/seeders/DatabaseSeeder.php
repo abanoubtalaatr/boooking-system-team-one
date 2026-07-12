@@ -19,13 +19,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call([
+            SpecializationSeeder::class,
+            FaqCategorySeeder::class,
+            FaqSeeder::class,
+            PolicySeeder::class,
+        ]);
+
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
-
-        $this->call(FavoriteSeeder::class);
         $users = User::factory(10)->create();
 
         foreach ($users as $user) {
@@ -40,10 +45,9 @@ class DatabaseSeeder extends Seeder
         Promotion::factory()->count(5)->create();
 
         $this->call([
-            SpecializationSeeder::class,
-            FaqCategorySeeder::class,
-            FaqSeeder::class,
-            PolicySeeder::class,
+            FavoriteSeeder::class,
+            AvailabilitySlotSeeder::class,
+            BookingSeeder::class,
         ]);
         // User::factory()->create([
         //     'name' => 'Test User',
