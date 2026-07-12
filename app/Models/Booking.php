@@ -9,45 +9,52 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * NOTE: the Booking module (creation flow, checkout, etc.) is built separately per
- * the prompt — this model only carries what the Doctor module's Accept/Reject
- * actions and DoctorResource::average_rating need to reference.
+ * Booking model shared by Doctor accept/reject flows and the booking module foundation.
  */
 class Booking extends Model
 {
-    use  HasFactory;
+    use HasFactory;
 
     protected $fillable = [
-        "patient_id",
-        "doctor_id",
-        "slot_id",
-        "status",
-        "price",
-        "payment_status",
+        'booking_number',
+        'patient_id',
+        'doctor_id',
+        'slot_id',
+        'availability_slot_id',
+        'booking_date',
+        'booking_time',
+        'consultation_type',
+        'status',
+        'price',
+        'payment_status',
     ];
 
     protected $casts = [
-        "status" => BookingStatus::class,
-        "price" => "decimal:2",
-        "payment_status" => PaymentStatus::class,
+        'booking_date' => 'date',
+        'booking_time' => 'datetime:H:i',
+        'status' => BookingStatus::class,
+        'price' => 'decimal:2',
+        'payment_status' => PaymentStatus::class,
     ];
 
     public function patient(): BelongsTo
     {
-        return $this->belongsTo(User::class, "patient_id");
+        return $this->belongsTo(User::class, 'patient_id');
     }
 
-    /** doctor_id references doctor_profiles.id, not users.id directly (see ERD). */
+    /** doctor_id references doctor_profiles.id in the doctor module ERD. */
     public function doctorProfile(): BelongsTo
     {
-        return $this->belongsTo(DoctorProfile::class, "doctor_id");
+        return $this->belongsTo(DoctorProfile::class, 'doctor_id');
+    }
+
+    public function doctor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'doctor_id');
     }
 
     public function slot(): BelongsTo
     {
-        return $this->belongsTo(AvailabilitySlot::class, "slot_id");
+        return $this->belongsTo(AvailabilitySlot::class, 'slot_id');
     }
-
-    // payments()/rating() relations are owned by the Payment/Rating modules,
-    // not declared here to avoid depending on models this module doesn't build.
 }
