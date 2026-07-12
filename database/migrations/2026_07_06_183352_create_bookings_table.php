@@ -20,8 +20,6 @@ return new class extends Migration
             $table->enum("payment_status", ["pending", "paid", "failed", "refunded"])->default("pending");
             $table->timestamps();
 
-            $table->index(["doctor_id", "status"]);
-            $table->index(["patient_id", "status"]);
         });
     }
 

@@ -10,11 +10,6 @@ class HospitalSeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = User::where("role", "admin")->first() ?? User::factory()->create(["role" => "admin"]);
-
-        Hospital::factory()
-            ->count(5)
-            ->state(["admin_id" => $admin->id])
-            ->create();
+        Hospital::factory()->count(5)->create();
     }
 }

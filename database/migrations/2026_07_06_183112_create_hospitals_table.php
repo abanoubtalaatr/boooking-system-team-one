@@ -10,10 +10,10 @@ return new class extends Migration
     {
         Schema::create("hospitals", function (Blueprint $table) {
             $table->id();
-            $table->foreignId("admin_id")->constrained("users")->cascadeOnDelete();
             $table->string("name");
             $table->decimal("latitude", 10, 7)->nullable();
             $table->decimal("longitude", 10, 7)->nullable();
+            $table->string("address");
             $table->timestamps();
         });
     }

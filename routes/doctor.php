@@ -5,20 +5,20 @@
 | Doctor & Chat module routes — append to routes/api.php
 |--------------------------------------------------------------------------
 */
-
-use App\Http\Controllers\Api\Doctor;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\DoctorController;
+use App\Http\Controllers\Api\AvailabilitySlotController;
 
 
+Route::middleware('auth:patient')->prefix('doctors')->group(function () {
 
-Route::prefix("doctor")->middleware(["auth:sanctum", "role:doctor"])->group(function () {
-    Route::get("profile", [Doctor\ProfileController::class, "show"]);
-    Route::put("profile", [Doctor\ProfileController::class, "update"]);
-    Route::apiResource("availability-slots", Doctor\AvailabilitySlotController::class);
-    Route::put("specialties", Doctor\AssignSpecialtiesController::class);
-    Route::put("hospitals", Doctor\AssignHospitalsController::class);
-    Route::put("bookings/{booking}/accept", Doctor\AcceptBookingController::class);
-    Route::put("bookings/{booking}/reject", Doctor\RejectBookingController::class);
+    // doctors
+    Route::get('/', [DoctorController::class, 'index']);
+    Route::get('/{id}', [DoctorController::class, 'show']);
+
+    // available slots
+    Route::get('/{doctor}/availability-slots', [AvailabilitySlotController::class, 'index']);
+    Route::get('/availability-slots/{id}', [AvailabilitySlotController::class, 'show']);
 });
 
 

@@ -8,6 +8,8 @@ use App\Actions\Chat\SendMessageAction;
 use App\Actions\Chat\StartConversationAction;
 use App\Models\Conversation;
 use App\Models\Message;
+use App\Models\Patient;
+use App\Models\User;
 use App\Repositories\Contracts\ConversationRepositoryInterface;
 use App\Repositories\Contracts\MessageRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -16,45 +18,33 @@ use Illuminate\Http\UploadedFile;
 /**
  * Single entry point controllers use for start/send/list/seen/delete.
  */
+// app/Services/Chat/ChatService.php
 class ChatService
 {
     public function __construct(
-        private readonly StartConversationAction $startConversation,
-        private readonly SendMessageAction $sendMessage,
-        private readonly MarkMessagesAsSeenAction $markMessagesAsSeen,
-        private readonly DeleteMessageAction $deleteMessage,
-        private readonly ConversationRepositoryInterface $conversations,
-        private readonly MessageRepositoryInterface $messages,
-    ) {
+        private ConversationRepositoryInterface $conversations,
+        private MessageRepositoryInterface $messages,
+        private SendMessageAction $sendMessage,
+        private StartConversationAction $startConversation,
+    ) {}
+
+    public function startOrGet(Patient $patient, User $doctor): Conversation
+    {
+        return $this->startConversation->execute($patient, $doctor);
     }
 
-    public function start(string $patientId, string $doctorId): Conversation
+    public function send(Conversation $conversation, Model $sender, array $data): Message
     {
-        return $this->startConversation->handle($patientId, $doctorId);
+        return $this->sendMessage->execute($conversation, $sender, $data);
     }
 
-    public function listForUser(string $userId, int $perPage = 20): LengthAwarePaginator
+    public function listMessages(Conversation $conversation): LengthAwarePaginator
     {
-        return $this->conversations->paginateForUser($userId, $perPage);
+        return $this->messages->paginateForConversation($conversation->id);
     }
 
-    public function messagesFor(string $conversationId, int $perPage = 30): LengthAwarePaginator
+    public function markRead(Conversation $conversation, Model $reader): void
     {
-        return $this->messages->paginateForConversation($conversationId, $perPage);
-    }
-
-    public function send(Conversation $conversation, string $senderId, array $data, ?UploadedFile $file = null): Message
-    {
-        return $this->sendMessage->handle($conversation, $senderId, $data, $file);
-    }
-
-    public function markSeen(Conversation $conversation, string $userId): int
-    {
-        return $this->markMessagesAsSeen->handle($conversation, $userId);
-    }
-
-    public function deleteMessage(Message $message, string $requesterId): bool
-    {
-        return $this->deleteMessage->handle($message, $requesterId);
+        $this->messages->markAsRead($conversation, $reader);
     }
 }

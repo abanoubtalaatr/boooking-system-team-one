@@ -2,24 +2,27 @@
 
 namespace Database\Factories;
 
-use App\Models\AvailabilitySlot;
-use App\Models\DoctorProfile;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 class AvailabilitySlotFactory extends Factory
 {
-    protected $model = AvailabilitySlot::class;
-
     public function definition(): array
     {
-        $start = fake()->numberBetween(8, 16);
+        $start = $this->faker->numberBetween(9, 16); // من 9 صباحًا لـ 4 عصرًا
 
         return [
-            "doctor_id" => DoctorProfile::factory(),
-            "day" => fake()->dateTimeBetween("now", "+2 weeks")->format("Y-m-d"),
-            "start_time" => sprintf("%02d:00:00", $start),
-            "end_time" => sprintf("%02d:00:00", $start + 1),
-            "is_booked" => false,
+            'doctor_id'  => User::factory(),
+            'day'        => Carbon::today()->addDays($this->faker->numberBetween(0, 14)),
+            'start_time' => sprintf('%02d:00:00', $start),
+            'end_time'   => sprintf('%02d:00:00', $start + 1),
+            'is_booked'  => false,
         ];
+    }
+
+    public function booked(): static
+    {
+        return $this->state(fn (array $attributes) => ['is_booked' => true]);
     }
 }

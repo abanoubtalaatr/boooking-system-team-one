@@ -10,11 +10,12 @@ class AvailabilitySlotResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
-            "day" => $this->day?->toDateString(),
-            "start_time" => $this->start_time,
-            "end_time" => $this->end_time,
-            "is_booked" => $this->is_booked,
+            'id'         => $this->id,
+            'doctor_id'  => $this->doctor_id,
+            'day'        => $this->day->toDateString(),
+            'start_time' => substr($this->start_time, 0, 5),
+            'end_time'   => substr($this->end_time, 0, 5),
+            'is_booked'  => $this->is_booked,
         ];
     }
 }
