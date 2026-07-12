@@ -35,7 +35,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        $this->call(FavoriteSeeder::class);
         $users = User::factory(10)->create();
 
         foreach ($users as $user) {
