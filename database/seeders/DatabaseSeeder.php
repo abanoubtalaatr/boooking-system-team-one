@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Models\DoctorProfile;
@@ -22,6 +21,17 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+        ]);*/
+        $this->call([
+            AdminUserSeeder::class,
+            SpecialtySeeder::class,
+            HospitalSeeder::class,
+            DoctorSeeder::class,
+            DoctorSpecialtySeeder::class,
+            DoctorHospitalSeeder::class,
+            AvailabilitySlotSeeder::class,
+            ConversationSeeder::class,
+            MessageSeeder::class,
         ]);
 
 

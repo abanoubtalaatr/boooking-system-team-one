@@ -1,47 +1,31 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Database\Factories;
 
 use App\Models\DoctorProfile;
-use App\Models\Specialization;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<DoctorProfile>
- */
 class DoctorProfileFactory extends Factory
 {
     protected $model = DoctorProfile::class;
 
-    /**
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
-            'specialization_id' => Specialization::factory(),
-
-            'bio' => fake()->paragraph(),
-
-            'experience_years' => rand(1, 20),
-
-            'consultation_fee' => rand(100, 1000),
-
-            'rating' => rand(30, 50) / 10,
-
-            'address' => fake()->address(),
-
-            'latitude' => fake()->randomFloat(7, 29.90, 30.20),
-
-            'longitude' => fake()->randomFloat(7, 31.10, 31.40),
-
-            'image' => null,
-
-            'is_available' => true,
+            "user_id" => User::factory()->state(["role" => "doctor", "status" => "active"]),
+            "bio" => fake()->paragraph(),
+            "consultation_price" => fake()->randomFloat(2, 20, 300),
+            "is_approved" => fake()->boolean(80),
         ];
+    }
+
+    public function pendingProfile(): static
+    {
+        return $this->state(fn () => [
+            "bio" => null,
+            "consultation_price" => null,
+            "is_approved" => false,
+        ]);
     }
 }
