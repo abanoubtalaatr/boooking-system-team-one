@@ -8,23 +8,25 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create("bookings", function (Blueprint $table) {
+        Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->foreignid("patient_id")->constrained("users")->cascadeOnDelete();
-            // ERD's "receives" relation runs DOCTOR_PROFILES -> BOOKINGS (not users),
-            // consistent with availability_slots.doctor_id.
-            $table->foreignId("doctor_id")->constrained("doctor_profiles")->cascadeOnDelete();
-            $table->foreignId("slot_id")->constrained("availability_slots")->cascadeOnDelete();
-            $table->enum("status", ["pending", "confirmed", "rejected", "completed", "cancelled"])->default("pending");
-            $table->decimal("price", 10, 2);
-            $table->enum("payment_status", ["pending", "paid", "failed", "refunded"])->default("pending");
+            $table->string('booking_number')->unique();
+            $table->foreignId('patient_id')->constrained('patients')->cascadeOnDelete();
+            // Matches availability_slots.doctor_id (users.id)
+            $table->foreignId('doctor_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('availability_slot_id')->constrained('availability_slots')->cascadeOnDelete();
+            $table->date('booking_date');
+            $table->time('booking_time');
+            $table->string('consultation_type');
+            $table->string('status')->default('pending');
+            $table->decimal('price', 10, 2);
+            $table->string('payment_status')->default('pending');
             $table->timestamps();
-
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists("bookings");
+        Schema::dropIfExists('bookings');
     }
 };

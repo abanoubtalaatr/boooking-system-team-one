@@ -6,6 +6,7 @@ use App\Http\Concerns\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DoctorProfile extends Model
 {
@@ -40,12 +41,8 @@ class DoctorProfile extends Model
         return $this->belongsTo(Hospital::class);
     }
 
-    // reviews & rate
-
-    
-    public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function reviews(): HasMany
     {
-        // reviews.user_id بيشاور على نفس user_id بتاع الدكتور
         return $this->hasMany(Review::class, 'user_id', 'user_id');
     }
 
@@ -54,21 +51,13 @@ class DoctorProfile extends Model
         return $this->reviews()->avg('rating');
     }
 
-    public function availabilitySlots(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function availabilitySlots(): HasMany
     {
         return $this->hasMany(AvailabilitySlot::class, 'doctor_id', 'user_id');
     }
 
-    public function favorites(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function favorites(): HasMany
     {
         return $this->hasMany(Favorite::class, 'doctor_id', 'user_id');
     }
-
-    /*public function is_favorite($patient_id)
-    {
-        return Favorite::query()
-            ->where('doctor_id', $this->user_id)
-            ->where('user_id', $patient_id)
-            ->exists();
-    }*/
 }
