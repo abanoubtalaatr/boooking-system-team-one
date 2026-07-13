@@ -13,25 +13,15 @@ return new class extends Migration
     {
         Schema::create('availability_slots', function (Blueprint $table) {
             $table->id();
-
-            $table->date("day"); // ERD: concrete calendar date, not a weekday name
+            $table->foreignId("doctor_id")->constrained("users")->cascadeOnDelete();
+            $table->date("day"); 
             $table->time("start_time");
             $table->time("end_time");
             $table->boolean("is_booked")->default(false);
             $table->timestamps();
 
-            // Foreign keys
-            $table->foreignId("doctor_id")->constrained("users")->cascadeOnDelete();
-
-            $table->unique([
-                'doctor_id',
-                'day',
-                'start_time',
-                'end_time'
-            ]);
-
-            $table->index(["doctor_id", "day"]);
-
+            $table->unique(["doctor_id" , "day" , "start_time" , "end_time"]);
+            $table->index(["doctor_id" , "day"]);
         });
     }
 

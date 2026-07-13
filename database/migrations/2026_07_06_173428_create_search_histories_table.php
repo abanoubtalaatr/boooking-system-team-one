@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('search_histories', function (Blueprint $table) {
             $table->id();
             $table->string('query');
-            $table->string('source'); // chat, search,  favorite
+            $table->string('source')->nullable(); // chat, search,  favorite
             $table->timestamps();
 
             // Relationships: 

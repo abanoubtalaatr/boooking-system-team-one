@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\SearchHistory;
-
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 class SearchHistoryService
 {
@@ -11,18 +11,28 @@ class SearchHistoryService
     /**
      * Get search history
      */
-    public function getSearchHistory(User $user)
+    public function getSearchHistory(?string $source = null)
     {
-        return SearchHistory::where('user_id', $user->id)->latest()
+        $user = Auth::user(); 
+        return SearchHistory::where('user_id', $user->id)->when($source, function ($query) use ($source) {
+            $query->where('source', $source);
+        })->latest()
             ->paginate(10);
     }
 
     /**
      * Delete search history
      */
-    public function deleteSearchHistory(User $user, $id)
+    public function deleteSearchHistory(int $id)
     {
-        $searchHistory = SearchHistory::where('user_id', $user->id)->findOrFail($id);
+        $user = Auth::user(); 
+
+        $searchHistory = SearchHistory::where('user_id', $user->id)
+            ->where('id', $id)->first();
+
+        if (!$searchHistory) {
+            throw new \Exception('Search history not found');
+        }
         $searchHistory->delete();
         return true;
     }
@@ -30,24 +40,18 @@ class SearchHistoryService
     /** 
      * Add Search History
      */
-    public function recordSearchHistory(User $user, $doctoryId): SearchHistory
+    public function recordSearchHistory(string $query, string $source): SearchHistory
     {
-       // check if the search history already exist
-       $searchHistory = SearchHistory::where('user_id', $user->id)
-       ->where('doctor_id', $doctoryId)
-       ->first();
-   
-        // if the search history already exist, return true
-        if ($searchHistory) {
-            $searchHistory->touch();
-            return $searchHistory;
-        }
-        // if the search history does not exist, create a new search history
-        $searchHistory = SearchHistory::create([
-            'user_id' => $user->id,
-            'doctor_id' => $doctoryId,
-        ]); 
-        
-        return $searchHistory;
+        $user = Auth::user();
+        return SearchHistory::updateOrCreate(
+            [
+                'user_id' => $user->id,
+                'query'   => $query,
+                'source'  => $source,
+            ],
+            [
+                'updated_at' => now(),
+            ]
+        );
     }
 }

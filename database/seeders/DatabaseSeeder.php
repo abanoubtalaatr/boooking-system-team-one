@@ -14,9 +14,6 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         $this->call([
@@ -24,6 +21,13 @@ class DatabaseSeeder extends Seeder
             FaqCategorySeeder::class,
             FaqSeeder::class,
             PolicySeeder::class,
+            HospitalSeeder::class,
+            DoctorSeeder::class,
+            PatientSeeder::class,
+            ReviewSeeder::class,
+            AvailabilitySlotSeeder::class,
+            FavoriteSeeder::class,
+            BookingSeeder::class,
         ]);
 
         User::factory()->create([
@@ -36,22 +40,11 @@ class DatabaseSeeder extends Seeder
         foreach ($users as $user) {
             DoctorProfile::factory()->create([
                 'user_id' => $user->id,
-                'specialization_id' => Specialization::inRandomOrder()->first()->id,
+                'specialization_id' => Specialization::inRandomOrder()->first()?->id,
             ]);
         }
 
         Patient::factory()->count(20)->create();
-
         Promotion::factory()->count(5)->create();
-
-        $this->call([
-            FavoriteSeeder::class,
-            AvailabilitySlotSeeder::class,
-            BookingSeeder::class,
-        ]);
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }

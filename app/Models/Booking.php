@@ -5,13 +5,17 @@ namespace App\Models;
 use App\Enums\BookingStatus;
 use App\Enums\ConsultationType;
 use App\Enums\PaymentStatus;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * Patient booking API + doctor accept/reject flows.
+ */
 class Booking extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'booking_number',
         'patient_id',
@@ -20,39 +24,35 @@ class Booking extends Model
         'booking_date',
         'booking_time',
         'consultation_type',
-        'price',
         'status',
+        'price',
         'payment_status',
     ];
 
     protected $casts = [
         'booking_date' => 'date',
         'booking_time' => 'datetime:H:i',
-        'price' => 'decimal:2',
         'status' => BookingStatus::class,
+        'price' => 'decimal:2',
         'payment_status' => PaymentStatus::class,
         'consultation_type' => ConsultationType::class,
     ];
 
-    /**
-     * Patient who created the booking.
-     */
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);
     }
 
-    /**
-     * Doctor of the booking.
-     */
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'doctor_id');
     }
 
-    /**
-     * Reserved availability slot.
-     */
+    public function doctorProfile(): BelongsTo
+    {
+        return $this->belongsTo(DoctorProfile::class, 'doctor_id', 'user_id');
+    }
+
     public function slot(): BelongsTo
     {
         return $this->belongsTo(AvailabilitySlot::class, 'availability_slot_id');

@@ -2,31 +2,26 @@
 
 namespace App\Actions\Booking;
 
-use App\Models\AvailabilitySlot;
-use App\Models\Booking;
 use App\Enums\BookingStatus;
 use App\Enums\PaymentStatus;
+use App\Models\AvailabilitySlot;
+use App\Models\Booking;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use App\Models\DoctorProfile;
-use App\Models\User;
 
 class CreateBookingAction
 {
-    /**
-     * Create a new class instance.
-     */
-
-    public function __invoke(array $data): Booking
+    public function __invoke(array $data, int $patientId): Booking
     {
-        return DB::transaction(function () use ($data) {
-
+        return DB::transaction(function () use ($data, $patientId) {
             $slot = AvailabilitySlot::query()
                 ->whereKey($data['availability_slot_id'])
+                ->lockForUpdate()
                 ->firstOrFail();
 
-            if ($slot->doctor_id != $data['doctor_id']) {
+            if ((int) $slot->doctor_id !== (int) $data['doctor_id']) {
                 throw ValidationException::withMessages([
                     'availability_slot_id' => 'Invalid availability slot.',
                 ]);
@@ -44,30 +39,23 @@ class CreateBookingAction
 
             $doctorProfile = $doctor->doctorProfile;
 
-            $patientId = 1; // For testing purposes
+            if (! $doctorProfile) {
+                throw ValidationException::withMessages([
+                    'doctor_id' => 'Doctor profile not found.',
+                ]);
+            }
 
             $booking = Booking::create([
-
                 'booking_number' => $this->generateBookingNumber(),
-
                 'patient_id' => $patientId,
-
                 'doctor_id' => $data['doctor_id'],
-
                 'availability_slot_id' => $slot->id,
-
                 'booking_date' => $slot->day,
-
                 'booking_time' => $slot->start_time,
-
                 'consultation_type' => $data['consultation_type'],
-
-                'price' => $doctorProfile->consultation_fee,
-
+                'price' => $doctorProfile->price,
                 'status' => BookingStatus::Pending,
-
                 'payment_status' => PaymentStatus::Pending,
-
             ]);
 
             $slot->update([
@@ -75,7 +63,7 @@ class CreateBookingAction
             ]);
 
             return $booking->fresh([
-                'doctor.doctorProfile.specialization',
+                'doctor.doctorProfile.specialty',
                 'slot',
             ]);
         });
@@ -83,6 +71,6 @@ class CreateBookingAction
 
     private function generateBookingNumber(): string
     {
-        return 'BK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(6));
+        return 'BK-'.now()->format('Ymd').'-'.strtoupper(Str::random(6));
     }
 }

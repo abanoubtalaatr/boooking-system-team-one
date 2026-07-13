@@ -12,7 +12,6 @@ use App\Http\Controllers\Api\SearchHistoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -49,22 +48,36 @@ Route::prefix('patient')
             ->name('logout');
     });
 
-// Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/favorites', [FavoriteController::class, 'index']);
-    Route::post('/favorites', [FavoriteController::class, 'store']);
-    Route::delete('/favorites', [FavoriteController::class, 'destroy']);
+Route::get('/favorites', [FavoriteController::class, 'index']);
+Route::post('/favorites', [FavoriteController::class, 'store']);
+Route::delete('/favorites', [FavoriteController::class, 'destroy']);
 
-    Route::get('/search-history', [SearchHistoryController::class, 'index']);
-    Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
+Route::get('/search-history', [SearchHistoryController::class, 'index']);
+Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
 
-    Route::get('/', [HomeController::class, 'index']);
-    Route::get('/faqs', [FaqController::class, 'index']);
-    Route::get('/privacy-policy', [PolicyController::class, 'privacy']);
-    Route::get('/terms', [PolicyController::class, 'terms']);
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/faqs', [FaqController::class, 'index']);
+Route::get('/privacy-policy', [PolicyController::class, 'privacy']);
+Route::get('/terms', [PolicyController::class, 'terms']);
 
-    Route::apiResource('reviews', ReviewsController::class);
+Route::apiResource('reviews', ReviewsController::class);
 
-    // Booking routes
+Route::middleware('auth:patient')->group(function () {
+    Route::get('/bookings', [BookingController::class, 'index']);
+    Route::get('/bookings/{booking}', [BookingController::class, 'show']);
     Route::post('/bookings', [BookingController::class, 'store']);
     Route::put('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
-// });
+});
+
+Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
+    return $request->user();
+});
+
+require __DIR__.'/doctor.php';
+require __DIR__.'/chat.php';
+require __DIR__.'/channels.php';
+require __DIR__.'/admin_doctor.php';
+
+if (file_exists(__DIR__.'/api_auth_additions.php')) {
+    require __DIR__.'/api_auth_additions.php';
+}

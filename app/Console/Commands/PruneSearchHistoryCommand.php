@@ -22,6 +22,7 @@ class PruneSearchHistoryCommand extends Command
 
        $deletedTotal = 0; 
 
+       // TODO: add the source to the query, so we get the latest search history records per user and source
        foreach ($userIds as $userId) {
         $idsToKeep = SearchHistory::query()
             ->where('user_id', $userId)
