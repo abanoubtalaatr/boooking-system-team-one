@@ -94,4 +94,25 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class, 'doctor_id');
     }
+
+    public function wallet(): HasOne
+    {
+        return $this->hasOne(Wallet::class, 'doctor_id')
+            ->where('currency', config('services.paymob.currency', 'EGP'));
+    }
+
+    public function wallets(): HasMany
+    {
+        return $this->hasMany(Wallet::class, 'doctor_id');
+    }
+
+    public function walletWithdrawals(): HasMany
+    {
+        return $this->hasMany(WalletWithdrawal::class, 'doctor_id');
+    }
+
+    public function reviewedWalletWithdrawals(): HasMany
+    {
+        return $this->hasMany(WalletWithdrawal::class, 'reviewed_by');
+    }
 }

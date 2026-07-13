@@ -2,11 +2,28 @@
 
 @php
     $isDoctor = $role === 'doctor';
+    $dashboardRoute = $isDoctor ? route('web.doctor.dashboard') : route('web.admin.dashboard');
     $navigation = $isDoctor
-        ? [['الرئيسية', 'home'], ['حجوزاتي', 'calendar'], ['جدول المواعيد', 'clock'], ['المرضى', 'users'], ['الاستشارات', 'consultation'], ['التقييمات', 'star'], ['الملف المهني', 'doctor']]
-        : [['لوحة التحكم', 'home'], ['الحجوزات', 'calendar'], ['الأطباء', 'doctor'], ['المرضى', 'users'], ['التخصصات', 'specialty'], ['العيادات', 'clinic'], ['المواعيد', 'clock'], ['التقارير', 'report'], ['المستخدمون والصلاحيات', 'shield'], ['إعدادات المنصة', 'settings']];
-    $personName = $isDoctor ? 'د. أحمد منصور' : 'محمد إسماعيل';
+        ? [
+            ['الرئيسية والمدفوعات', 'home', $dashboardRoute, request()->routeIs('web.doctor.dashboard')],
+            ['المحفظة والسحب', 'report', route('web.doctor.wallet.index'), request()->routeIs('web.doctor.wallet.*')],
+            ['حجوزاتي', 'calendar', '#', false], ['جدول المواعيد', 'clock', '#', false], ['المرضى', 'users', '#', false], ['الاستشارات', 'consultation', '#', false], ['التقييمات', 'star', '#', false], ['الملف المهني', 'doctor', '#', false],
+        ]
+        : [
+            ['لوحة المدفوعات', 'home', $dashboardRoute, request()->routeIs('web.admin.dashboard')],
+            ['الحجوزات', 'calendar', '#', false], ['الأطباء', 'doctor', '#', false], ['المرضى', 'users', '#', false],
+            ['التخصصات', 'specialty', '#', false], ['العيادات', 'clinic', '#', false], ['المواعيد', 'clock', '#', false],
+            ['التقارير', 'report', '#', false], ['المستخدمون والصلاحيات', 'shield', '#', false],
+            ['طلبات السحب', 'report', route('web.admin.withdrawals.index'), request()->routeIs('web.admin.withdrawals.*')],
+            ['إعدادات العمولات', 'settings', route('web.admin.payment-settings.edit'), request()->routeIs('web.admin.payment-settings.*')],
+        ];
+    $authenticatedUser = auth()->user();
+    $personName = $isDoctor ? 'د. '.$authenticatedUser->name : $authenticatedUser->name;
     $personRole = $isDoctor ? 'طبيب استشاري' : 'مدير المنصة';
+    $avatar = collect(preg_split('/\s+/u', $authenticatedUser->name, -1, PREG_SPLIT_NO_EMPTY))
+        ->take(2)
+        ->map(fn (string $part): string => mb_substr($part, 0, 1))
+        ->implode('');
 @endphp
 
 <!DOCTYPE html>
@@ -16,7 +33,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="لوحة تحكم منصة الأطباء">
     <title>{{ $title }} | منصة الأطباء</title>
-    <style>{!! file_get_contents(resource_path('css/app.css')) !!}</style>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
 <div class="shell" data-shell>
@@ -27,14 +44,17 @@
         </div>
         <nav class="sidebar-nav">
             <div class="nav-label">القائمة الرئيسية</div>
-            @foreach ($navigation as [$label, $icon])
-                <a class="nav-link {{ $loop->first ? 'is-active' : '' }}" href="#" @if($loop->first) aria-current="page" @endif>
+            @foreach ($navigation as [$label, $icon, $href, $active])
+                <a class="nav-link {{ $active ? 'is-active' : '' }}" href="{{ $href }}" @if($active) aria-current="page" @endif>
                     <span class="nav-icon"><x-ui-icon :name="$icon" /></span><span class="sidebar-copy">{{ $label }}</span>
                 </a>
             @endforeach
         </nav>
         <div class="sidebar-footer">
-            <a class="nav-link" href="{{ route('login') }}"><span class="nav-icon"><x-ui-icon name="logout" /></span><span class="sidebar-copy">تسجيل الخروج</span></a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button class="nav-link nav-button" type="submit"><span class="nav-icon"><x-ui-icon name="logout" /></span><span class="sidebar-copy">تسجيل الخروج</span></button>
+            </form>
         </div>
     </aside>
 
@@ -52,12 +72,13 @@
                 <button class="icon-button" type="button" aria-label="الإشعارات"><x-ui-icon name="bell" /><span class="notification-dot"></span></button>
                 <div class="profile">
                     <button class="profile-button" data-profile-toggle type="button" aria-expanded="false" aria-controls="profile-menu">
-                        <span class="avatar">{{ $isDoctor ? 'أم' : 'مإ' }}</span>
+                        <span class="avatar">{{ $avatar }}</span>
                         <span class="profile-copy"><span class="profile-name">{{ $personName }}</span><span class="profile-role">{{ $personRole }}</span></span>
                         <x-ui-icon name="chevron" />
                     </button>
                     <div class="profile-menu" id="profile-menu" data-profile-menu>
-                        <a href="#">الملف الشخصي</a><a href="#">الإعدادات</a><a href="{{ route('login') }}">تسجيل الخروج</a>
+                        <a href="#">الملف الشخصي</a><a href="#">الإعدادات</a>
+                        <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit">تسجيل الخروج</button></form>
                     </div>
                 </div>
             </div>
@@ -67,6 +88,5 @@
         <footer class="footer"><span>© {{ date('Y') }} منصة الأطباء. جميع الحقوق محفوظة.</span><span>الخصوصية · الشروط · الدعم</span></footer>
     </div>
 </div>
-<script>{!! file_get_contents(resource_path('js/app.js')) !!}</script>
 </body>
 </html>

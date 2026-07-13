@@ -9,17 +9,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Specialty extends Model
 {
-    use  HasFactory;
+    use HasFactory;
 
-    protected $fillable = ["admin_id", "name"];
+    protected $table = 'specializations';
+
+    protected $fillable = ['admin_id', 'name'];
 
     public function admin(): BelongsTo
     {
-        return $this->belongsTo(User::class, "admin_id");
+        return $this->belongsTo(User::class, 'admin_id');
     }
 
     public function doctorProfiles(): BelongsToMany
     {
-        return $this->belongsToMany(DoctorProfile::class, "doctor_specialty");
+        return $this->belongsToMany(DoctorProfile::class, 'doctor_specialty');
     }
 }

@@ -70,4 +70,9 @@ class Patient extends Authenticatable
     {
         return $this->hasMany(Booking::class, 'patient_id');
     }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

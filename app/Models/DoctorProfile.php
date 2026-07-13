@@ -6,10 +6,12 @@ use App\Http\Concerns\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DoctorProfile extends Model
 {
-    use HasFactory, Filterable;
+    use Filterable, HasFactory;
 
     protected $fillable = [
         'user_id', 'specialty_id', 'hospital_id',
@@ -18,9 +20,9 @@ class DoctorProfile extends Model
     ];
 
     protected $casts = [
-        'latitude'  => 'decimal:7',
+        'latitude' => 'decimal:7',
         'longitude' => 'decimal:7',
-        'price'     => 'decimal:2',
+        'price' => 'decimal:2',
         'is_active' => 'boolean',
         'certificates' => 'array',
     ];
@@ -40,12 +42,13 @@ class DoctorProfile extends Model
         return $this->belongsTo(Hospital::class);
     }
 
-    // reviews & rate
-
-    
-    public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function specialties(): BelongsToMany
     {
-        // reviews.user_id بيشاور على نفس user_id بتاع الدكتور
+        return $this->belongsToMany(Specialty::class, 'doctor_specialty');
+    }
+
+    public function reviews(): HasMany
+    {
         return $this->hasMany(Review::class, 'user_id', 'user_id');
     }
 
@@ -54,21 +57,13 @@ class DoctorProfile extends Model
         return $this->reviews()->avg('rating');
     }
 
-    public function availabilitySlots(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function availabilitySlots(): HasMany
     {
         return $this->hasMany(AvailabilitySlot::class, 'doctor_id', 'user_id');
     }
 
-    public function favorites(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function favorites(): HasMany
     {
         return $this->hasMany(Favorite::class, 'doctor_id', 'user_id');
     }
-
-    /*public function is_favorite($patient_id)
-    {
-        return Favorite::query()
-            ->where('doctor_id', $this->user_id)
-            ->where('user_id', $patient_id)
-            ->exists();
-    }*/
 }

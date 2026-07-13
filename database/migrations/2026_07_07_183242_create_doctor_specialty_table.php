@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('doctor_specialty', function (Blueprint $table) {
-            //$table->id();
-            $table->foreignId("doctor_profile_id")->constrained("doctor_profiles")->cascadeOnDelete();
-            $table->foreignId("specialty_id")->constrained("specialties")->cascadeOnDelete();
-            $table->primary(["doctor_profile_id", "specialty_id"]);
+            // $table->id();
+            $table->foreignId('doctor_profile_id')->constrained('doctor_profiles')->cascadeOnDelete();
+            $table->foreignId('specialty_id')->constrained('specializations')->cascadeOnDelete();
+            $table->primary(['doctor_profile_id', 'specialty_id']);
             $table->timestamps();
         });
     }

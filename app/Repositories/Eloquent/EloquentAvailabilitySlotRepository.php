@@ -4,46 +4,33 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\AvailabilitySlot;
 use App\Repositories\Contracts\AvailabilitySlotRepositoryInterface;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 class EloquentAvailabilitySlotRepository implements AvailabilitySlotRepositoryInterface
 {
-    public function find(string $id): ?AvailabilitySlot
+    public function forDoctor(int $doctorId, Request $request): Collection
     {
-        return AvailabilitySlot::find($id);
-    }
-
-    public function create(array $data): AvailabilitySlot
-    {
-        return AvailabilitySlot::create($data);
-    }
-
-    public function update(AvailabilitySlot $slot, array $data): AvailabilitySlot
-    {
-        $slot->update($data);
-
-        return $slot->refresh();
-    }
-
-    public function delete(AvailabilitySlot $slot): bool
-    {
-        return (bool) $slot->delete();
-    }
-
-    public function paginate(string $doctorId, int $perPage = 15): LengthAwarePaginator
-    {
-        return AvailabilitySlot::where("doctor_id", $doctorId)
-            ->orderBy("day")
-            ->orderBy("start_time")
-            ->paginate($perPage);
-    }
-
-    public function findAvailableSlotsForDoctor(string $doctorId, string $day): Collection
-    {
-        return AvailabilitySlot::where("doctor_id", $doctorId)
-            ->where("day", $day)
-            ->orderBy("start_time")
+        return AvailabilitySlot::query()
+            ->where('doctor_id', $doctorId)
+            ->when(! $request->boolean('include_booked'), fn ($query) => $query->where('is_booked', false))
+            ->when($request->filled('day'), fn ($query) => $query->whereDate('day', $request->string('day')))
+            ->when($request->filled('date_from'), fn ($query) => $query->whereDate('day', '>=', $request->string('date_from')))
+            ->when($request->filled('date_to'), fn ($query) => $query->whereDate('day', '<=', $request->string('date_to')))
+            ->where(function ($query): void {
+                $query->whereDate('day', '>', now()->toDateString())
+                    ->orWhere(function ($todayQuery): void {
+                        $todayQuery->whereDate('day', now()->toDateString())
+                            ->whereTime('start_time', '>=', now()->toTimeString());
+                    });
+            })
+            ->orderBy('day')
+            ->orderBy('start_time')
             ->get();
+    }
+
+    public function findById(int $id): ?AvailabilitySlot
+    {
+        return AvailabilitySlot::query()->find($id);
     }
 }

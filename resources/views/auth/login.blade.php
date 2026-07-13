@@ -2,22 +2,25 @@
     <main class="auth-page">
         <section class="auth-surface" aria-labelledby="sign-in-title">
             <a class="auth-logo" href="#" aria-label="SFG Medical home"><x-brand-logo /></a>
-            <form class="auth-card" data-login-form novalidate>
+            <form class="auth-card" method="POST" action="{{ route('login.store') }}">
+                @csrf
                 <h1 class="auth-title" id="sign-in-title">Sign in</h1>
                 <p class="auth-lead">Please provide all information required to access your account</p>
 
                 <div class="field">
                     <label class="field-label" for="email">Email</label>
-                    <div class="field-control"><input class="field-input" id="email" type="email" placeholder="Email" autocomplete="email"></div>
+                    <div class="field-control"><input class="field-input" id="email" name="email" type="email" value="{{ old('email') }}" placeholder="Email" autocomplete="email" required autofocus></div>
+                    @error('email')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
                 <div class="field">
                     <label class="field-label" for="password">Password</label>
                     <div class="field-control">
-                        <input class="field-input" id="password" type="password" placeholder="Password" autocomplete="current-password" aria-describedby="password-hint">
+                        <input class="field-input" id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" aria-describedby="password-hint" required>
                         <button class="password-toggle" data-password-toggle type="button" aria-label="Show password">◉</button>
                     </div>
                     <p class="field-hint" id="password-hint">Must be at least eight characters</p>
                 </div>
+                <label class="remember-field"><input name="remember" type="checkbox" value="1"> تذكرني</label>
                 <a class="auth-link auth-forgot" href="#">Forget the password?</a>
                 <button class="auth-button" type="submit">Sign in</button>
                 <div class="auth-divider">or</div>

@@ -2,10 +2,15 @@
 
 namespace Database\Factories;
 
+use App\Enums\BookingStatus;
+use App\Enums\ConsultationType;
+use App\Enums\PaymentStatus;
 use App\Models\AvailabilitySlot;
 use App\Models\Booking;
-use App\Models\User;
+use App\Models\DoctorProfile;
+use App\Models\Patient;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class BookingFactory extends Factory
 {
@@ -13,15 +18,28 @@ class BookingFactory extends Factory
 
     public function definition(): array
     {
-        $slot = AvailabilitySlot::factory()->create();
+        $slot = AvailabilitySlot::query()
+            ->where('is_booked', false)
+            ->inRandomOrder()
+            ->first() ?? AvailabilitySlot::factory()->create();
+
+        $doctorProfile = DoctorProfile::query()
+            ->where('user_id', $slot->doctor_id)
+            ->first();
 
         return [
-            "patient_id" => User::factory()->state(["role" => "patient"]),
-            "doctor_id" => $slot->doctor_id,
-            "slot_id" => $slot->id,
-            "status" => "pending",
-            "price" => fake()->randomFloat(2, 20, 300),
-            "payment_status" => "pending",
+            'booking_number' => 'BK-'.strtoupper(Str::random(8)),
+            'patient_id' => Patient::query()->inRandomOrder()->value('id') ?? Patient::factory(),
+            'doctor_id' => $slot->doctor_id,
+            'availability_slot_id' => $slot->id,
+            'booking_date' => $slot->day,
+            'booking_time' => $slot->start_time,
+            'consultation_type' => fake()->randomElement(
+                array_column(ConsultationType::cases(), 'value')
+            ),
+            'price' => $doctorProfile?->price ?? fake()->randomFloat(2, 20, 300),
+            'status' => BookingStatus::Pending->value,
+            'payment_status' => PaymentStatus::Pending->value,
         ];
     }
 }

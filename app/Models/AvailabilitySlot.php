@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\SlotReservationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,11 +18,16 @@ class AvailabilitySlot extends Model
         'start_time',
         'end_time',
         'is_booked',
+        'reservation_status',
+        'reserved_booking_id',
+        'reserved_until',
     ];
 
     protected $casts = [
         'day' => 'date',
         'is_booked' => 'boolean',
+        'reservation_status' => SlotReservationStatus::class,
+        'reserved_until' => 'datetime',
     ];
 
     public function doctor(): BelongsTo
@@ -31,6 +37,11 @@ class AvailabilitySlot extends Model
 
     public function booking(): HasOne
     {
-        return $this->hasOne(Booking::class, 'slot_id');
+        return $this->hasOne(Booking::class, 'availability_slot_id');
+    }
+
+    public function reservedBooking(): BelongsTo
+    {
+        return $this->belongsTo(Booking::class, 'reserved_booking_id');
     }
 }
