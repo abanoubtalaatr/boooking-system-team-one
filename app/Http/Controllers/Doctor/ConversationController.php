@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Conversation;
+use App\Models\Message;
+use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Conversation;
-use App\Models\Patient;
-use App\Models\Message;
-use App\Models\User;
+
 class ConversationController extends Controller
 {
     /**
@@ -31,7 +32,6 @@ class ConversationController extends Controller
     {
         $doctor = Auth::user();
 
-        
         $conversation->load(['patient', 'messages' => fn ($q) => $q->oldest()]);
 
         // اعتبر رسائل المريض مقروءة
@@ -54,10 +54,10 @@ class ConversationController extends Controller
         ]);
 
         $conversation->messages()->create([
-            'sender_type' => \App\Models\User::class,
-            'sender_id'   => $doctor->id,
-            'type'        => 'text',
-            'body'        => $validated['body'],
+            'sender_type' => User::class,
+            'sender_id' => $doctor->id,
+            'type' => 'text',
+            'body' => $validated['body'],
         ]);
 
         $conversation->update(['last_message_at' => now()]);
