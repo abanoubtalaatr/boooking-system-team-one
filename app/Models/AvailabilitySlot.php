@@ -23,12 +23,15 @@ class AvailabilitySlot extends Model
         'reserved_until',
     ];
 
-    protected $casts = [
-        'day' => 'date',
-        'is_booked' => 'boolean',
-        'reservation_status' => SlotReservationStatus::class,
-        'reserved_until' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'day' => 'date',
+            'is_booked' => 'boolean',
+            'reservation_status' => SlotReservationStatus::class,
+            'reserved_until' => 'datetime',
+        ];
+    }
 
     public function doctor(): BelongsTo
     {

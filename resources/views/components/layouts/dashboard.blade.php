@@ -7,13 +7,23 @@
         ? [
             ['الرئيسية والمدفوعات', 'home', $dashboardRoute, request()->routeIs('web.doctor.dashboard')],
             ['المحفظة والسحب', 'report', route('web.doctor.wallet.index'), request()->routeIs('web.doctor.wallet.*')],
-            ['حجوزاتي', 'calendar', '#', false], ['جدول المواعيد', 'clock', '#', false], ['المرضى', 'users', '#', false], ['الاستشارات', 'consultation', '#', false], ['التقييمات', 'star', '#', false], ['الملف المهني', 'doctor', '#', false],
+            ['حجوزاتي', 'calendar', '#', false],
+            ['جدول المواعيد', 'clock', '#', false],
+            ['المرضى', 'users', '#', false],
+            ['الاستشارات', 'consultation', route('doctor.conversations'), request()->routeIs('doctor.conversations*')],
+            ['التقييمات', 'star', '#', false],
+            ['الملف المهني', 'doctor', '#', false],
         ]
         : [
             ['لوحة المدفوعات', 'home', $dashboardRoute, request()->routeIs('web.admin.dashboard')],
-            ['الحجوزات', 'calendar', '#', false], ['الأطباء', 'doctor', '#', false], ['المرضى', 'users', '#', false],
-            ['التخصصات', 'specialty', '#', false], ['العيادات', 'clinic', '#', false], ['المواعيد', 'clock', '#', false],
-            ['التقارير', 'report', '#', false], ['المستخدمون والصلاحيات', 'shield', '#', false],
+            ['الحجوزات', 'calendar', '#', false],
+            ['الأطباء', 'doctor', '#', false],
+            ['المرضى', 'users', '#', false],
+            ['التخصصات', 'specialty', '#', false],
+            ['العيادات', 'clinic', '#', false],
+            ['المواعيد', 'clock', '#', false],
+            ['التقارير', 'report', '#', false],
+            ['المستخدمون والصلاحيات', 'shield', '#', false],
             ['طلبات السحب', 'report', route('web.admin.withdrawals.index'), request()->routeIs('web.admin.withdrawals.*')],
             ['إعدادات العمولات', 'settings', route('web.admin.payment-settings.edit'), request()->routeIs('web.admin.payment-settings.*')],
         ];

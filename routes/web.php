@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Doctor\ConversationController;
 use App\Http\Controllers\Web\AdminPaymentDashboardController;
 use App\Http\Controllers\Web\AdminPaymentSettingsController;
 use App\Http\Controllers\Web\AdminWalletWithdrawalController;
@@ -45,4 +46,12 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/doctor/wallet/withdrawals', [DoctorWalletController::class, 'store'])
         ->middleware(['role:doctor', 'throttle:10,1'])
         ->name('web.doctor.wallet.withdrawals.store');
+
+    Route::middleware('role:doctor')->prefix('doctor')->name('doctor.')->group(function (): void {
+        Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations');
+        Route::post('/conversations/{conversation}/send', [ConversationController::class, 'sendMessage'])->name('conversations.send');
+        Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
+        Route::delete('/conversations/{conversation}/messages/{message}', [ConversationController::class, 'deleteMessage'])
+            ->name('conversations.messages.destroy');
+    });
 });
