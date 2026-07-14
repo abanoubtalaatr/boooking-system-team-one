@@ -16,9 +16,14 @@ class Message extends Model implements HasMedia
 
     protected $fillable = ['conversation_id', 'sender_id', 'sender_type', 'type', 'body', 'read_at'];
 
-    protected $casts = [
-        'read_at' => 'datetime',
-    ];
+
+    protected function casts(): array
+    {
+        return [
+            'read_at' => 'datetime',
+        ];
+
+    }
 
     public function conversation(): BelongsTo
     {
