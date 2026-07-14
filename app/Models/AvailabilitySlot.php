@@ -19,10 +19,16 @@ class AvailabilitySlot extends Model
         'is_booked',
     ];
 
-    protected $casts = [
-        'day' => 'date',
-        'is_booked' => 'boolean',
-    ];
+    
+
+    protected function casts(): array
+    {
+        return [
+            'day' => 'date',
+            'is_booked' => 'boolean',
+        ];
+
+    }
 
     public function doctor(): BelongsTo
     {
