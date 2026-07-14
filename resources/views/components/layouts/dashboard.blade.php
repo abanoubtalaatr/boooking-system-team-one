@@ -3,8 +3,27 @@
 @php
     $isDoctor = $role === 'doctor';
     $navigation = $isDoctor
-        ? [['الرئيسية', 'home'], ['حجوزاتي', 'calendar'], ['جدول المواعيد', 'clock'], ['المرضى', 'users'], ['الاستشارات', 'consultation'], ['التقييمات', 'star'], ['الملف المهني', 'doctor']]
-        : [['لوحة التحكم', 'home'], ['الحجوزات', 'calendar'], ['الأطباء', 'doctor'], ['المرضى', 'users'], ['التخصصات', 'specialty'], ['العيادات', 'clinic'], ['المواعيد', 'clock'], ['التقارير', 'report'], ['المستخدمون والصلاحيات', 'shield'], ['إعدادات المنصة', 'settings']];
+    ? [
+        ['الرئيسية', 'home', 'doctor.dashboard'],
+        ['حجوزاتي', 'calendar', 'doctor.bookings'],
+        ['جدول المواعيد', 'clock', 'doctor.schedule'],
+        ['المرضى', 'users', 'doctor.patients'],
+        ['الاستشارات', 'Conversations', 'doctor.conversations'],
+        ['التقييمات', 'star', 'doctor.reviews'],
+        ['الملف المهني', 'doctor', 'doctor.profile'],
+    ]
+    : [
+        ['لوحة التحكم', 'home', 'admin.dashboard'],
+        ['الحجوزات', 'calendar', 'admin.bookings'],
+        ['الأطباء', 'doctor', 'admin.doctors'],
+        ['المرضى', 'users', 'admin.patients'],
+        ['التخصصات', 'specialty', 'admin.specialties'],
+        ['العيادات', 'clinic', 'admin.clinics'],
+        ['المواعيد', 'clock', 'admin.appointments'],
+        ['التقارير', 'report', 'admin.reports'],
+        ['المستخدمون والصلاحيات', 'shield', 'admin.users'],
+        ['إعدادات المنصة', 'settings', 'admin.settings'],
+    ];
     $personName = $isDoctor ? 'د. أحمد منصور' : 'محمد إسماعيل';
     $personRole = $isDoctor ? 'طبيب استشاري' : 'مدير المنصة';
 @endphp
@@ -17,6 +36,8 @@
     <meta name="description" content="لوحة تحكم منصة الأطباء">
     <title>{{ $title }} | منصة الأطباء</title>
     <style>{!! file_get_contents(resource_path('css/app.css')) !!}</style>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 </head>
 <body>
 <div class="shell" data-shell>
@@ -27,9 +48,12 @@
         </div>
         <nav class="sidebar-nav">
             <div class="nav-label">القائمة الرئيسية</div>
-            @foreach ($navigation as [$label, $icon])
-                <a class="nav-link {{ $loop->first ? 'is-active' : '' }}" href="#" @if($loop->first) aria-current="page" @endif>
-                    <span class="nav-icon"><x-ui-icon :name="$icon" /></span><span class="sidebar-copy">{{ $label }}</span>
+            @foreach ($navigation as [$label, $icon, $routeName])
+                <a class="nav-link {{ request()->routeIs($routeName) ? 'is-active' : '' }}"
+                href="{{ route($routeName) }}"
+                @if(request()->routeIs($routeName)) aria-current="page" @endif>
+                    <span class="nav-icon"><x-ui-icon :name="$icon" /></span>
+                    <span class="sidebar-copy">{{ $label }}</span>
                 </a>
             @endforeach
         </nav>

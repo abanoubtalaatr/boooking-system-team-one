@@ -19,6 +19,7 @@ class Conversation extends Model
     protected $casts = [
         'last_message_at' => 'datetime',
     ];
+    
 
     public function patient(): BelongsTo
     {
