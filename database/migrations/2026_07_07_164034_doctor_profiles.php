@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->integer('experience_years')->default(0);
 
-            $table->decimal('consultation_fee',8,2)->default(0);
+            $table->decimal('price',8,2)->default(0);
 
             $table->double('rating')->default(0);
 

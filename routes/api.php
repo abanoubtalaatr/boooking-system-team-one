@@ -67,6 +67,7 @@ Route::middleware('auth:patient')->group(function () {
     Route::get('/bookings/{booking}', [BookingController::class, 'show']);
     Route::post('/bookings', [BookingController::class, 'store']);
     Route::put('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
+    Route::put('bookings/{booking}/reschedule', [BookingController::class, 'reschedule']);
 });
 
 Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
