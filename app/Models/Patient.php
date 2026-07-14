@@ -39,11 +39,6 @@ class Patient extends Authenticatable
         'remember_token',
     ];
 
-    public function otps(): HasMany
-    {
-        return $this->hasMany(PatientOtp::class);
-    }
-
     public function isVerified(): bool
     {
         return $this->verified_at !== null;
@@ -61,5 +56,18 @@ class Patient extends Authenticatable
             'verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function otps(): HasMany
+    {
+        return $this->hasMany(PatientOtp::class);
+    }
+
+    /**
+     * Bookings created by the patient.
+     */
+    public function patientBookings(): HasMany
+    {
+        return $this->hasMany(Booking::class, 'patient_id');
     }
 }

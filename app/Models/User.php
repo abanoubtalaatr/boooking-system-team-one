@@ -2,37 +2,96 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
+use App\Enums\UserRole;
+use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $fillable = [
+        'created_by',
+        'name',
+        'email',
+        'phone',
+        'password',
+        'provider',
+        'provider_id',
+        'role',
+        'status',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'role' => UserRole::class,
+        'status' => UserStatus::class,
+    ];
+
+    public function creator(): BelongsTo
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function createdUsers(): HasMany
+    {
+        return $this->hasMany(User::class, 'created_by');
     }
 
     public function doctorProfile(): HasOne
     {
         return $this->hasOne(DoctorProfile::class);
+    }
+
+    public function conversationsAsPatient(): HasMany
+    {
+        return $this->hasMany(Conversation::class, 'patient_id');
+    }
+
+    public function conversationsAsDoctor(): HasMany
+    {
+        return $this->hasMany(Conversation::class, 'doctor_id');
+    }
+
+    public function sentMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function bookingsAsPatient(): HasMany
+    {
+        return $this->hasMany(Booking::class, 'patient_id');
+    }
+
+    public function bookingsAsDoctor(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Booking::class,
+            DoctorProfile::class,
+            'user_id',
+            'doctor_id',
+        );
+    }
+
+    public function availabilitySlots(): HasMany
+    {
+        return $this->hasMany(AvailabilitySlot::class, 'doctor_id');
+    }
+
+    public function doctorBookings(): HasMany
+    {
+        return $this->hasMany(Booking::class, 'doctor_id');
     }
 }

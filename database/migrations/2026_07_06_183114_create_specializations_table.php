@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('favorites', function (Blueprint $table) {
+        Schema::create('specializations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('doctor_id')->constrained('users')->onDelete('cascade'); 
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string("name")->unique();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('favorites');
+        Schema::dropIfExists('specialties');
     }
 };
