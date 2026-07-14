@@ -11,7 +11,6 @@ use App\Http\Controllers\Api\SearchHistoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -54,6 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/favorites', [FavoriteController::class, 'destroy']);
 
     Route::get('/search-history', [SearchHistoryController::class, 'index']);
+    Route::delete('/search-history', [SearchHistoryController::class, 'destroyAll']);
     Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
 
     Route::get('/', [HomeController::class, 'index']);

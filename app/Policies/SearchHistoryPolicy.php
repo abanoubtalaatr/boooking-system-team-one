@@ -2,14 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\SearchHistory;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 // for authorization
 class SearchHistoryPolicy
 {
-
     /**
      * Get all search history
      */
@@ -18,12 +16,19 @@ class SearchHistoryPolicy
         return $user->id;
     }
 
-
     /**
      * Delete a search history
      */
     public function delete(User $user, SearchHistory $searchHistory)
     {
         return $searchHistory->user_id === $user->id;
+    }
+
+    /**
+     * Delete all search history for the authenticated user
+     */
+    public function deleteAny(User $user): bool
+    {
+        return (bool) $user->id;
     }
 }
