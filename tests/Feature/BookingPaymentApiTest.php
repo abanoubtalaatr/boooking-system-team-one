@@ -9,6 +9,7 @@ use App\Models\Patient;
 use App\Models\Payment;
 use App\Models\Setting;
 use App\Models\Wallet;
+use App\Models\WalletTransaction;
 use App\Notifications\PaymentSucceededNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
@@ -105,6 +106,9 @@ it('marks cash as collected and deducts the configured commission from the docto
     $this->postJson("/api/doctor/bookings/{$bookingId}/cash-collected")
         ->assertSuccessful()
         ->assertJsonPath('data.status', PaymentStatus::CashCollected->value);
+    $this->postJson("/api/doctor/bookings/{$bookingId}/cash-collected")
+        ->assertSuccessful()
+        ->assertJsonPath('data.status', PaymentStatus::CashCollected->value);
 
     expect(Wallet::query()->where('doctor_id', $doctor->id)->value('balance_cents'))->toBe(-6000);
     $payment = Payment::query()->where('booking_id', $bookingId)->firstOrFail();
@@ -113,7 +117,39 @@ it('marks cash as collected and deducts the configured commission from the docto
         ->and($payment->doctor_amount_cents)->toBe(44000)
         ->and($doctor->wallet()->firstOrFail()->currency)->toBe('EGP')
         ->and($doctor->wallet()->firstOrFail()->payout_blocked)->toBeTrue()
-        ->and($doctor->wallet()->firstOrFail()->canWithdraw())->toBeFalse();
+        ->and($doctor->wallet()->firstOrFail()->canWithdraw())->toBeFalse()
+        ->and(WalletTransaction::query()->where('payment_id', $payment->id)->count())->toBe(1);
     Notification::assertSentTo($patient, PaymentSucceededNotification::class);
     Notification::assertSentTo($doctor, PaymentSucceededNotification::class);
+});
+
+it('voids a cancelled cash payment and prevents collecting it afterwards', function (): void {
+    Notification::fake();
+    Setting::factory()->platformCashCommission('12.00')->create();
+    $this->app->instance(PaymentGatewayInterface::class, Mockery::mock(PaymentGatewayInterface::class));
+    [$doctor, $slot] = createBookableSlot();
+    $patient = Patient::factory()->create();
+    $bookingId = createBookingThroughApi($this, $patient, $doctor, $slot, 'cancelled-cash-booking');
+
+    $this->withHeader('Idempotency-Key', 'cancelled-cash-checkout')
+        ->postJson("/api/bookings/{$bookingId}/checkout", ['method' => 'cash'])
+        ->assertSuccessful();
+
+    Sanctum::actingAs($patient, ['*'], 'patient');
+    $this->putJson("/api/bookings/{$bookingId}/cancel")
+        ->assertSuccessful()
+        ->assertJsonPath('data.status', BookingStatus::Cancelled->value)
+        ->assertJsonPath('data.payment_status', PaymentStatus::Voided->value);
+
+    $payment = Payment::query()->where('booking_id', $bookingId)->firstOrFail();
+
+    Sanctum::actingAs($doctor);
+    $this->postJson("/api/doctor/bookings/{$bookingId}/cash-collected")
+        ->assertConflict()
+        ->assertJsonPath('error.code', 'cash_not_due');
+
+    expect($payment->fresh()->status)->toBe(PaymentStatus::Voided)
+        ->and(Wallet::query()->where('doctor_id', $doctor->id)->exists())->toBeFalse()
+        ->and(WalletTransaction::query()->where('payment_id', $payment->id)->exists())->toBeFalse();
+    Notification::assertNothingSent();
 });

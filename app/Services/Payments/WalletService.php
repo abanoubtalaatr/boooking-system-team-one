@@ -2,6 +2,7 @@
 
 namespace App\Services\Payments;
 
+use App\Enums\BookingStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
 use App\Enums\WalletTransactionType;
@@ -22,6 +23,10 @@ class WalletService
 
             if ((int) $lockedBooking->doctor_id !== $doctorId) {
                 throw new PaymentDomainException('غير مسموح بتحديث هذا الحجز.', 'forbidden', 403);
+            }
+
+            if ($lockedBooking->status !== BookingStatus::Confirmed) {
+                throw new PaymentDomainException('عملية الدفع النقدي ليست مستحقة.', 'cash_not_due', 409);
             }
 
             $payment = Payment::query()

@@ -2,6 +2,8 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 uses(RefreshDatabase::class);
 
@@ -56,6 +58,24 @@ test('invalid web credentials are rejected', function () {
     $this->from(route('login'))->post(route('login.store'), [
         'email' => $user->email,
         'password' => 'incorrect-password',
+    ])->assertRedirect(route('login'))->assertSessionHasErrors('email');
+
+    $this->assertGuest();
+});
+
+test('users outside the supported web roles cannot log in', function () {
+    DB::table('users')->insert([
+        'name' => 'Unsupported User',
+        'email' => 'unsupported@example.test',
+        'password' => Hash::make('password'),
+        'role' => 'patient',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    $this->from(route('login'))->post(route('login.store'), [
+        'email' => 'unsupported@example.test',
+        'password' => 'password',
     ])->assertRedirect(route('login'))->assertSessionHasErrors('email');
 
     $this->assertGuest();

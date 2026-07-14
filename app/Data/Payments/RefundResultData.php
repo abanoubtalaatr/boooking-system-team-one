@@ -8,5 +8,6 @@ class RefundResultData
         public readonly bool $succeeded,
         public readonly ?string $providerRefundId = null,
         public readonly ?string $failureMessage = null,
+        public readonly bool $outcomeUnknown = false,
     ) {}
 }

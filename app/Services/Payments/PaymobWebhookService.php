@@ -14,6 +14,7 @@ use App\Notifications\PaymentFailedNotification;
 use App\Notifications\PaymentSucceededNotification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PaymobWebhookService
 {
@@ -29,21 +30,36 @@ class PaymobWebhookService
             ?? Arr::get($payload, 'order.merchant_order_id')
             ?? Arr::get($payload, 'payment_key_claims.extra.special_reference')
             ?? '');
+        $orderId = (string) Arr::get($payload, 'order.id', '');
         $transactionId = (string) Arr::get($payload, 'id', '');
 
-        $payment = Payment::query()
-            ->when($reference !== '', fn ($query) => $query->where('uuid', $reference))
-            ->when($reference === '', fn ($query) => $query->where('provider_order_id', (string) Arr::get($payload, 'order.id', '')))
-            ->first();
-
-        if (! $payment) {
+        if ($reference === '' && $orderId === '') {
             throw new PaymentDomainException('Payment reference not found.', 'payment_reference_not_found', 404);
         }
 
+        $matchingPayments = Payment::query()
+            ->when($reference !== '', fn ($query) => $query->where('uuid', $reference))
+            ->when($reference === '', fn ($query) => $query->where('provider_order_id', $orderId))
+            ->limit(2)
+            ->get();
+
+        if ($matchingPayments->count() !== 1) {
+            throw new PaymentDomainException('Payment reference not found.', 'payment_reference_not_found', 404);
+        }
+
+        $payment = $matchingPayments->firstOrFail();
+
         $this->validateTransaction($payment, $payload, $reference);
 
-        if ($payment->provider_transaction_id === $transactionId
-            && in_array($payment->status, [PaymentStatus::Succeeded, PaymentStatus::RefundPending, PaymentStatus::Refunded], true)) {
+        if (in_array($payment->status, [PaymentStatus::Succeeded, PaymentStatus::RefundPending, PaymentStatus::Refunded], true)) {
+            if ($payment->provider_transaction_id !== $transactionId) {
+                Log::warning('Ignored an additional successful transaction for a settled payment.', [
+                    'payment_uuid' => $payment->uuid,
+                    'settled_transaction_id' => $payment->provider_transaction_id,
+                    'additional_transaction_id' => $transactionId,
+                ]);
+            }
+
             return;
         }
 
@@ -70,8 +86,7 @@ class PaymobWebhookService
         $mustRefund = DB::transaction(function () use ($payment, $transactionId): bool {
             $lockedPayment = Payment::query()->lockForUpdate()->findOrFail($payment->id);
 
-            if ($lockedPayment->provider_transaction_id === $transactionId
-                && in_array($lockedPayment->status, [PaymentStatus::Succeeded, PaymentStatus::RefundPending, PaymentStatus::Refunded], true)) {
+            if (in_array($lockedPayment->status, [PaymentStatus::Succeeded, PaymentStatus::RefundPending, PaymentStatus::Refunded], true)) {
                 return false;
             }
 

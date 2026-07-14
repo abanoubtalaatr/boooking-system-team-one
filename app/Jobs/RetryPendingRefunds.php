@@ -27,7 +27,7 @@ class RetryPendingRefunds implements ShouldBeUnique, ShouldQueue
     {
         PaymentRefund::query()
             ->with('payment')
-            ->whereIn('status', [RefundStatus::Pending, RefundStatus::Failed])
+            ->where('status', RefundStatus::Failed)
             ->select(['id', 'payment_id', 'reason'])
             ->chunkById(50, function ($pendingRefunds) use ($refunds): void {
                 foreach ($pendingRefunds as $pendingRefund) {

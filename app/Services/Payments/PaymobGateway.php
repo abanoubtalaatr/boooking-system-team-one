@@ -30,7 +30,7 @@ class PaymobGateway implements PaymentGatewayInterface
         $this->assertConfigured(['secret_key', 'public_key', 'card_integration_id', 'notification_url']);
         [$firstName, $lastName] = $this->splitName($data->patientName);
 
-        $response = $this->request()
+        $response = $this->request(retry: false)
             ->withToken((string) config('services.paymob.secret_key'), 'Token')
             ->post('/v1/intention/', [
                 'amount' => $data->amountCents,
@@ -83,16 +83,30 @@ class PaymobGateway implements PaymentGatewayInterface
             $authResponse = $this->request()->post('/api/auth/tokens', [
                 'api_key' => config('services.paymob.api_key'),
             ]);
+        } catch (Throwable $exception) {
+            report($exception);
 
-            if (! $authResponse->successful() || ! $authResponse->json('token')) {
-                return new RefundResultData(false, failureMessage: 'Paymob authentication failed.');
-            }
+            return new RefundResultData(false, failureMessage: 'Paymob authentication failed.');
+        }
 
-            $response = $this->request()->post('/api/acceptance/void_refund/refund', [
+        if (! $authResponse->successful() || ! $authResponse->json('token')) {
+            return new RefundResultData(false, failureMessage: 'Paymob authentication failed.');
+        }
+
+        try {
+            $response = $this->request(retry: false)->post('/api/acceptance/void_refund/refund', [
                 'auth_token' => $authResponse->json('token'),
                 'transaction_id' => $payment->provider_transaction_id,
                 'amount_cents' => $amountCents,
             ]);
+
+            if ($response->serverError() || $response->status() === 429) {
+                return new RefundResultData(
+                    false,
+                    failureMessage: 'Paymob refund outcome is pending verification.',
+                    outcomeUnknown: true,
+                );
+            }
 
             if (! $response->successful() || $response->json('success') === false) {
                 return new RefundResultData(false, failureMessage: (string) ($response->json('message') ?? 'Paymob refund failed.'));
@@ -107,7 +121,11 @@ class PaymobGateway implements PaymentGatewayInterface
         } catch (Throwable $exception) {
             report($exception);
 
-            return new RefundResultData(false, failureMessage: 'Paymob refund request is pending verification.');
+            return new RefundResultData(
+                false,
+                failureMessage: 'Paymob refund outcome is pending verification.',
+                outcomeUnknown: true,
+            );
         }
     }
 
@@ -135,17 +153,22 @@ class PaymobGateway implements PaymentGatewayInterface
         return (string) $value;
     }
 
-    private function request(): PendingRequest
+    private function request(bool $retry = true): PendingRequest
     {
-        return Http::baseUrl(rtrim((string) config('services.paymob.base_url'), '/'))
+        $request = Http::baseUrl(rtrim((string) config('services.paymob.base_url'), '/'))
             ->acceptJson()
             ->asJson()
             ->connectTimeout((int) config('services.paymob.connect_timeout', 3))
-            ->timeout((int) config('services.paymob.timeout', 10))
-            ->retry([200, 500], when: function (Throwable $exception): bool {
-                return $exception instanceof ConnectionException
-                    || ($exception instanceof RequestException && $exception->response->serverError());
-            }, throw: false);
+            ->timeout((int) config('services.paymob.timeout', 10));
+
+        if (! $retry) {
+            return $request;
+        }
+
+        return $request->retry([200, 500], when: function (Throwable $exception): bool {
+            return $exception instanceof ConnectionException
+                || ($exception instanceof RequestException && $exception->response->serverError());
+        }, throw: false);
     }
 
     /** @param list<string> $keys */

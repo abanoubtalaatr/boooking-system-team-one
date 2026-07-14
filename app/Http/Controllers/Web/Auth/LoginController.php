@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\WebLoginRequest;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,10 @@ class LoginController extends Controller
     public function store(WebLoginRequest $request): RedirectResponse
     {
         $credentials = $request->safe()->only(['email', 'password']);
+        $credentials[] = fn (Builder $query): Builder => $query->whereIn('role', [
+            UserRole::Admin->value,
+            UserRole::Doctor->value,
+        ]);
 
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
             throw ValidationException::withMessages([

@@ -85,6 +85,24 @@ it('requests a full refund using the stored Paymob transaction id', function ():
         && $request['amount_cents'] === $payment->amount_cents);
 });
 
+it('does not retry a refund whose provider outcome is unknown', function (): void {
+    $payment = Payment::factory()->create(['provider_transaction_id' => 'uncertain-refund-transaction']);
+    Http::fake([
+        'https://paymob.test/api/auth/tokens' => Http::response(['token' => 'auth-token'], 201),
+        'https://paymob.test/api/acceptance/void_refund/refund' => Http::response(['detail' => 'temporary'], 500),
+    ]);
+
+    $result = app(PaymobGateway::class)->refund($payment, $payment->amount_cents);
+
+    expect($result->succeeded)->toBeFalse()
+        ->and($result->outcomeUnknown)->toBeTrue();
+    Http::assertSentCount(2);
+    expect(Http::recorded(fn (Request $request): bool => str_ends_with(
+        $request->url(),
+        '/api/acceptance/void_refund/refund',
+    )))->toHaveCount(1);
+});
+
 it('keeps the booking held when Paymob has a transient server failure', function (): void {
     Http::fake(['*' => Http::response(['detail' => 'temporary'], 500)]);
     $this->app->bind(PaymentGatewayInterface::class, PaymobGateway::class);
@@ -94,7 +112,7 @@ it('keeps the booking held when Paymob has a transient server failure', function
     $response->assertSuccessful()->assertJsonPath('data.status', PaymentStatus::PendingVerification->value);
     expect(Payment::query()->where('booking_id', $bookingId)->value('status'))->toBe(PaymentStatus::PendingVerification)
         ->and($slot->fresh()->reservation_status)->toBe(SlotReservationStatus::Held);
-    Http::assertSentCount(3);
+    Http::assertSentCount(1);
 });
 
 it('keeps the booking held when the Paymob connection outcome is unknown', function (): void {
@@ -106,6 +124,7 @@ it('keeps the booking held when the Paymob connection outcome is unknown', funct
     $response->assertSuccessful()->assertJsonPath('data.status', PaymentStatus::PendingVerification->value);
     expect(Payment::query()->where('booking_id', $bookingId)->value('status'))->toBe(PaymentStatus::PendingVerification)
         ->and($slot->fresh()->reservation_status)->toBe(SlotReservationStatus::Held);
+    Http::assertSentCount(1);
 });
 
 it('fails safely and releases the slot after a definitive Paymob rejection', function (): void {

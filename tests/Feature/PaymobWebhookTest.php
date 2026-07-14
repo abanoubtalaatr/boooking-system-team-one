@@ -11,6 +11,7 @@ use App\Jobs\ExpireBookingHolds;
 use App\Jobs\RetryPendingRefunds;
 use App\Models\Patient;
 use App\Models\Payment;
+use App\Models\PaymentRefund;
 use App\Models\Wallet;
 use App\Models\WalletTransaction;
 use App\Notifications\PaymentFailedNotification;
@@ -86,6 +87,28 @@ it('confirms a successful Paymob callback and credits the wallet exactly once', 
         ->and(WalletTransaction::query()->where('payment_id', $payment->id)->count())->toBe(1);
     Notification::assertSentTo($payment->patient, PaymentSucceededNotification::class);
     Notification::assertSentTo($payment->doctor, PaymentSucceededNotification::class);
+});
+
+it('keeps a confirmed booking intact when a later success uses a different transaction id', function (): void {
+    Notification::fake();
+    $payment = cardPaymentFixture($this);
+    $gateway = Mockery::mock(PaymentGatewayInterface::class);
+    $gateway->shouldReceive('hasValidHmac')->twice()->andReturnTrue();
+    $this->app->instance(PaymentGatewayInterface::class, $gateway);
+    $firstPayload = paymobPayload($payment);
+
+    $this->postJson('/api/webhooks/paymob?hmac=valid', ['obj' => $firstPayload])->assertSuccessful();
+    $secondPayload = $firstPayload;
+    $secondPayload['id'] = 'different-transaction-'.$payment->id;
+    $this->postJson('/api/webhooks/paymob?hmac=valid', ['obj' => $secondPayload])->assertSuccessful();
+
+    expect($payment->fresh()->provider_transaction_id)->toBe($firstPayload['id'])
+        ->and($payment->fresh()->status)->toBe(PaymentStatus::Succeeded)
+        ->and($payment->booking->fresh()->status)->toBe(BookingStatus::Confirmed)
+        ->and($payment->booking->slot->fresh()->reservation_status)->toBe(SlotReservationStatus::Booked)
+        ->and(Wallet::query()->where('doctor_id', $payment->doctor_id)->value('balance_cents'))->toBe($payment->doctor_amount_cents)
+        ->and(WalletTransaction::query()->where('payment_id', $payment->id)->count())->toBe(1)
+        ->and($payment->refunds()->count())->toBe(0);
 });
 
 it('releases the slot when Paymob rejects the payment', function (): void {
@@ -202,6 +225,22 @@ it('rejects a callback with an unknown payment reference', function (): void {
     expect($payment->fresh()->status)->toBe(PaymentStatus::Pending);
 });
 
+it('rejects a callback when every payment reference is missing', function (): void {
+    $payment = cardPaymentFixture($this);
+    $gateway = Mockery::mock(PaymentGatewayInterface::class);
+    $gateway->shouldReceive('hasValidHmac')->once()->andReturnTrue();
+    $this->app->instance(PaymentGatewayInterface::class, $gateway);
+    $payload = paymobPayload($payment);
+    unset($payload['special_reference'], $payload['order']['merchant_order_id']);
+    $payload['order']['id'] = '';
+
+    $this->postJson('/api/webhooks/paymob?hmac=valid', ['obj' => $payload])
+        ->assertNotFound()
+        ->assertJsonPath('error.code', 'payment_reference_not_found');
+
+    expect($payment->fresh()->status)->toBe(PaymentStatus::Pending);
+});
+
 it('keeps the slot unavailable when refund fails and releases it after the scheduled retry succeeds', function (): void {
     Notification::fake();
     $payment = cardPaymentFixture($this);
@@ -229,4 +268,50 @@ it('keeps the slot unavailable when refund fails and releases it after the sched
     expect($payment->fresh()->status)->toBe(PaymentStatus::Refunded)
         ->and($payment->refunds()->firstOrFail()->status)->toBe(RefundStatus::Succeeded)
         ->and($payment->booking->slot->fresh()->reservation_status)->toBe(SlotReservationStatus::Available);
+});
+
+it('holds an uncertain refund for reconciliation instead of submitting it again', function (): void {
+    Notification::fake();
+    $payment = cardPaymentFixture($this);
+    $webhookGateway = Mockery::mock(PaymentGatewayInterface::class);
+    $webhookGateway->shouldReceive('hasValidHmac')->once()->andReturnTrue();
+    $this->app->instance(PaymentGatewayInterface::class, $webhookGateway);
+    $this->postJson('/api/webhooks/paymob?hmac=valid', ['obj' => paymobPayload($payment)])->assertSuccessful();
+
+    $uncertainRefundGateway = Mockery::mock(PaymentGatewayInterface::class);
+    $uncertainRefundGateway->shouldReceive('refund')->once()->andReturn(new RefundResultData(
+        false,
+        failureMessage: 'provider outcome unknown',
+        outcomeUnknown: true,
+    ));
+    $this->app->instance(PaymentGatewayInterface::class, $uncertainRefundGateway);
+    Sanctum::actingAs($payment->patient, ['*'], 'patient');
+    $this->putJson("/api/bookings/{$payment->booking_id}/cancel")
+        ->assertSuccessful()
+        ->assertJsonPath('data.status', BookingStatus::RefundPending->value);
+
+    $retryGateway = Mockery::mock(PaymentGatewayInterface::class);
+    $retryGateway->shouldNotReceive('refund');
+    $this->app->instance(PaymentGatewayInterface::class, $retryGateway);
+    (new RetryPendingRefunds)->handle(app(RefundService::class));
+
+    expect($payment->refunds()->firstOrFail()->status)->toBe(RefundStatus::PendingVerification)
+        ->and($payment->fresh()->status)->toBe(PaymentStatus::RefundPending)
+        ->and($payment->booking->fresh()->status)->toBe(BookingStatus::RefundPending)
+        ->and($payment->booking->slot->fresh()->reservation_status)->toBe(SlotReservationStatus::Booked);
+});
+
+it('does not blindly submit a pending refund left by an interrupted worker', function (): void {
+    $payment = cardPaymentFixture($this);
+    PaymentRefund::factory()->create([
+        'payment_id' => $payment->id,
+        'status' => RefundStatus::Pending,
+    ]);
+    $gateway = Mockery::mock(PaymentGatewayInterface::class);
+    $gateway->shouldNotReceive('refund');
+    $this->app->instance(PaymentGatewayInterface::class, $gateway);
+
+    (new RetryPendingRefunds)->handle(app(RefundService::class));
+
+    expect($payment->refunds()->firstOrFail()->status)->toBe(RefundStatus::Pending);
 });

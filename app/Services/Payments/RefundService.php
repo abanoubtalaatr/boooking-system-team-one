@@ -37,7 +37,7 @@ class RefundService
             ],
         );
 
-        if ($refund->status === RefundStatus::Succeeded) {
+        if (in_array($refund->status, [RefundStatus::Succeeded, RefundStatus::PendingVerification], true)) {
             return $refund;
         }
 
@@ -60,9 +60,9 @@ class RefundService
 
         if (! $result->succeeded) {
             $refund->update([
-                'status' => RefundStatus::Failed,
+                'status' => $result->outcomeUnknown ? RefundStatus::PendingVerification : RefundStatus::Failed,
                 'failure_message' => $result->failureMessage,
-                'failed_at' => now(),
+                'failed_at' => $result->outcomeUnknown ? null : now(),
             ]);
 
             return $refund->refresh();

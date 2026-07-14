@@ -55,27 +55,30 @@ Route::prefix('patient')
             ->name('logout');
     });
 
-Route::get('/favorites', [FavoriteController::class, 'index']);
-Route::post('/favorites', [FavoriteController::class, 'store']);
-Route::delete('/favorites', [FavoriteController::class, 'destroy']);
-
-Route::get('/search-history', [SearchHistoryController::class, 'index']);
-Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
-
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/faqs', [FaqController::class, 'index']);
 Route::get('/privacy-policy', [PolicyController::class, 'privacy']);
 Route::get('/terms', [PolicyController::class, 'terms']);
 
-Route::apiResource('reviews', ReviewsController::class);
+Route::apiResource('reviews', ReviewsController::class)->only(['index', 'show']);
 
 Route::middleware('auth:patient')->group(function () {
+    Route::get('/favorites', [FavoriteController::class, 'index']);
+    Route::post('/favorites', [FavoriteController::class, 'store']);
+    Route::delete('/favorites', [FavoriteController::class, 'destroy']);
+    Route::apiResource('reviews', ReviewsController::class)->only(['store', 'update', 'destroy']);
+
     Route::get('/bookings', [BookingController::class, 'index']);
     Route::get('/bookings/{booking}', [BookingController::class, 'show']);
     Route::post('/bookings', [BookingController::class, 'store']);
     Route::post('/bookings/{booking}/checkout', BookingCheckoutController::class)->name('payments.checkout');
     Route::get('/payments/{payment}', PaymentController::class)->name('payments.show');
     Route::put('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/search-history', [SearchHistoryController::class, 'index']);
+    Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
 });
 
 Route::post('/webhooks/paymob', PaymobWebhookController::class)

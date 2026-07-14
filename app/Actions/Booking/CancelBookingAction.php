@@ -29,7 +29,7 @@ class CancelBookingAction
                 throw ValidationException::withMessages(['booking' => 'Booking is already cancelled.']);
             }
 
-            $payment = $lockedBooking->payments()->latest('id')->first();
+            $payment = $lockedBooking->payments()->latest('id')->lockForUpdate()->first();
 
             if ($lockedBooking->status === BookingStatus::RefundPending && $payment) {
                 return $payment;
@@ -44,8 +44,16 @@ class CancelBookingAction
                 return $payment;
             }
 
+            $paymentStatus = $lockedBooking->payment_status;
+
+            if ($payment?->method === PaymentMethod::Cash && $payment->status === PaymentStatus::CashDue) {
+                $payment->update(['status' => PaymentStatus::Voided]);
+                $paymentStatus = PaymentStatus::Voided;
+            }
+
             $lockedBooking->update([
                 'status' => BookingStatus::Cancelled,
+                'payment_status' => $paymentStatus,
                 'hold_expires_at' => null,
             ]);
             $lockedBooking->slot()->where('reserved_booking_id', $lockedBooking->id)->update([
