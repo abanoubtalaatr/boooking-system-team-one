@@ -11,10 +11,15 @@ class Hospital extends Model
 
     protected $fillable = ["address", "name", "latitude", "longitude"];
 
-    protected $casts = [
-        "latitude" => "decimal:7",
-        "longitude" => "decimal:7",
-    ];
+
+    protected function casts(): array
+    {
+        return [
+            "latitude" => "decimal:7",
+            "longitude" => "decimal:7",
+        ];
+
+    }
 
    
 
