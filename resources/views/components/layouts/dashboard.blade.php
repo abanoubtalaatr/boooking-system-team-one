@@ -5,7 +5,7 @@
     $navigation = $isDoctor
     ? [
         ['الرئيسية', 'home', 'doctor.dashboard'],
-        ['حجوزاتي', 'calendar', 'doctor.bookings'],
+        ['حجوزاتي', 'bookings', 'doctor.bookings'],
         ['جدول المواعيد', 'clock', 'doctor.schedule'],
         ['المرضى', 'users', 'doctor.patients'],
         ['الاستشارات', 'Conversations', 'doctor.conversations'],
@@ -14,7 +14,7 @@
     ]
     : [
         ['لوحة التحكم', 'home', 'admin.dashboard'],
-        ['الحجوزات', 'calendar', 'admin.bookings'],
+        ['الحجوزات', 'bookings', 'admin.bookings'],
         ['الأطباء', 'doctor', 'admin.doctors'],
         ['المرضى', 'users', 'admin.patients'],
         ['التخصصات', 'specialty', 'admin.specialties'],
@@ -36,7 +36,7 @@
     <meta name="description" content="لوحة تحكم منصة الأطباء">
     <title>{{ $title }} | منصة الأطباء</title>
     <style>{!! file_get_contents(resource_path('css/app.css')) !!}</style>
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
 
 </head>
 <body>

@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Actions\Booking\CancelBookingAction;
 use App\Actions\Booking\CreateBookingAction;
+use App\Actions\Booking\Dashboard\GetBookingsDashboardAction;
+use App\Actions\Booking\Dashboard\GetBookingStatisticsAction;
 use App\Actions\Booking\GetBookingsAction;
 use App\Actions\Booking\RescheduleBookingAction;
 use App\Models\Booking;
@@ -17,6 +19,8 @@ class BookingService
         protected CancelBookingAction $cancelBookingAction,
         protected GetBookingsAction $getBookingsAction,
         protected RescheduleBookingAction $rescheduleBookingAction,
+        protected GetBookingsDashboardAction $getBookingsDashboardAction,
+        protected GetBookingStatisticsAction $statisticsAction,
     ) {}
 
     public function listForPatient(int $patientId, ?string $status = null): LengthAwarePaginator
@@ -58,5 +62,28 @@ class BookingService
             $patientId,
             $data
         );
+    }
+
+    /**
+     * Dashboard methods
+     */
+
+
+    public function index(array $filters): array
+    {
+        return [
+            'bookings' => ($this->getBookingsDashboardAction)($filters),
+
+            'stats' => ($this->statisticsAction)(),
+        ];
+    }
+
+    public function show(Booking $booking): Booking
+    {
+        return $booking->load([
+            'patient',
+            'doctor.doctorProfile.specialization',
+            'slot',
+        ]);
     }
 }

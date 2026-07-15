@@ -20,16 +20,8 @@ class SpecializationFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->randomElement([
-                'Cardiology',
-                'Dermatology',
-                'Dentistry',
-                'Neurology',
-                'Orthopedics',
-                'Pediatrics',
-                'Ophthalmology',
-            ]),
-            'description' => fake()->sentence(),
+            'name' => fake()->unique()->jobTitle(),
+            'image' => 'specializations/default.png',
         ];
     }
 }

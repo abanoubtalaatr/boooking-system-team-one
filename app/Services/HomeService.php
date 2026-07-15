@@ -6,8 +6,8 @@ namespace App\Services;
 
 use App\Actions\Home\GetNearbyDoctorsAction;
 use App\Actions\Home\GetPromotionsAction;
-use App\Actions\Home\GetSpecializationsAction;
 use App\Actions\Home\GetTopRatedDoctorsAction;
+use App\Actions\Specialization\GetSpecializationsAction;
 use App\Data\HomeData;
 use App\Http\Requests\Home\HomeIndexRequest;
 

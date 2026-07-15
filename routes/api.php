@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Patient\PatientPasswordResetController;
 use App\Http\Controllers\Api\Policy\PolicyController;
 use App\Http\Controllers\Api\ReviewsController;
 use App\Http\Controllers\Api\SearchHistoryController;
+use App\Http\Controllers\Api\Specialization\SpecializationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -55,7 +56,7 @@ Route::delete('/favorites', [FavoriteController::class, 'destroy']);
 Route::get('/search-history', [SearchHistoryController::class, 'index']);
 Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/home', [HomeController::class, 'index']);
 Route::get('/faqs', [FaqController::class, 'index']);
 Route::get('/privacy-policy', [PolicyController::class, 'privacy']);
 Route::get('/terms', [PolicyController::class, 'terms']);
@@ -68,6 +69,9 @@ Route::middleware('auth:patient')->group(function () {
     Route::post('/bookings', [BookingController::class, 'store']);
     Route::put('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
     Route::put('bookings/{booking}/reschedule', [BookingController::class, 'reschedule']);
+
+    // Specializations route
+    Route::get('/specialists', [SpecializationController::class, 'index']);
 });
 
 Route::middleware('auth:sanctum')->get('/me', function (Request $request) {

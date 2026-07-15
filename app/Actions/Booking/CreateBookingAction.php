@@ -63,7 +63,7 @@ class CreateBookingAction
             ]);
 
             return $booking->fresh([
-                'doctor.doctorProfile.specialty',
+                'doctor.doctorProfile.specialization',
                 'slot',
             ]);
         });

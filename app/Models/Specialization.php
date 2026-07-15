@@ -12,8 +12,15 @@ class Specialization extends Model
 
     protected $fillable = [
         'name',
-        'description',
+        'image'
     ];
+
+    // protected function image(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn () => $this->getFirstMediaUrl('specializations')
+    //     );
+    // }
 
     public function doctors(): HasMany
     {
