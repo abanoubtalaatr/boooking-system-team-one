@@ -18,6 +18,7 @@
         ['الأطباء', 'doctor', 'admin.doctors'],
         ['المرضى', 'users', 'admin.patients'],
         ['المفضلة لدى المرضى', 'star', 'admin.patient-favorites'],
+        ['سجل البحث', 'search', 'admin.search-history'],
         ['التخصصات', 'specialty', 'admin.specialties'],
         ['العيادات', 'clinic', 'admin.clinics'],
         ['المواعيد', 'clock', 'admin.appointments'],

@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Doctor\ConversationController;
 use App\Http\Controllers\Doctor\DashboardController as DoctorDashboardController;
 use App\Http\Controllers\Admin\PatientFavoriteDoctorsController;
+use App\Http\Controllers\Admin\PatientSearchHistoryController;
 
 // صفحات تسجيل الدخول
 Route::view('/', 'auth.login')->name('login');
@@ -20,12 +21,12 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::view('/admin', 'admin.dashboard')->name('admin.dashboard');
     Route::view('/doctor', 'doctor.dashboard')->name('doctor.dashboard');
-  
+
 });
 
 // مجموعة الأدمن
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/bookings', [DashboardController::class, 'bookings'])->name('bookings');
     Route::get('/doctors', [DashboardController::class, 'doctors'])->name('doctors');
     Route::get('/patients', [DashboardController::class, 'patients'])->name('patients');
@@ -39,7 +40,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Patient Favorites
     Route::get('/patient-favorites', [PatientFavoriteDoctorsController::class, 'index'])->name('patient-favorites');
     Route::get('/patient-favorites/{patient}', [PatientFavoriteDoctorsController::class, 'show'])->name('patient-favorites.show');
-  
+
+    // Search History
+    Route::get('/search-history', [PatientSearchHistoryController::class, 'index'])->name('search-history');
+    Route::get('/search-history/{patient}', [PatientSearchHistoryController::class, 'show'])->name('search-history.show');
+
 });
 
 // مجموعة الطبيب

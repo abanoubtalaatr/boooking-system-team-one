@@ -78,4 +78,12 @@ class Patient extends Authenticatable
     {
         return $this->hasMany(Favorite::class, 'user_id');
     }
+
+    /**
+     * Search queries recorded by the patient.
+     */
+    public function searchHistories(): HasMany
+    {
+        return $this->hasMany(SearchHistory::class, 'user_id');
+    }
 }
