@@ -80,6 +80,7 @@ Route::middleware('auth:patient')->group(function () {
     Route::post('/bookings/{booking}/checkout', BookingCheckoutController::class)->name('payments.checkout');
     Route::get('/payments/{payment}', PaymentController::class)->name('payments.show');
     Route::put('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
+    Route::put('bookings/{booking}/reschedule', [BookingController::class, 'reschedule']);
 });
 
 Route::post('/webhooks/paymob', PaymobWebhookController::class)
