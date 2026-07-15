@@ -34,11 +34,14 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'role' => UserRole::class,
-        'status' => UserStatus::class,
-    ];
+    
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'role' => UserRole::class,
+        ];
+    }
 
     public function creator(): BelongsTo
     {
@@ -124,5 +127,15 @@ class User extends Authenticatable
     public function reviewedBookingNoShowReports(): HasMany
     {
         return $this->hasMany(BookingNoShowReport::class, 'reviewed_by');
+    }
+
+     public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating');
     }
 }

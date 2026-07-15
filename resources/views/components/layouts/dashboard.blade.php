@@ -19,13 +19,13 @@
             ['لوحة المدفوعات', 'home', $dashboardRoute, request()->routeIs('web.admin.dashboard')],
             ['لوحة التحكم', 'home', route('admin.dashboard'), request()->routeIs('admin.dashboard')],
             ['حجوزاتي', 'bookings', route('admin.bookings'), request()->routeIs('admin.bookings')],
-            ['الأطباء', 'doctor', route('admin.doctors'), request()->routeIs('admin.doctors')],
+            ['الأطباء', 'doctor', route('admin.doctors.index'), request()->routeIs('admin.doctors')],
             ['المرضى', 'users', route('admin.patients'), request()->routeIs('admin.patients')],
             ['المفضلة لدى المرضى', 'star', route('admin.patient-favorites'), request()->routeIs('admin.patient-favorites*')],
             ['سجل البحث', 'search', route('admin.search-history'), request()->routeIs('admin.search-history*')],
             ['التخصصات', 'specialty', route('admin.specialties'), request()->routeIs('admin.specialties')],
-            ['العيادات', 'clinic', route('admin.clinics'), request()->routeIs('admin.clinics')],
-            ['المواعيد', 'clock', route('admin.appointments'), request()->routeIs('admin.appointments')],
+            ['العيادات', 'clinic', route('admin.hospitals.index'), request()->routeIs('admin.hospitals*')],
+            ['المواعيد', 'clock', route('admin.availability-slots.index'), request()->routeIs('admin.availability-slots*')],
             ['التقارير', 'report', route('admin.reports'), request()->routeIs('admin.reports')],
             ['المستخدمون والصلاحيات', 'shield', route('admin.users'), request()->routeIs('admin.users')],
             ['بلاغات عدم الحضور', 'calendar', route('web.admin.no-show-reports.index'), request()->routeIs('web.admin.no-show-reports.*')],
@@ -100,6 +100,11 @@
             </div>
         </header>
 
+        @if(session('success'))
+            <div class="mx-6 mt-4 rounded-lg border border-green-300 bg-green-50 px-5 py-4 text-green-800">
+                {{ session('success') }}
+            </div>
+        @endif
         <main class="page">{{ $slot }}</main>
         <footer class="footer"><span>© {{ date('Y') }} منصة الأطباء. جميع الحقوق محفوظة.</span><span>الخصوصية · الشروط · الدعم</span></footer>
     </div>

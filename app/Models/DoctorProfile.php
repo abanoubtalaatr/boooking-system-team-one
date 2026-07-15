@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Http\Concerns\Filterable;
@@ -14,18 +13,25 @@ class DoctorProfile extends Model
     use Filterable, HasFactory;
 
     protected $fillable = [
-        'user_id', 'specialization_id', 'hospital_id',
-        'latitude', 'longitude', 'bio', 'avatar',
-        'price', 'experience_years', 'is_active',
+        'user_id',
+        'specialization_id',
+        'hospital_id',
+        'latitude',
+        'longitude',
+        'bio',
+        'avatar',
+        'price',
+        'experience_years',
+        'is_active',
     ];
 
     protected function casts(): array
     {
         return [
-            'latitude' => 'decimal:7',
-            'longitude' => 'decimal:7',
-            'price' => 'decimal:2',
-            'is_active' => 'boolean',
+            'latitude'     => 'decimal:7',
+            'longitude'    => 'decimal:7',
+            'price'        => 'decimal:2',
+            'is_active'    => 'boolean',
             'certificates' => 'array',
         ];
     }

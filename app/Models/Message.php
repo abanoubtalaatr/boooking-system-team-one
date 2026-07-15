@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +14,14 @@ class Message extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    protected $fillable = ['conversation_id', 'sender_id', 'sender_type', 'type', 'body', 'read_at'];
+    protected $fillable = [
+        'conversation_id',
+        'sender_id',
+        'sender_type',
+        'type',
+        'body',
+        'read_at',
+    ];
 
     protected function casts(): array
     {
