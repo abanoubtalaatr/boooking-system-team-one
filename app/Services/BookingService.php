@@ -51,7 +51,8 @@ class BookingService
         return ($this->cancelBookingAction)($booking);
     }
 
-    public function reschedule(Booking $booking, int $patientId, array $data): Booking {
+    public function reschedule(Booking $booking, int $patientId, array $data): Booking
+    {
 
         return ($this->rescheduleBookingAction)(
             $booking,

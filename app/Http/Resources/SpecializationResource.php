@@ -11,7 +11,8 @@ class SpecializationResource extends JsonApiResource
      * The resource's attributes.
      */
     public $attributes = [
+        'id',
         'name',
-        'description',
+        'image',
     ];
 }

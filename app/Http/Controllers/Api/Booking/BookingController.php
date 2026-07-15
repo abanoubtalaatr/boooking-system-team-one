@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\Booking;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Booking\StoreBookingRequest;
 use App\Http\Requests\Booking\RescheduleBookingRequest;
+use App\Http\Requests\Booking\StoreBookingRequest;
 use App\Http\Resources\BookingResource;
 use App\Models\Booking;
 use App\Services\BookingService;
@@ -56,7 +56,8 @@ class BookingController extends Controller
         return new BookingResource($booking);
     }
 
-    public function reschedule(RescheduleBookingRequest $request, Booking $booking): BookingResource {
+    public function reschedule(RescheduleBookingRequest $request, Booking $booking): BookingResource
+    {
         $booking = $this->bookingService->reschedule(
             $booking, (int) $request->user('patient')->id,
             $request->validated(),

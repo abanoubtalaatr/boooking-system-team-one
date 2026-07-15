@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Payment\PaymobWebhookController;
 use App\Http\Controllers\Api\Policy\PolicyController;
 use App\Http\Controllers\Api\ReviewsController;
 use App\Http\Controllers\Api\SearchHistoryController;
+use App\Http\Controllers\Api\Specialization\SpecializationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +61,7 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/faqs', [FaqController::class, 'index']);
 Route::get('/privacy-policy', [PolicyController::class, 'privacy']);
 Route::get('/terms', [PolicyController::class, 'terms']);
+Route::get('/specialists', [SpecializationController::class, 'index']);
 
 Route::apiResource('reviews', ReviewsController::class)->only(['index', 'show']);
 

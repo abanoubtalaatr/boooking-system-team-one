@@ -40,6 +40,11 @@ class DoctorProfile extends Model
         return $this->belongsTo(Specialization::class, 'specialization_id');
     }
 
+    public function specialization(): BelongsTo
+    {
+        return $this->specialty();
+    }
+
     public function hospital(): BelongsTo
     {
         return $this->belongsTo(Hospital::class);
