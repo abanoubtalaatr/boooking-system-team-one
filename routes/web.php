@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminConversationController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PatientFavoriteDoctorsController;
 use App\Http\Controllers\Admin\PatientSearchHistoryController;
@@ -86,6 +87,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     Route::get('/search-history', [PatientSearchHistoryController::class, 'index'])->name('search-history');
     Route::get('/search-history/{patient}', [PatientSearchHistoryController::class, 'show'])->name('search-history.show');
+
+    Route::get('/doctors/{doctor}/conversations', [AdminConversationController::class, 'index'])
+        ->name('doctors.conversations');
+    Route::get('/conversations/{conversation}', [AdminConversationController::class, 'show'])
+        ->name('conversations.show');
 });
 
 Route::middleware(['auth', 'role:doctor'])

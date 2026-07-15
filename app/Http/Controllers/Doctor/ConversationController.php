@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Doctor;
 
+use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Models\Conversation;
 use App\Models\Message;
@@ -36,7 +37,7 @@ class ConversationController extends Controller
     {
         abort_unless((int) $conversation->doctor_id === (int) $request->user()->id, 403);
 
-        $conversation->load(['patient', 'messages' => fn ($q) => $q->oldest()]);
+        $conversation->load(['patient', 'messages' => fn ($q) => $q->oldest()->with('media')]);
 
         $conversation->messages()
             ->where('sender_type', Patient::class)
@@ -54,17 +55,45 @@ class ConversationController extends Controller
         abort_unless($conversation->status === 'active', 409);
 
         $validated = $request->validate([
-            'body' => ['required', 'string', 'max:2000'],
+            'body' => ['nullable', 'string', 'max:2000'],
+            'attachment' => ['nullable', 'file', 'max:20480'],
         ]);
 
-        $conversation->messages()->create([
+        $type = 'text';
+
+        if ($request->hasFile('attachment')) {
+            $mime = (string) $request->file('attachment')->getMimeType();
+
+            if (str_starts_with($mime, 'image/')) {
+                $type = 'image';
+            } elseif (str_starts_with($mime, 'audio/')) {
+                $type = 'voice';
+            } else {
+                $type = 'file';
+            }
+        }
+
+        if ($type === 'text' && empty($validated['body'])) {
+            return back()->withErrors(['body' => 'الرجاء كتابة رسالة أو إرفاق ملف.']);
+        }
+
+        $message = $conversation->messages()->create([
             'sender_type' => User::class,
             'sender_id' => $doctor->id,
-            'type' => 'text',
-            'body' => $validated['body'],
+            'type' => $type,
+            'body' => $validated['body'] ?? null,
         ]);
 
+        if ($request->hasFile('attachment')) {
+            $message->addMediaFromRequest('attachment')
+                ->toMediaCollection('attachment');
+        }
+
         $conversation->update(['last_message_at' => now()]);
+
+        $message->load('media');
+
+        broadcast(new MessageSent($message))->toOthers();
 
         return back();
     }

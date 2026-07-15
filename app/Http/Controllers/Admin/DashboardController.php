@@ -78,19 +78,19 @@ class DashboardController extends Controller
      */
     public function doctors(Request $request)
     {
-        $doctors = User::where('role', 'doctor')
-            ->with(['doctorProfile.specialization', 'doctorProfile.hospital'])
-            ->withCount(['bookingsAsDoctor', 'reviews'])
-            ->withAvg('reviews', 'rating')
-            ->when($request->specialization_id, function ($q) use ($request) {
-                $q->whereHas('doctorProfile', fn ($q) => $q->where('specialization_id', $request->specialization_id));
-            })
-            ->when($request->search, fn ($q) => $q->where('name', 'like', "%{$request->search}%"))
-            ->paginate(12);
+        $doctors = User::where('role', 'doctor')->with('doctorProfile')
+           // ->with(['doctorProfile.specialization', 'doctorProfile.hospital'])
+            // ->withCount(['bookingsAsDoctor', 'reviews'])
+           // ->withAvg('reviews', 'rating')
+            // ->when($request->specialization_id, function ($q) use ($request) {
+            //    $q->whereHas('doctorProfile', fn ($q) => $q->where('specialization_id', $request->specialization_id));
+           // })
+            // ->when($request->search, fn ($q) => $q->where('name', 'like', "%{$request->search}%"))
+            ->paginate(10);
 
-        $specializations = Specialization::all();
+        // $specializations = Specialization::all();
 
-        return view('admin.doctors.index', compact('doctors', 'specializations'));
+        return view('admin.doctors.index', compact('doctors')); // , 'specializations'));
     }
 
     /**

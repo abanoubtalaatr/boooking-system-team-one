@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\Models\Message;
 use App\Repositories\Contracts\MessageRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Models\Conversation;
 
 class EloquentMessageRepository implements MessageRepositoryInterface
 {
@@ -37,5 +38,20 @@ class EloquentMessageRepository implements MessageRepositoryInterface
             ->where("sender_id", "!=", $userId)
             ->where("status", "!=", "seen")
             ->update(["status" => "seen"]);
+    }
+
+    /**
+     * يعتبر رسايل الطرف التاني مقروءة (مش رسايل القارئ نفسه).
+     * بيرجع عدد الصفوف اللي اتحدثت.
+     */
+    public function markAsRead(Conversation $conversation, string $readerType, int $readerId): int
+    {
+        return Message::where('conversation_id', $conversation->id)
+            ->where(function ($query) use ($readerType, $readerId) {
+                $query->where('sender_type', '!=', $readerType)
+                    ->orWhere('sender_id', '!=', $readerId);
+            })
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
     }
 }
