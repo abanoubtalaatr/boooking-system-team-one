@@ -67,6 +67,11 @@ Route::middleware('auth:patient')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index']);
     Route::post('/favorites', [FavoriteController::class, 'store']);
     Route::delete('/favorites', [FavoriteController::class, 'destroy']);
+
+    Route::get('/search-history', [SearchHistoryController::class, 'index']);
+    Route::delete('/search-history', [SearchHistoryController::class, 'destroyAll']);
+    Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
+
     Route::apiResource('reviews', ReviewsController::class)->only(['store', 'update', 'destroy']);
 
     Route::get('/bookings', [BookingController::class, 'index']);
@@ -75,11 +80,6 @@ Route::middleware('auth:patient')->group(function () {
     Route::post('/bookings/{booking}/checkout', BookingCheckoutController::class)->name('payments.checkout');
     Route::get('/payments/{payment}', PaymentController::class)->name('payments.show');
     Route::put('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/search-history', [SearchHistoryController::class, 'index']);
-    Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
 });
 
 Route::post('/webhooks/paymob', PaymobWebhookController::class)
@@ -99,11 +99,11 @@ Route::post('/doctor/bookings/{booking}/no-show-reports', StoreBookingNoShowRepo
 
 Route::get('/doctor/dashboard', DoctorDashboardController::class)
     ->middleware(['auth:sanctum', 'role:doctor'])
-    ->name('doctor.dashboard');
+    ->name('api.doctor.dashboard');
 
 Route::get('/doctor/dashboard/payments', DoctorPaymentIndexController::class)
     ->middleware(['auth:sanctum', 'role:doctor'])
-    ->name('doctor.dashboard.payments');
+    ->name('api.doctor.dashboard.payments');
 
 Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
     return $request->user();

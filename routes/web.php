@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PatientFavoriteDoctorsController;
+use App\Http\Controllers\Admin\PatientSearchHistoryController;
 use App\Http\Controllers\Doctor\ConversationController;
+use App\Http\Controllers\Doctor\DashboardController as DoctorDashboardController;
 use App\Http\Controllers\Web\AdminNoShowReportController;
 use App\Http\Controllers\Web\AdminPaymentDashboardController;
 use App\Http\Controllers\Web\AdminPaymentSettingsController;
@@ -65,6 +69,25 @@ Route::middleware('auth')->group(function (): void {
         ->name('web.doctor.no-show-reports.store');
 });
 
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function (): void {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/bookings', [DashboardController::class, 'bookings'])->name('bookings');
+    Route::get('/doctors', [DashboardController::class, 'doctors'])->name('doctors');
+    Route::get('/patients', [DashboardController::class, 'patients'])->name('patients');
+    Route::get('/specialties', [DashboardController::class, 'specialties'])->name('specialties');
+    Route::get('/clinics', [DashboardController::class, 'clinics'])->name('clinics');
+    Route::get('/appointments', [DashboardController::class, 'appointments'])->name('appointments');
+    Route::get('/reports', [DashboardController::class, 'reports'])->name('reports');
+    Route::get('/users', [DashboardController::class, 'users'])->name('users');
+    Route::get('/settings', [DashboardController::class, 'settings'])->name('settings');
+
+    Route::get('/patient-favorites', [PatientFavoriteDoctorsController::class, 'index'])->name('patient-favorites');
+    Route::get('/patient-favorites/{patient}', [PatientFavoriteDoctorsController::class, 'show'])->name('patient-favorites.show');
+
+    Route::get('/search-history', [PatientSearchHistoryController::class, 'index'])->name('search-history');
+    Route::get('/search-history/{patient}', [PatientSearchHistoryController::class, 'show'])->name('search-history.show');
+});
+
 Route::middleware(['auth', 'role:doctor'])
     ->prefix('doctor')
     ->name('doctor.')
@@ -75,4 +98,11 @@ Route::middleware(['auth', 'role:doctor'])
         Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
         Route::delete('/conversations/{conversation}/messages/{message}', [ConversationController::class, 'deleteMessage'])
             ->name('conversations.messages.destroy');
+
+        Route::get('/dashboard', [DoctorDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/bookings', [DoctorDashboardController::class, 'bookings'])->name('bookings');
+        Route::get('/schedule', [DoctorDashboardController::class, 'schedule'])->name('schedule');
+        Route::get('/patients', [DoctorDashboardController::class, 'patients'])->name('patients');
+        Route::get('/reviews', [DoctorDashboardController::class, 'reviews'])->name('reviews');
+        Route::get('/profile', [DoctorDashboardController::class, 'profile'])->name('profile');
     });

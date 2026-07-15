@@ -75,4 +75,20 @@ class Patient extends Authenticatable
     {
         return $this->hasMany(Payment::class);
     }
+
+    /**
+     * Doctors the patient marked as favorite.
+     */
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class, 'user_id');
+    }
+
+    /**
+     * Search queries recorded by the patient.
+     */
+    public function searchHistories(): HasMany
+    {
+        return $this->hasMany(SearchHistory::class, 'user_id');
+    }
 }
