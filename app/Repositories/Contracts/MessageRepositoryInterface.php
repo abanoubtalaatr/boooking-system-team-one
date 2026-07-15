@@ -4,6 +4,7 @@ namespace App\Repositories\Contracts;
 
 use App\Models\Message;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Models\Conversation;
 
 interface MessageRepositoryInterface
 {

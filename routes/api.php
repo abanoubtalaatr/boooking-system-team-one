@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ReviewsController;
 use App\Http\Controllers\Api\SearchHistoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminConversationController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -81,3 +82,20 @@ require __DIR__.'/admin_doctor.php';
 if (file_exists(__DIR__.'/api_auth_additions.php')) {
     require __DIR__.'/api_auth_additions.php';
 }
+
+
+/**** admin show doctor conversions  */
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get(
+        '/doctors/{doctor}/conversations',
+        [AdminConversationController::class, 'index']
+    )->name('doctors.conversations');
+
+    Route::get(
+        '/conversations/{conversation}',
+        [AdminConversationController::class, 'show']
+    )->name('conversations.show');
+
+});

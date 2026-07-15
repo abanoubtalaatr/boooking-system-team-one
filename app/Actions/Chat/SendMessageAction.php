@@ -2,55 +2,45 @@
 
 namespace App\Actions\Chat;
 
-use App\Enums\MessageType;
 use App\Events\MessageSent;
 use App\Models\Conversation;
 use App\Models\Message;
-use App\Notifications\DoctorMessageNotification;
-use App\Notifications\PatientMessageNotification;
-use App\Repositories\Contracts\ConversationRepositoryInterface;
+//use App\Notifications\ChatMessageReceived;
 use App\Repositories\Contracts\MessageRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\DB;
 
 class SendMessageAction
 {
     public function __construct(
-        private readonly MessageRepositoryInterface $messages,
-        private readonly ConversationRepositoryInterface $conversations,
-    ) {
-    }
+        private MessageRepositoryInterface $messages,
+    ) {}
 
-    public function handle(Conversation $conversation, string $senderId, array $data, ?UploadedFile $file = null): Message
+    public function handle(Conversation $conversation, Model $sender, array $data): Message
     {
-        $message = DB::transaction(function () use ($conversation, $senderId, $data, $file) {
-            $message = $this->messages->create([
-                "conversation_id" => $conversation->id,
-                "sender_id" => $senderId,
-                "type" => $data["type"],
-                "content" => $data["content"] ?? null,
-            ]);
+        $message = $this->messages->create([
+            'conversation_id' => $conversation->id,
+            'sender_id' => $sender->id,
+            'sender_type' => get_class($sender),
+            'type' => $data['type'],
+            'body' => $data['body'] ?? null,
+        ]);
 
-            $type = MessageType::from($data["type"]);
+        if (isset($data['attachment']) && $data['attachment'] instanceof UploadedFile) {
+            $message->addMedia($data['attachment'])->toMediaCollection('attachment');
+        }
 
-            if ($type !== MessageType::Text && $file) {
-                $message->addMedia($file)->toMediaCollection($type->value);
-            }
+        $conversation->update(['last_message_at' => now()]);
 
-            $this->conversations->touchLastMessageAt($conversation);
-
-            return $message;
-        });
+        $message->load('media');
 
         broadcast(new MessageSent($message))->toOthers();
 
-        $recipient = $conversation->otherParticipant($senderId);
+        $recipient = $sender instanceof \App\Models\Patient
+            ? $conversation->doctor
+            : $conversation->patient;
 
-        $recipient->notify(
-            $recipient->id === $conversation->doctor_id
-                ? new DoctorMessageNotification($message)
-                : new PatientMessageNotification($message)
-        );
+        //$recipient?->notify(new ChatMessageReceived($message));
 
         return $message;
     }

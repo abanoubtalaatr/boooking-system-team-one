@@ -10,32 +10,31 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Patient;
 use App\Models\User;
-use App\Repositories\Contracts\ConversationRepositoryInterface;
 use App\Repositories\Contracts\MessageRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * Single entry point controllers use for start/send/list/seen/delete.
+ * نقطة الدخول الوحيدة اللي الـ Controllers بتستخدمها لـ start/send/list/seen/delete.
  */
-// app/Services/Chat/ChatService.php
 class ChatService
 {
     public function __construct(
-        private ConversationRepositoryInterface $conversations,
         private MessageRepositoryInterface $messages,
         private SendMessageAction $sendMessage,
         private StartConversationAction $startConversation,
+        private MarkMessagesAsSeenAction $markSeen,
+        private DeleteMessageAction $deleteMessage,
     ) {}
 
     public function startOrGet(Patient $patient, User $doctor): Conversation
     {
-        return $this->startConversation->execute($patient, $doctor);
+        return $this->startConversation->handle($patient, $doctor);
     }
 
     public function send(Conversation $conversation, Model $sender, array $data): Message
     {
-        return $this->sendMessage->execute($conversation, $sender, $data);
+        return $this->sendMessage->handle($conversation, $sender, $data);
     }
 
     public function listMessages(Conversation $conversation): LengthAwarePaginator
@@ -43,8 +42,13 @@ class ChatService
         return $this->messages->paginateForConversation($conversation->id);
     }
 
-    public function markRead(Conversation $conversation, Model $reader): void
+    public function markRead(Conversation $conversation, Model $reader): int
     {
-        $this->messages->markAsRead($conversation, $reader);
+        return $this->markSeen->handle($conversation, $reader);
+    }
+
+    public function delete(Message $message): bool
+    {
+        return $this->deleteMessage->handle($message);
     }
 }

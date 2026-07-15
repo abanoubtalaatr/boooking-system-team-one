@@ -35,8 +35,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="لوحة تحكم منصة الأطباء">
     <title>{{ $title }} | منصة الأطباء</title>
-    <style>{!! file_get_contents(resource_path('css/app.css')) !!}</style>
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 <body>
@@ -91,6 +90,5 @@
         <footer class="footer"><span>© {{ date('Y') }} منصة الأطباء. جميع الحقوق محفوظة.</span><span>الخصوصية · الشروط · الدعم</span></footer>
     </div>
 </div>
-<script>{!! file_get_contents(resource_path('js/app.js')) !!}</script>
 </body>
 </html>
