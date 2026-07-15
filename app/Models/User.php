@@ -115,4 +115,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(WalletWithdrawal::class, 'reviewed_by');
     }
+
+    public function bookingNoShowReports(): HasMany
+    {
+        return $this->hasMany(BookingNoShowReport::class, 'doctor_id');
+    }
+
+    public function reviewedBookingNoShowReports(): HasMany
+    {
+        return $this->hasMany(BookingNoShowReport::class, 'reviewed_by');
+    }
 }

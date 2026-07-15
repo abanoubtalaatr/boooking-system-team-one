@@ -72,4 +72,9 @@ class Booking extends Model
     {
         return $this->hasOne(Payment::class)->latestOfMany();
     }
+
+    public function noShowReport(): HasOne
+    {
+        return $this->hasOne(BookingNoShowReport::class);
+    }
 }

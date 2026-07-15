@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Doctor\ConversationController;
+use App\Http\Controllers\Web\AdminNoShowReportController;
 use App\Http\Controllers\Web\AdminPaymentDashboardController;
 use App\Http\Controllers\Web\AdminPaymentSettingsController;
 use App\Http\Controllers\Web\AdminWalletWithdrawalController;
 use App\Http\Controllers\Web\Auth\LoginController;
+use App\Http\Controllers\Web\DoctorNoShowReportController;
 use App\Http\Controllers\Web\DoctorPaymentDashboardController;
 use App\Http\Controllers\Web\DoctorWalletController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +38,15 @@ Route::middleware('auth')->group(function (): void {
     Route::patch('/admin/withdrawals/{walletWithdrawal}/cancel', [AdminWalletWithdrawalController::class, 'cancel'])
         ->middleware('role:admin')
         ->name('web.admin.withdrawals.cancel');
+    Route::get('/admin/no-show-reports', [AdminNoShowReportController::class, 'index'])
+        ->middleware('role:admin')
+        ->name('web.admin.no-show-reports.index');
+    Route::patch('/admin/no-show-reports/{bookingNoShowReport}/approve', [AdminNoShowReportController::class, 'approve'])
+        ->middleware('role:admin')
+        ->name('web.admin.no-show-reports.approve');
+    Route::patch('/admin/no-show-reports/{bookingNoShowReport}/reject', [AdminNoShowReportController::class, 'reject'])
+        ->middleware('role:admin')
+        ->name('web.admin.no-show-reports.reject');
 
     Route::get('/doctor', DoctorPaymentDashboardController::class)
         ->middleware('role:doctor')
@@ -46,6 +57,12 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/doctor/wallet/withdrawals', [DoctorWalletController::class, 'store'])
         ->middleware(['role:doctor', 'throttle:10,1'])
         ->name('web.doctor.wallet.withdrawals.store');
+    Route::get('/doctor/no-show-reports', [DoctorNoShowReportController::class, 'index'])
+        ->middleware('role:doctor')
+        ->name('web.doctor.no-show-reports.index');
+    Route::post('/doctor/bookings/{booking}/no-show-reports', [DoctorNoShowReportController::class, 'store'])
+        ->middleware(['role:doctor', 'throttle:10,1'])
+        ->name('web.doctor.no-show-reports.store');
 });
 
 Route::middleware(['auth', 'role:doctor'])

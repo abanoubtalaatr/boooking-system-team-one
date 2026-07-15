@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Booking\BookingController;
 use App\Http\Controllers\Api\Doctor\DoctorDashboardController;
 use App\Http\Controllers\Api\Doctor\DoctorPaymentIndexController;
 use App\Http\Controllers\Api\Doctor\MarkCashCollectedController;
+use App\Http\Controllers\Api\Doctor\StoreBookingNoShowReportController;
 use App\Http\Controllers\Api\Faq\FaqController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\HomeController;
@@ -91,6 +92,10 @@ Route::get('/payments/paymob/return', PaymobReturnController::class)
 Route::post('/doctor/bookings/{booking}/cash-collected', MarkCashCollectedController::class)
     ->middleware(['auth:sanctum', 'role:doctor'])
     ->name('doctor.payments.cash_collected');
+
+Route::post('/doctor/bookings/{booking}/no-show-reports', StoreBookingNoShowReportController::class)
+    ->middleware(['auth:sanctum', 'role:doctor'])
+    ->name('doctor.no-show-reports.store');
 
 Route::get('/doctor/dashboard', DoctorDashboardController::class)
     ->middleware(['auth:sanctum', 'role:doctor'])

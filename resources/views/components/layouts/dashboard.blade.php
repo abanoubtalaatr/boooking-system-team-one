@@ -7,7 +7,7 @@
         ? [
             ['الرئيسية والمدفوعات', 'home', $dashboardRoute, request()->routeIs('web.doctor.dashboard')],
             ['المحفظة والسحب', 'report', route('web.doctor.wallet.index'), request()->routeIs('web.doctor.wallet.*')],
-            ['حجوزاتي', 'calendar', '#', false],
+            ['بلاغات عدم الحضور', 'calendar', route('web.doctor.no-show-reports.index'), request()->routeIs('web.doctor.no-show-reports.*')],
             ['جدول المواعيد', 'clock', '#', false],
             ['المرضى', 'users', '#', false],
             ['الاستشارات', 'consultation', route('doctor.conversations'), request()->routeIs('doctor.conversations*')],
@@ -19,6 +19,7 @@
             ['الحجوزات', 'calendar', '#', false], ['الأطباء', 'doctor', '#', false], ['المرضى', 'users', '#', false],
             ['التخصصات', 'specialty', '#', false], ['العيادات', 'clinic', '#', false], ['المواعيد', 'clock', '#', false],
             ['التقارير', 'report', '#', false], ['المستخدمون والصلاحيات', 'shield', '#', false],
+            ['بلاغات عدم الحضور', 'calendar', route('web.admin.no-show-reports.index'), request()->routeIs('web.admin.no-show-reports.*')],
             ['طلبات السحب', 'report', route('web.admin.withdrawals.index'), request()->routeIs('web.admin.withdrawals.*')],
             ['إعدادات العمولات', 'settings', route('web.admin.payment-settings.edit'), request()->routeIs('web.admin.payment-settings.*')],
         ];

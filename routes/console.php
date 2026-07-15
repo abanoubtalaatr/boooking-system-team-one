@@ -29,7 +29,7 @@ Schedule::job(new RetryPendingRefunds)
     ->onOneServer();
 
 Schedule::job(new CompletePendingBookings)
-    ->dailyAt('00:05')
+    ->everyFifteenMinutes()
     ->withoutOverlapping()
     ->onOneServer();
 

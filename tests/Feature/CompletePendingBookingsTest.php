@@ -29,6 +29,12 @@ it('completes only ended pending bookings and notifies their doctor', function (
         'start_time' => '13:00:00',
         'end_time' => '14:00:00',
     ]);
+    $withinGraceSlot = AvailabilitySlot::factory()->create([
+        'doctor_id' => $doctor->id,
+        'day' => today(),
+        'start_time' => '11:00:00',
+        'end_time' => '11:30:00',
+    ]);
     $endedPendingBooking = Booking::factory()->create([
         'patient_id' => $patient->id,
         'doctor_id' => $doctor->id,
@@ -43,6 +49,14 @@ it('completes only ended pending bookings and notifies their doctor', function (
         'availability_slot_id' => $futureSlot->id,
         'booking_date' => today(),
         'booking_time' => '13:00:00',
+        'status' => BookingStatus::Pending,
+    ]);
+    $withinGraceBooking = Booking::factory()->create([
+        'patient_id' => $patient->id,
+        'doctor_id' => $doctor->id,
+        'availability_slot_id' => $withinGraceSlot->id,
+        'booking_date' => today(),
+        'booking_time' => '11:00:00',
         'status' => BookingStatus::Pending,
     ]);
     $endedConfirmedBooking = Booking::factory()->create([
@@ -60,6 +74,7 @@ it('completes only ended pending bookings and notifies their doctor', function (
 
     expect($endedPendingBooking->fresh()->status)->toBe(BookingStatus::Completed)
         ->and($futurePendingBooking->fresh()->status)->toBe(BookingStatus::Pending)
+        ->and($withinGraceBooking->fresh()->status)->toBe(BookingStatus::Pending)
         ->and($endedConfirmedBooking->fresh()->status)->toBe(BookingStatus::Confirmed);
 
     Notification::assertSentTo(
@@ -74,7 +89,7 @@ it('completes only ended pending bookings and notifies their doctor', function (
     Notification::assertSentToTimes($doctor, BookingCompletedNotification::class, 1);
 });
 
-it('registers the pending booking completion job as a daily schedule', function (): void {
+it('registers the pending booking completion job in the schedule', function (): void {
     Artisan::call('schedule:list');
 
     expect(Artisan::output())->toContain(CompletePendingBookings::class);

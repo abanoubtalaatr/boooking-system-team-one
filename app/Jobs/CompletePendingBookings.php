@@ -36,7 +36,7 @@ class CompletePendingBookings implements ShouldBeUnique, ShouldQueue
                     $query->whereDate('day', '<', today())
                         ->orWhere(function (Builder $query): void {
                             $query->whereDate('day', today())
-                                ->whereTime('end_time', '<=', now()->toTimeString());
+                                ->whereTime('end_time', '<=', now()->subHour()->toTimeString());
                         });
                 });
             })
@@ -62,7 +62,7 @@ class CompletePendingBookings implements ShouldBeUnique, ShouldQueue
 
             $slotEndsAt = Carbon::parse(
                 $booking->slot->day->toDateString().' '.$booking->slot->end_time,
-            );
+            )->addHour();
 
             if ($slotEndsAt->isFuture()) {
                 return;
