@@ -24,7 +24,6 @@ class ReviewRequest extends FormRequest
     {
         return [
             'user_id' => ['required', 'integer', 'exists:users,id'],
-            'patient_id' => ['required', 'integer', 'exists:patients,id'],
             'comment' => ['required', 'string'],
             'rating' => ['required', 'integer', 'between:1,5'],
         ];

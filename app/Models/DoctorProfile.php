@@ -6,11 +6,12 @@ use App\Http\Concerns\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DoctorProfile extends Model
 {
-    use HasFactory, Filterable;
+    use Filterable, HasFactory;
 
     protected $fillable = [
         'user_id', 'specialization_id', 'hospital_id',
@@ -18,17 +19,15 @@ class DoctorProfile extends Model
         'price', 'experience_years', 'is_active',
     ];
 
-    
     protected function casts(): array
     {
         return [
-            'latitude'  => 'decimal:7',
+            'latitude' => 'decimal:7',
             'longitude' => 'decimal:7',
-            'price'     => 'decimal:2',
+            'price' => 'decimal:2',
             'is_active' => 'boolean',
             'certificates' => 'array',
         ];
-
     }
 
     public function user(): BelongsTo
@@ -44,6 +43,16 @@ class DoctorProfile extends Model
     public function hospital(): BelongsTo
     {
         return $this->belongsTo(Hospital::class);
+    }
+
+    public function hospitals(): BelongsToMany
+    {
+        return $this->belongsToMany(Hospital::class, 'doctor_hospital');
+    }
+
+    public function specialties(): BelongsToMany
+    {
+        return $this->belongsToMany(Specialty::class, 'doctor_specialty');
     }
 
     public function reviews(): HasMany

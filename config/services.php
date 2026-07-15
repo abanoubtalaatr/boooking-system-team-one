@@ -44,4 +44,19 @@ return [
         'environment' => env('SMS_MASR_ENVIRONMENT', '1'),
     ],
 
+    'paymob' => [
+        'base_url' => env('PAYMOB_BASE_URL', 'https://accept.paymob.com'),
+        'api_key' => env('PAYMOB_API_KEY'),
+        'public_key' => env('PAYMOB_PUBLIC_KEY'),
+        'secret_key' => env('PAYMOB_SECRET_KEY'),
+        'hmac_secret' => env('PAYMOB_HMAC_SECRET'),
+        'card_integration_id' => env('PAYMOB_CARD_INTEGRATION_ID'),
+        'currency' => env('PAYMOB_CURRENCY', 'EGP'),
+        'notification_url' => env('PAYMOB_NOTIFICATION_URL'),
+        'redirection_url' => env('PAYMOB_REDIRECTION_URL'),
+        'checkout_url' => env('PAYMOB_CHECKOUT_URL', 'https://accept.paymob.com/unifiedcheckout/'),
+        'timeout' => (int) env('PAYMOB_TIMEOUT', 10),
+        'connect_timeout' => (int) env('PAYMOB_CONNECT_TIMEOUT', 3),
+    ],
+
 ];

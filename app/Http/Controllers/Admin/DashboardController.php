@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\Patient;
+use App\Models\AvailabilitySlot;
 use App\Models\Booking;
 use App\Models\Hospital;
+use App\Models\Patient;
 use App\Models\Specialization;
-use App\Models\Review;
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -20,15 +19,15 @@ class DashboardController extends Controller
     public function index()
     {
         $stats = [
-            'total_doctors'   => User::where('role', 'doctor')->count(),
-            'total_patients'  => Patient::count(),
-            'total_bookings'  => Booking::count(),
+            'total_doctors' => User::where('role', 'doctor')->count(),
+            'total_patients' => Patient::count(),
+            'total_bookings' => Booking::count(),
             'total_hospitals' => Hospital::count(),
-            'pending_bookings'   => Booking::where('status', 'pending')->count(),
+            'pending_bookings' => Booking::where('status', 'pending')->count(),
             'confirmed_bookings' => Booking::where('status', 'confirmed')->count(),
             'completed_bookings' => Booking::where('status', 'completed')->count(),
             'cancelled_bookings' => Booking::where('status', 'cancelled')->count(),
-            'total_revenue'   => Booking::where('payment_status', 'paid')->sum('price'),
+            'total_revenue' => Booking::where('payment_status', 'paid')->sum('price'),
         ];
 
         // Bookings over the last 7 days (for a chart)
@@ -132,7 +131,7 @@ class DashboardController extends Controller
      */
     public function appointments(Request $request)
     {
-        $slots = \App\Models\AvailabilitySlot::with('doctor.doctorProfile')
+        $slots = AvailabilitySlot::with('doctor.doctorProfile')
             ->when($request->date, fn ($q) => $q->whereDate('day', $request->date))
             ->when($request->doctor_id, fn ($q) => $q->where('doctor_id', $request->doctor_id))
             ->orderBy('day')
@@ -148,7 +147,7 @@ class DashboardController extends Controller
     public function reports(Request $request)
     {
         $from = $request->date('from', now()->subMonth());
-        $to   = $request->date('to', now());
+        $to = $request->date('to', now());
 
         $revenueByMonth = Booking::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(price) as total')
             ->where('payment_status', 'paid')

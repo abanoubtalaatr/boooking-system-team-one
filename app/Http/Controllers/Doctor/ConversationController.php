@@ -3,23 +3,28 @@
 namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Conversation;
-use App\Models\Patient;
 use App\Models\Message;
+use App\Models\Patient;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+
 class ConversationController extends Controller
 {
-    /**
-     * Chat / Conversations with patients
-     */
-    public function index()
+    public function index(Request $request): View
     {
-        $doctor = Auth::user();
+        $doctor = $request->user();
 
-        $conversations = Conversation::with(['patient', 'messages' => fn ($q) => $q->latest()->limit(1)])
-            ->where('doctor_id', $doctor->id)
+        $conversations = Conversation::query()
+            ->with(['patient', 'latestMessage'])
+            ->withCount([
+                'messages as unread_messages_count' => fn ($query) => $query
+                    ->where('sender_type', Patient::class)
+                    ->whereNull('read_at'),
+            ])
+            ->whereBelongsTo($doctor, 'doctor')
             ->where('status', 'active')
             ->orderByDesc('last_message_at')
             ->paginate(15);
@@ -27,14 +32,12 @@ class ConversationController extends Controller
         return view('doctor.conversations.index', compact('conversations'));
     }
 
-    public function show(Conversation $conversation)
+    public function show(Request $request, Conversation $conversation): View
     {
-        $doctor = Auth::user();
+        abort_unless((int) $conversation->doctor_id === (int) $request->user()->id, 403);
 
-        
         $conversation->load(['patient', 'messages' => fn ($q) => $q->oldest()]);
 
-        // اعتبر رسائل المريض مقروءة
         $conversation->messages()
             ->where('sender_type', Patient::class)
             ->whereNull('read_at')
@@ -43,21 +46,22 @@ class ConversationController extends Controller
         return view('doctor.conversations.show', compact('conversation'));
     }
 
-    public function sendMessage(Request $request, Conversation $conversation)
+    public function sendMessage(Request $request, Conversation $conversation): RedirectResponse
     {
-        $doctor = Auth::user();
+        $doctor = $request->user();
 
-        abort_unless($conversation->doctor_id === $doctor->id, 403);
+        abort_unless((int) $conversation->doctor_id === (int) $doctor->id, 403);
+        abort_unless($conversation->status === 'active', 409);
 
         $validated = $request->validate([
-            'body' => 'required|string|max:2000',
+            'body' => ['required', 'string', 'max:2000'],
         ]);
 
         $conversation->messages()->create([
-            'sender_type' => \App\Models\User::class,
-            'sender_id'   => $doctor->id,
-            'type'        => 'text',
-            'body'        => $validated['body'],
+            'sender_type' => User::class,
+            'sender_id' => $doctor->id,
+            'type' => 'text',
+            'body' => $validated['body'],
         ]);
 
         $conversation->update(['last_message_at' => now()]);
@@ -65,30 +69,22 @@ class ConversationController extends Controller
         return back();
     }
 
-    public function deleteMessage(Conversation $conversation, Message $message)
+    public function deleteMessage(Request $request, Conversation $conversation, Message $message): RedirectResponse
     {
-        $doctor = Auth::user();
+        $doctor = $request->user();
 
-        // تأكد إن المحادثة دي بتاعة الدكتور المسجل دخوله
-        abort_unless($conversation->doctor_id === $doctor->id, 403);
+        abort_unless((int) $conversation->doctor_id === (int) $doctor->id, 403);
 
-        // تأكد إن الرسالة دي فعلاً تابعة للمحادثة دي
-        abort_unless($message->conversation_id === $conversation->id, 404);
-
-        // الدكتور يقدر يمسح بس رسايله هو، مش رسايل المريض
         abort_unless(
-            $message->sender_type === User::class && $message->sender_id === $doctor->id,
+            $message->sender_type === User::class && (int) $message->sender_id === (int) $doctor->id,
             403,
             'لا يمكنك حذف رسائل المريض'
         );
 
-        // حدّث آخر رسالة في المحادثة بعد الحذف
-        $lastMessage = $conversation->messages()->latest()->first();
-        $conversation->update([
-            'last_message_at' => $lastMessage?->created_at,
-        ]);
-
         $message->delete();
+        $conversation->update([
+            'last_message_at' => $conversation->messages()->reorder()->latest()->value('created_at'),
+        ]);
 
         return back()->with('success', 'تم حذف الرسالة');
     }

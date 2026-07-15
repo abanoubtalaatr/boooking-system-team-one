@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -22,7 +23,7 @@ class LoginController extends Controller
     {
 
         $credentials = $request->validate([
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
@@ -44,9 +45,9 @@ class LoginController extends Controller
     {
 
         return match ($user->role->value) {
-            'admin'  => redirect()->route('admin.dashboard'),
+            'admin' => redirect()->route('admin.dashboard'),
             'doctor' => redirect()->route('doctor.dashboard'),
-            default  => redirect()->route('login'),
+            default => redirect()->route('login'),
         };
     }
 
