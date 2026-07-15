@@ -6,9 +6,14 @@
     "guidelines": true,
     "mcp": true,
     "nightwatch": false,
+    "packages": [
+        "spatie/laravel-medialibrary"
+    ],
     "sail": false,
     "skills": [
         "laravel-best-practices",
-        "pest-testing"
+        "pest-testing",
+        "tailwindcss-development",
+        "medialibrary-development"
     ]
 }

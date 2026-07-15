@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Patient;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +17,6 @@ class Conversation extends Model
     protected $casts = [
         'last_message_at' => 'datetime',
     ];
-    
 
     public function patient(): BelongsTo
     {

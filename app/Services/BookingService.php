@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Actions\Booking\CancelBookingAction;
 use App\Actions\Booking\CreateBookingAction;
 use App\Actions\Booking\GetBookingsAction;
+use App\Actions\Booking\RescheduleBookingAction;
 use App\Models\Booking;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Validation\ValidationException;
@@ -15,6 +16,7 @@ class BookingService
         protected CreateBookingAction $createBookingAction,
         protected CancelBookingAction $cancelBookingAction,
         protected GetBookingsAction $getBookingsAction,
+        protected RescheduleBookingAction $rescheduleBookingAction,
     ) {}
 
     public function listForPatient(int $patientId, ?string $status = null): LengthAwarePaginator
@@ -47,5 +49,15 @@ class BookingService
         }
 
         return ($this->cancelBookingAction)($booking);
+    }
+
+    public function reschedule(Booking $booking, int $patientId, array $data): Booking
+    {
+
+        return ($this->rescheduleBookingAction)(
+            $booking,
+            $patientId,
+            $data
+        );
     }
 }

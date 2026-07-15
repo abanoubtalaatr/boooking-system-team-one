@@ -24,7 +24,6 @@ class ReviewUpdateRequest extends FormRequest
     {
         return [
             'user_id' => ['sometimes', 'integer', 'exists:users,id'],
-            'patient_id' => ['sometimes', 'integer', 'exists:patients,id'],
             'comment' => ['sometimes', 'string'],
             'rating' => ['sometimes', 'integer', 'between:1,5'],
         ];
