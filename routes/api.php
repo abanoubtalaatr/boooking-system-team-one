@@ -48,12 +48,15 @@ Route::prefix('patient')
             ->name('logout');
     });
 
-Route::get('/favorites', [FavoriteController::class, 'index']);
-Route::post('/favorites', [FavoriteController::class, 'store']);
-Route::delete('/favorites', [FavoriteController::class, 'destroy']);
+Route::middleware('auth:patient')->group(function () {
+    Route::get('/favorites', [FavoriteController::class, 'index']);
+    Route::post('/favorites', [FavoriteController::class, 'store']);
+    Route::delete('/favorites', [FavoriteController::class, 'destroy']);
 
-Route::get('/search-history', [SearchHistoryController::class, 'index']);
-Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
+    Route::get('/search-history', [SearchHistoryController::class, 'index']);
+    Route::delete('/search-history', [SearchHistoryController::class, 'destroyAll']);
+    Route::delete('/search-history/{searchHistory}', [SearchHistoryController::class, 'destroy']);
+});
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/faqs', [FaqController::class, 'index']);
