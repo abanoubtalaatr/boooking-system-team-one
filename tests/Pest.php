@@ -1,6 +1,13 @@
 <?php
 
+use App\Models\AvailabilitySlot;
+use App\Models\DoctorProfile;
+use App\Models\Hospital;
+use App\Models\Patient;
+use App\Models\Specialization;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 /*
@@ -47,4 +54,39 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+function createBookableSlot(): array
+{
+    $doctor = User::factory()->create(['role' => 'doctor']);
+    $specialization = Specialization::factory()->create(['name' => fake()->unique()->jobTitle()]);
+    $hospital = Hospital::factory()->create();
+    DoctorProfile::factory()->create([
+        'user_id' => $doctor->id,
+        'specialization_id' => $specialization->id,
+        'hospital_id' => $hospital->id,
+        'price' => 500,
+    ]);
+    $slot = AvailabilitySlot::factory()->create([
+        'doctor_id' => $doctor->id,
+        'day' => now()->addDay()->toDateString(),
+        'is_booked' => false,
+    ]);
+
+    return [$doctor, $slot];
+}
+
+function createBookingThroughApi($test, Patient $patient, User $doctor, AvailabilitySlot $slot, string $key = 'booking-key'): int
+{
+    Sanctum::actingAs($patient, ['*'], 'patient');
+
+    return (int) $test->withHeader('Idempotency-Key', $key)
+        ->postJson('/api/bookings', [
+            'doctor_id' => $doctor->id,
+            'availability_slot_id' => $slot->id,
+            'consultation_type' => 'clinic',
+        ])
+        ->assertCreated()
+        ->assertJsonPath('data.status', 'pending_payment')
+        ->json('data.id');
 }

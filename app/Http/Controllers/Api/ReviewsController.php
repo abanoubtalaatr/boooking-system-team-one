@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Review;
 use App\Http\Requests\ReviewRequest;
 use App\Http\Requests\ReviewUpdateRequest;
-use App\Models\Patient;
-use App\Models\User;
+use App\Models\Review;
+use Illuminate\Http\Request;
 
 class ReviewsController extends Controller
 {
@@ -19,10 +17,11 @@ class ReviewsController extends Controller
     {
         $user = auth()->user();
         $reviews = Review::all();
+
         return response()->json([
             'status' => true,
             'message' => 'Reviews retrieved successfully',
-            'data' => $reviews
+            'data' => $reviews,
         ]);
     }
 
@@ -31,74 +30,80 @@ class ReviewsController extends Controller
      */
     public function store(ReviewRequest $request)
     {
-        $review = Review::create($request->validated());
+        $review = Review::create([
+            ...$request->validated(),
+            'patient_id' => $request->user('patient')->id,
+        ]);
+
         return response()->json([
             'status' => true,
             'message' => 'Review created successfully',
-            'data' => $review
+            'data' => $review,
         ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-
     public function show(string $id)
     {
         $review = Review::findOrFail($id);
+
         return response()->json([
             'status' => true,
             'message' => 'Review retrieved successfully',
-            'data' => $review
+            'data' => $review,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ReviewUpdateRequest $request, string $id)
+    public function update(ReviewUpdateRequest $request, Review $review)
     {
-        $review = Review::findOrFail($id);
+        abort_unless((int) $review->patient_id === (int) $request->user('patient')->id, 403);
         $review->update($request->validated());
+
         return response()->json([
             'status' => true,
             'message' => 'Review updated successfully',
-            'data' => $review
+            'data' => $review,
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, Review $review)
     {
-        $review = Review::findOrFail($id);
+        abort_unless((int) $review->patient_id === (int) $request->user('patient')->id, 403);
         $review->delete();
+
         return response()->json([
             'status' => true,
-            'message' => 'Review deleted successfully'
+            'message' => 'Review deleted successfully',
         ]);
     }
 
     public function getReviewsByPatient($patientId)
     {
         $reviews = Review::where('patient_id', $patientId)->get();
+
         return response()->json([
             'status' => true,
             'message' => 'Reviews retrieved successfully',
-            'data' => $reviews
+            'data' => $reviews,
         ]);
     }
 
     public function getReviewsUser($userId)
     {
         $reviews = Review::where('user_id', $userId)->get();
+
         return response()->json([
             'status' => true,
             'message' => 'Reviews retrieved successfully',
-            'data' => $reviews
+            'data' => $reviews,
         ]);
     }
-
-
 }

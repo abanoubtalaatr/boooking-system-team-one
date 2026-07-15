@@ -8,6 +8,8 @@ use App\Enums\PaymentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Patient booking API + doctor accept/reject flows.
@@ -27,6 +29,8 @@ class Booking extends Model
         'status',
         'price',
         'payment_status',
+        'creation_idempotency_key',
+        'hold_expires_at',
     ];
 
     protected $casts = [
@@ -36,6 +40,7 @@ class Booking extends Model
         'price' => 'decimal:2',
         'payment_status' => PaymentStatus::class,
         'consultation_type' => ConsultationType::class,
+        'hold_expires_at' => 'datetime',
     ];
 
     public function patient(): BelongsTo
@@ -56,5 +61,20 @@ class Booking extends Model
     public function slot(): BelongsTo
     {
         return $this->belongsTo(AvailabilitySlot::class, 'availability_slot_id');
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function latestPayment(): HasOne
+    {
+        return $this->hasOne(Payment::class)->latestOfMany();
+    }
+
+    public function noShowReport(): HasOne
+    {
+        return $this->hasOne(BookingNoShowReport::class);
     }
 }

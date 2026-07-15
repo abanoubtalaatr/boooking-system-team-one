@@ -18,6 +18,7 @@ class BookingResource extends JsonResource
             'price' => $this->price,
             'status' => $this->status,
             'payment_status' => $this->payment_status,
+            'hold_expires_at' => $this->hold_expires_at,
             'doctor' => [
                 'id' => $this->doctor?->id,
                 'name' => $this->doctor?->name,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Home;
+namespace App\Actions\Specialization;
 
 use App\Models\Specialization;
 use Illuminate\Database\Eloquent\Collection;
