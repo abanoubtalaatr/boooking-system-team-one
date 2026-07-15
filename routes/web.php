@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Doctor\ConversationController;
 use App\Http\Controllers\Doctor\DashboardController as DoctorDashboardController;
+use App\Http\Controllers\Admin\PatientFavoriteDoctorsController;
 
 // صفحات تسجيل الدخول
 Route::view('/', 'auth.login')->name('login');
@@ -34,6 +35,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/reports', [DashboardController::class, 'reports'])->name('reports');
     Route::get('/users', [DashboardController::class, 'users'])->name('users');
     Route::get('/settings', [DashboardController::class, 'settings'])->name('settings');
+
+    // Patient Favorites
+    Route::get('/patient-favorites', [PatientFavoriteDoctorsController::class, 'index'])->name('patient-favorites');
+    Route::get('/patient-favorites/{patient}', [PatientFavoriteDoctorsController::class, 'show'])->name('patient-favorites.show');
+  
 });
 
 // مجموعة الطبيب
