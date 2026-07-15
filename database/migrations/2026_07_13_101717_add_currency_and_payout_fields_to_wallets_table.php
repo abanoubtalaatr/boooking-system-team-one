@@ -1,0 +1,45 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('wallets', function (Blueprint $table) {
+            $table->string('currency', 3)->default('EGP')->after('doctor_id');
+            $table->boolean('payout_blocked')->default(false)->after('balance_cents');
+        });
+
+        Schema::table('wallets', function (Blueprint $table) {
+            $table->unique(['doctor_id', 'currency']);
+        });
+
+        Schema::table('wallets', function (Blueprint $table) {
+            $table->dropUnique(['doctor_id']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('wallets', function (Blueprint $table) {
+            $table->unique('doctor_id');
+        });
+
+        Schema::table('wallets', function (Blueprint $table) {
+            $table->dropUnique(['doctor_id', 'currency']);
+        });
+
+        Schema::table('wallets', function (Blueprint $table) {
+            $table->dropColumn(['currency', 'payout_blocked']);
+        });
+    }
+};

@@ -4,7 +4,8 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+
 class CreateFavoriteRequest extends FormRequest
 {
     /**
@@ -23,7 +24,12 @@ class CreateFavoriteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'doctor_id' => 'required|exists:users,id|unique:favorites,doctor_id,user_id,' . Auth::id(),
+            'doctor_id' => [
+                'required',
+                'integer',
+                'exists:users,id',
+                Rule::unique('favorites', 'doctor_id')->where('user_id', $this->user('patient')->id),
+            ],
         ];
     }
 

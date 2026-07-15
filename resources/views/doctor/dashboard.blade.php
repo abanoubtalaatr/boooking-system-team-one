@@ -1,18 +1,44 @@
-<x-layouts.dashboard title="لوحة الطبيب" role="doctor">
-    <div class="breadcrumb">الرئيسية / لوحة الطبيب</div>
-    <div class="page-head"><div><h1 class="page-title">صباح الخير، د. أحمد 👋</h1><p class="page-description">لديك 8 مواعيد مؤكدة خلال اليوم.</p></div><button class="primary-button" type="button">عرض جدول اليوم</button></div>
-    <section class="stats" aria-label="الإحصائيات">
-        @foreach ([['مواعيد اليوم','8','موعدان مكتملان','calendar'],['المرضى هذا الشهر','94','+11.2% عن السابق','users'],['ساعات العمل','32','هذا الأسبوع','clock'],['متوسط التقييم','4.9','من 286 تقييماً','star']] as [$label,$value,$change,$icon])
-            <article class="stat"><div class="stat-top"><div><span class="stat-label">{{ $label }}</span><div class="stat-value">{{ $value }}</div><span class="stat-change">{{ $change }}</span></div><span class="stat-icon"><x-ui-icon :name="$icon" /></span></div></article>
+<x-layouts.dashboard title="لوحة مدفوعات الطبيب" role="doctor">
+    <div class="breadcrumb">الرئيسية / مدفوعاتي</div>
+    <div class="page-head">
+        <div>
+            <h1 class="page-title">مرحباً، د. {{ $dashboard['doctor']->name }}</h1>
+            <p class="page-description">ملخص حجوزاتك ومحفظتك وكل عمليات الدفع الخاصة بك فقط.</p>
+        </div>
+        <span class="commission-chip">فيزا {{ $dashboard['current_commission']['card']['percentage'] }}% · كاش {{ $dashboard['current_commission']['cash']['percentage'] }}%</span>
+    </div>
+
+    <section class="stats payment-stats" aria-label="ملخص مدفوعات الطبيب">
+        @foreach ([
+            ['رصيد المحفظة', number_format($dashboard['wallet']['balance_cents'] / 100, 2).' '.$dashboard['wallet']['currency'], $dashboard['wallet']['can_withdraw'] ? 'متاح للسحب' : 'غير متاح للسحب حالياً', 'report'],
+            ['إجمالي المحصل', number_format($dashboard['payments']['gross_revenue_cents'] / 100, 2).' EGP', $dashboard['payments']['completed_transactions'].' عمليات مكتملة', 'calendar'],
+            ['عمولة المنصة', number_format($dashboard['payments']['platform_fees_cents'] / 100, 2).' EGP', 'من عملياتك المكتملة', 'shield'],
+            ['صافي مستحقاتك', number_format($dashboard['payments']['doctor_net_revenue_cents'] / 100, 2).' EGP', 'بعد خصم العمولة', 'doctor'],
+        ] as [$label, $value, $hint, $icon])
+            <article class="stat">
+                <div class="stat-top">
+                    <div><span class="stat-label">{{ $label }}</span><div class="stat-value stat-value--money">{{ $value }}</div><span class="stat-change">{{ $hint }}</span></div>
+                    <span class="stat-icon"><x-ui-icon :name="$icon" /></span>
+                </div>
+            </article>
         @endforeach
     </section>
-    <section class="dashboard-grid">
-        <article class="panel"><div class="panel-head"><h2 class="panel-title">نشاط الحجوزات</h2><span class="field-hint">آخر 7 أيام</span></div><div class="chart" aria-label="رسم تجريبي للنشاط">@foreach ([38,57,49,74,62,86,70] as $height)<div class="bar bar-height-{{ $height }}"><span>{{ ['س','ح','ن','ث','ر','خ','ج'][$loop->index] }}</span></div>@endforeach</div></article>
-        <article class="panel">
-            <div class="panel-head">
-                <h2 class="panel-title">المواعيد القادمة</h2>
-                <a class="auth-link" href="#">الجدول الكامل</a>
-            </div>
-            @foreach ([['09:00','سارة محمود','كشف جديد'],['10:30','محمود أحمد','متابعة'],['12:00','ليلى حسن','كشف جديد'],['02:30','خالد سعيد','متابعة']] as [$time,$patient,$type])<div class="schedule-item"><span class="schedule-time">{{ $time }}</span><span class="schedule-copy"><strong>{{ $patient }}</strong><small>{{ $type }}</small></span><span class="status">مؤكد</span></div>@endforeach</article>
+
+    <section class="payment-breakdown" aria-label="تفاصيل حجوزات الطبيب">
+        <span><strong>{{ number_format($dashboard['payments']['card_net_revenue_cents'] / 100, 2) }} EGP</strong> صافي الفيزا</span>
+        <span><strong>{{ number_format($dashboard['payments']['cash_gross_collected_cents'] / 100, 2) }} EGP</strong> كاش محصل</span>
+        <span><strong>{{ number_format($dashboard['payments']['pending_card_cents'] / 100, 2) }} EGP</strong> فيزا معلقة</span>
+        <span><strong>{{ number_format($dashboard['bookings']['confirmed']) }}</strong> حجوزات مؤكدة</span>
+        <span><strong>{{ number_format($dashboard['payments']['failed_transactions']) }}</strong> عمليات فاشلة</span>
+    </section>
+
+    <section class="panel payment-panel">
+        <div class="panel-head payment-panel-head">
+            <div><h2 class="panel-title">مدفوعاتي</h2><p>هذه القائمة مقيدة تلقائياً بحسابك ولا تعرض بيانات أي طبيب آخر.</p></div>
+            <span class="results-count">{{ number_format($payments->total()) }} نتيجة</span>
+        </div>
+
+        <x-payment-dashboard.filters :action="route('web.doctor.dashboard')" />
+        <x-payment-dashboard.table :payments="$payments" />
     </section>
 </x-layouts.dashboard>

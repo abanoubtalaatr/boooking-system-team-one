@@ -10,7 +10,8 @@ use Illuminate\Validation\ValidationException;
 
 class RescheduleBookingAction
 {
-    public function __invoke(Booking $booking, int $patientId, array $data): Booking {
+    public function __invoke(Booking $booking, int $patientId, array $data): Booking
+    {
 
         return DB::transaction(function () use (
             $booking,
@@ -43,16 +44,14 @@ class RescheduleBookingAction
             if ($newSlot->doctor_id !== $booking->doctor_id) {
 
                 throw ValidationException::withMessages([
-                    'availability_slot_id' =>
-                        'This slot does not belong to this doctor.',
+                    'availability_slot_id' => 'This slot does not belong to this doctor.',
                 ]);
             }
 
             if ($newSlot->is_booked) {
 
                 throw ValidationException::withMessages([
-                    'availability_slot_id' =>
-                        'This slot is already booked.',
+                    'availability_slot_id' => 'This slot is already booked.',
                 ]);
             }
 

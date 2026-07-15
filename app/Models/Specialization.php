@@ -12,7 +12,7 @@ class Specialization extends Model
 
     protected $fillable = [
         'name',
-        'image'
+        'image',
     ];
 
     // protected function image(): Attribute

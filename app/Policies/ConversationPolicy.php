@@ -3,12 +3,14 @@
 namespace App\Policies;
 
 use App\Models\Conversation;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
 class ConversationPolicy
 {
-    public function view(User $user, Conversation $conversation): bool
+    public function participate(Model $user, Conversation $conversation): bool
     {
-        return $user->id === $conversation->patient_id || $user->id === $conversation->doctor_id;
+        $type = $user instanceof \App\Models\Patient ? 'patient' : 'doctor';
+
+        return $conversation->hasParticipant($type, $user->id);
     }
 }

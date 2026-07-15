@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api\Booking;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Booking\StoreBookingRequest;
 use App\Http\Requests\Booking\RescheduleBookingRequest;
+use App\Http\Requests\Booking\StoreBookingRequest;
 use App\Http\Resources\BookingResource;
 use App\Models\Booking;
 use App\Services\BookingService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -35,14 +36,14 @@ class BookingController extends Controller
         return new BookingResource($booking);
     }
 
-    public function store(StoreBookingRequest $request): BookingResource
+    public function store(StoreBookingRequest $request): JsonResponse
     {
         $booking = $this->bookingService->create(
             $request->validated(),
             (int) $request->user('patient')->id
         );
 
-        return new BookingResource($booking);
+        return (new BookingResource($booking))->response()->setStatusCode(201);
     }
 
     public function cancel(Request $request, Booking $booking): BookingResource
@@ -55,7 +56,8 @@ class BookingController extends Controller
         return new BookingResource($booking);
     }
 
-    public function reschedule(RescheduleBookingRequest $request, Booking $booking): BookingResource {
+    public function reschedule(RescheduleBookingRequest $request, Booking $booking): BookingResource
+    {
         $booking = $this->bookingService->reschedule(
             $booking, (int) $request->user('patient')->id,
             $request->validated(),

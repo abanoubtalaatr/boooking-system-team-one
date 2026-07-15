@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class SearchHistory extends Model
 {
     protected $fillable = [
@@ -12,10 +13,8 @@ class SearchHistory extends Model
         'source',
     ];
 
-    // Relationships: 
-    public function user()
+    public function patient(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Patient::class, 'user_id');
     }
-
 }

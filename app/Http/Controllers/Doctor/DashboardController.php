@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
-use App\Models\Booking;
 use App\Models\AvailabilitySlot;
+use App\Models\Booking;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -135,8 +135,6 @@ class DashboardController extends Controller
 
         return view('doctor.patients.index', compact('patients'));*/
     }
-
-    
 
     /**
      * Reviews received by this doctor

@@ -31,8 +31,6 @@ document.querySelector('[data-password-toggle]')?.addEventListener('click', (eve
     event.currentTarget.setAttribute('aria-label', input.type === 'password' ? 'Show password' : 'Hide password');
 });
 
-document.querySelector('[data-login-form]')?.addEventListener('submit', (event) => event.preventDefault());
-
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
         shell?.classList.remove('is-menu-open');

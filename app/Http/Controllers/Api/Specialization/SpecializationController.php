@@ -17,5 +17,4 @@ class SpecializationController extends Controller
             $this->service->index()
         );
     }
-
 }
