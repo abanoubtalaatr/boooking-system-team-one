@@ -14,7 +14,7 @@ class DoctorProfile extends Model
     use Filterable, HasFactory;
 
     protected $fillable = [
-        'user_id', 'specialty_id', 'hospital_id',
+        'user_id', 'specialization_id', 'hospital_id',
         'latitude', 'longitude', 'bio', 'avatar',
         'price', 'experience_years', 'is_active',
     ];
@@ -40,6 +40,11 @@ class DoctorProfile extends Model
     public function hospital(): BelongsTo
     {
         return $this->belongsTo(Hospital::class);
+    }
+
+    public function hospitals(): BelongsToMany
+    {
+        return $this->belongsToMany(Hospital::class, 'doctor_hospital');
     }
 
     public function specialties(): BelongsToMany

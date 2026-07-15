@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-//use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
+// use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Message extends Model implements HasMedia
 {
@@ -16,9 +17,13 @@ class Message extends Model implements HasMedia
 
     protected $fillable = ['conversation_id', 'sender_id', 'sender_type', 'type', 'body', 'read_at'];
 
-    protected $casts = [
-        'read_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'read_at' => 'datetime',
+        ];
+
+    }
 
     public function conversation(): BelongsTo
     {

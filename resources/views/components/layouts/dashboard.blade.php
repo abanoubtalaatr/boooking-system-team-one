@@ -7,7 +7,12 @@
         ? [
             ['الرئيسية والمدفوعات', 'home', $dashboardRoute, request()->routeIs('web.doctor.dashboard')],
             ['المحفظة والسحب', 'report', route('web.doctor.wallet.index'), request()->routeIs('web.doctor.wallet.*')],
-            ['حجوزاتي', 'calendar', '#', false], ['جدول المواعيد', 'clock', '#', false], ['المرضى', 'users', '#', false], ['الاستشارات', 'consultation', '#', false], ['التقييمات', 'star', '#', false], ['الملف المهني', 'doctor', '#', false],
+            ['حجوزاتي', 'calendar', '#', false],
+            ['جدول المواعيد', 'clock', '#', false],
+            ['المرضى', 'users', '#', false],
+            ['الاستشارات', 'consultation', route('doctor.conversations'), request()->routeIs('doctor.conversations*')],
+            ['التقييمات', 'star', '#', false],
+            ['الملف المهني', 'doctor', '#', false],
         ]
         : [
             ['لوحة المدفوعات', 'home', $dashboardRoute, request()->routeIs('web.admin.dashboard')],

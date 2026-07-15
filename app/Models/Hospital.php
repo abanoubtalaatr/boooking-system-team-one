@@ -7,16 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Hospital extends Model
 {
-    use  HasFactory;
+    use HasFactory;
 
-    protected $fillable = ["address", "name", "latitude", "longitude"];
+    protected $fillable = ['address', 'name', 'latitude', 'longitude'];
 
-    protected $casts = [
-        "latitude" => "decimal:7",
-        "longitude" => "decimal:7",
-    ];
+    protected function casts(): array
+    {
+        return [
+            'latitude' => 'decimal:7',
+            'longitude' => 'decimal:7',
+        ];
 
-   
+    }
 
     public function doctors()
     {

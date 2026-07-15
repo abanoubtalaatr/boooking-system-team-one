@@ -1,5 +1,7 @@
 <?php
 
+use App\Console\Scheduling\LogSchedulerHeartbeat;
+use App\Jobs\CompletePendingBookings;
 use App\Jobs\ExpireBookingHolds;
 use App\Jobs\RetryPendingRefunds;
 use Illuminate\Foundation\Inspiring;
@@ -25,3 +27,12 @@ Schedule::job(new RetryPendingRefunds)
     ->everyFiveMinutes()
     ->withoutOverlapping()
     ->onOneServer();
+
+Schedule::job(new CompletePendingBookings)
+    ->dailyAt('00:05')
+    ->withoutOverlapping()
+    ->onOneServer();
+
+Schedule::call(new LogSchedulerHeartbeat)
+    ->everyMinute()
+    ->name('scheduler-heartbeat');
