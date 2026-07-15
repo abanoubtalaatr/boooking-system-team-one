@@ -10,7 +10,7 @@ class GetBookingsAction
     public function __invoke(int $patientId, ?string $status = null): LengthAwarePaginator
     {
         return Booking::query()
-            ->with(['doctor.doctorProfile.specialty', 'slot'])
+            ->with(['doctor.doctorProfile.specialization', 'slot'])
             ->where('patient_id', $patientId)
             ->when($status, fn ($query) => $query->where('status', $status))
             ->latest()

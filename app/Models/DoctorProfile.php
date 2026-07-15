@@ -18,7 +18,7 @@ class DoctorProfile extends Model
         'price', 'experience_years', 'is_active',
     ];
 
-    
+
     protected function casts(): array
     {
         return [
@@ -36,7 +36,7 @@ class DoctorProfile extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function specialty(): BelongsTo
+    public function specialization(): BelongsTo
     {
         return $this->belongsTo(Specialization::class, 'specialization_id');
     }

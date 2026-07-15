@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text("bio")->nullable();
             $table->string("avatar")->nullable();
             $table->decimal("price", 10, 2)->nullable();
+            $table->double('rating')->default(0);
             $table->integer('experience_years')->default(0);
             $table->json('certificates')->nullable();
             $table->string('education')->nullable();

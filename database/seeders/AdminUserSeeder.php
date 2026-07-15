@@ -15,7 +15,7 @@ class AdminUserSeeder extends Seeder
             "email" => "admin@cure.test",
             "password" => Hash::make("password"),
             "role" => "admin",
-            "status" => "active",
+            // "status" => "active",
         ]);
     }
 }
