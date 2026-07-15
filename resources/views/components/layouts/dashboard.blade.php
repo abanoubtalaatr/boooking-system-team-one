@@ -8,7 +8,7 @@
             ['الرئيسية والمدفوعات', 'home', $dashboardRoute, request()->routeIs('web.doctor.dashboard')],
             ['المحفظة والسحب', 'report', route('web.doctor.wallet.index'), request()->routeIs('web.doctor.wallet.*')],
             ['بلاغات عدم الحضور', 'calendar', route('web.doctor.no-show-reports.index'), request()->routeIs('web.doctor.no-show-reports.*')],
-            ['حجوزاتي', 'calendar', route('doctor.bookings'), request()->routeIs('doctor.bookings')],
+            ['حجوزاتي', 'bookings', route('doctor.bookings'), request()->routeIs('doctor.bookings')],
             ['جدول المواعيد', 'clock', route('doctor.schedule'), request()->routeIs('doctor.schedule')],
             ['المرضى', 'users', route('doctor.patients'), request()->routeIs('doctor.patients')],
             ['الاستشارات', 'consultation', route('doctor.conversations'), request()->routeIs('doctor.conversations*')],
@@ -18,7 +18,7 @@
         : [
             ['لوحة المدفوعات', 'home', $dashboardRoute, request()->routeIs('web.admin.dashboard')],
             ['لوحة التحكم', 'home', route('admin.dashboard'), request()->routeIs('admin.dashboard')],
-            ['الحجوزات', 'calendar', route('admin.bookings'), request()->routeIs('admin.bookings')],
+            ['حجوزاتي', 'bookings', route('admin.bookings'), request()->routeIs('admin.bookings')],
             ['الأطباء', 'doctor', route('admin.doctors'), request()->routeIs('admin.doctors')],
             ['المرضى', 'users', route('admin.patients'), request()->routeIs('admin.patients')],
             ['المفضلة لدى المرضى', 'star', route('admin.patient-favorites'), request()->routeIs('admin.patient-favorites*')],

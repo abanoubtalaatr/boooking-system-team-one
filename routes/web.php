@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminConversationController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\PatientFavoriteDoctorsController;
 use App\Http\Controllers\Admin\PatientSearchHistoryController;
 use App\Http\Controllers\Doctor\ConversationController;
@@ -68,11 +69,11 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/doctor/bookings/{booking}/no-show-reports', [DoctorNoShowReportController::class, 'store'])
         ->middleware(['role:doctor', 'throttle:10,1'])
         ->name('web.doctor.no-show-reports.store');
+
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function (): void {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/bookings', [DashboardController::class, 'bookings'])->name('bookings');
     Route::get('/doctors', [DashboardController::class, 'doctors'])->name('doctors');
     Route::get('/patients', [DashboardController::class, 'patients'])->name('patients');
     Route::get('/specialties', [DashboardController::class, 'specialties'])->name('specialties');
@@ -92,6 +93,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         ->name('doctors.conversations');
     Route::get('/conversations/{conversation}', [AdminConversationController::class, 'show'])
         ->name('conversations.show');
+
+    Route::get('/bookings', [BookingController::class, 'index'])
+        ->name('bookings');
+    Route::get('/bookings/{booking}', [BookingController::class, 'show'])
+        ->name('bookings.show');
 });
 
 Route::middleware(['auth', 'role:doctor'])
@@ -111,4 +117,9 @@ Route::middleware(['auth', 'role:doctor'])
         Route::get('/patients', [DoctorDashboardController::class, 'patients'])->name('patients');
         Route::get('/reviews', [DoctorDashboardController::class, 'reviews'])->name('reviews');
         Route::get('/profile', [DoctorDashboardController::class, 'profile'])->name('profile');
-    });
+
+        // Route::get('/bookings', [BookingController::class, 'index'])
+        //     ->name('bookings');
+        // Route::get('/bookings/{booking}', [BookingController::class, 'show'])
+        //     ->name('bookings.show');
+});

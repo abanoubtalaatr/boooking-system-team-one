@@ -83,6 +83,9 @@ Route::middleware('auth:patient')->group(function () {
     Route::get('/payments/{payment}', PaymentController::class)->name('payments.show');
     Route::put('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
     Route::put('bookings/{booking}/reschedule', [BookingController::class, 'reschedule']);
+
+    // Specializations route
+    Route::get('/specialists', [SpecializationController::class, 'index']);
 });
 
 Route::post('/webhooks/paymob', PaymobWebhookController::class)
