@@ -19,13 +19,16 @@ class DoctorProfile extends Model
         'price', 'experience_years', 'is_active',
     ];
 
-    protected $casts = [
-        'latitude' => 'decimal:7',
-        'longitude' => 'decimal:7',
-        'price' => 'decimal:2',
-        'is_active' => 'boolean',
-        'certificates' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'latitude' => 'decimal:7',
+            'longitude' => 'decimal:7',
+            'price' => 'decimal:2',
+            'is_active' => 'boolean',
+            'certificates' => 'array',
+        ];
+    }
 
     public function user(): BelongsTo
     {
