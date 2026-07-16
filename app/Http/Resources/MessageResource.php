@@ -16,7 +16,7 @@ class MessageResource extends JsonResource
             'sender_type'     => class_basename($this->sender_type), // Patient / User
             'type'            => $this->type,
             'body'            => $this->body,
-            'attachment_url'  => $this->getFirstMediaUrl('chat-attachments') ?: null,
+            'attachment_url'  =>  $this->attachment_url,
             'read_at'         => $this->read_at,
             'created_at'      => $this->created_at,
         ];

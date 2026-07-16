@@ -9,7 +9,7 @@
             ['المحفظة والسحب', 'report', route('web.doctor.wallet.index'), request()->routeIs('web.doctor.wallet.*')],
             ['بلاغات عدم الحضور', 'calendar', route('web.doctor.no-show-reports.index'), request()->routeIs('web.doctor.no-show-reports.*')],
             ['حجوزاتي', 'bookings', route('doctor.bookings'), request()->routeIs('doctor.bookings')],
-            ['جدول المواعيد', 'clock', route('doctor.schedule'), request()->routeIs('doctor.schedule')],
+            ['جدول المواعيد', 'clock', route('doctor.availability-slots.index'), request()->routeIs('doctor.availability-slots.*')],
             ['المرضى', 'users', route('doctor.patients'), request()->routeIs('doctor.patients')],
             ['الاستشارات', 'consultation', route('doctor.conversations'), request()->routeIs('doctor.conversations*')],
             ['التقييمات', 'star', route('doctor.reviews'), request()->routeIs('doctor.reviews')],
@@ -103,6 +103,11 @@
         @if(session('success'))
             <div class="mx-6 mt-4 rounded-lg border border-green-300 bg-green-50 px-5 py-4 text-green-800">
                 {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="mx-6 mt-4 rounded-lg border border-red-300 bg-red-50 px-5 py-4 text-red-800">
+                {{ session('error') }}
             </div>
         @endif
         <main class="page">{{ $slot }}</main>

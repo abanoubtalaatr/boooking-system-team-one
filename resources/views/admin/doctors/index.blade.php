@@ -14,7 +14,22 @@
                 عرض وإدارة بيانات الأطباء ومتابعة المحادثات الخاصة بهم.
             </p>
         </div>
+{{-- Validation Errors --}}
+        @if ($errors->any())
 
+            <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+
+                <ul class="list-disc list-inside space-y-1 text-sm text-red-600">
+
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+
+                </ul>
+
+            </div>
+
+        @endif
         <a
             href="{{ route('admin.doctors.create') }}"
             class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-indigo-700"

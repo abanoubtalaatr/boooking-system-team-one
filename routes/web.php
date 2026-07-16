@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PatientSearchHistoryController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\HospitalController;
 use App\Http\Controllers\Admin\AvailabilitySlotController;
+use App\Http\Controllers\Doctor\AvailabilitySlotController as DoctorAvailabilitySlotController;
 use App\Http\Controllers\Doctor\ConversationController;
 use App\Http\Controllers\Doctor\DashboardController as DoctorDashboardController;
 use App\Http\Controllers\Web\AdminNoShowReportController;
@@ -75,7 +76,7 @@ Route::middleware(['auth', 'role:doctor'])->prefix('doctor')->name('doctor.')->s
     Route::delete('/conversations/{conversation}/messages/{message}', [ConversationController::class, 'deleteMessage'])->name('conversations.messages.destroy');
     Route::get('/dashboard', [DoctorDashboardController::class, 'index'])->name('dashboard');
     Route::get('/bookings', [DoctorDashboardController::class, 'bookings'])->name('bookings');
-    Route::get('/schedule', [DoctorDashboardController::class, 'schedule'])->name('schedule');
+    Route::resource('availability-slots', DoctorAvailabilitySlotController::class);
     Route::get('/patients', [DoctorDashboardController::class, 'patients'])->name('patients');
     Route::get('/reviews', [DoctorDashboardController::class, 'reviews'])->name('reviews');
     Route::get('/profile', [DoctorDashboardController::class, 'profile'])->name('profile');

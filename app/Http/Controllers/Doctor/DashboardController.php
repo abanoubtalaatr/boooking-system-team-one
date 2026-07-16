@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
-use App\Models\AvailabilitySlot;
+//use App\Models\AvailabilitySlot;
 use App\Models\Booking;
-use App\Models\Review;
+//use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -81,45 +81,9 @@ class DashboardController extends Controller
         return view('doctor.bookings.index', compact('bookings'));
     }
 
-    /**
-     * Manage availability schedule
-     */
-    public function schedule(Request $request)
-    {/*
-        $doctor = Auth::user();
+   
 
-        $slots = AvailabilitySlot::where('doctor_id', $doctor->id)
-            ->when($request->date, fn ($q) => $q->whereDate('day', $request->date), fn ($q) => $q->where('day', '>=', today()))
-            ->orderBy('day')
-            ->orderBy('start_time')
-            ->paginate(20);
-
-        return view('doctor.schedule.index', compact('slots'));*/
-    }
-
-    /**
-     * Store a new availability slot
-     */
-    public function storeSlot(Request $request)
-    {/*
-        $doctor = Auth::user();
-
-        $validated = $request->validate([
-            'day'        => 'required|date|after_or_equal:today',
-            'start_time' => 'required|date_format:H:i',
-            'end_time'   => 'required|date_format:H:i|after:start_time',
-        ]);
-
-        AvailabilitySlot::create([
-            'doctor_id'  => $doctor->id,
-            'day'        => $validated['day'],
-            'start_time' => $validated['start_time'],
-            'end_time'   => $validated['end_time'],
-            'is_booked'  => false,
-        ]);
-
-        return back()->with('success', 'تمت إضافة الموعد بنجاح');*/
-    }
+    
 
     /**
      * List of patients who booked with this doctor

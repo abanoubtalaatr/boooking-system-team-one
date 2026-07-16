@@ -3,7 +3,22 @@
 <div class="breadcrumb mb-4">
     الرئيسية / إدارة الأطباء / إضافة طبيب
 </div>
+{{-- Validation Errors --}}
+        @if ($errors->any())
 
+            <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+
+                <ul class="list-disc list-inside space-y-1 text-sm text-red-600">
+
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+
+                </ul>
+
+            </div>
+
+        @endif
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
 
     <h2 class="text-2xl font-bold mb-6">

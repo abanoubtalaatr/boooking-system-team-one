@@ -3,11 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\Admin\Hospital\StoreHospitalRequest;
+use App\Http\Requests\Web\Admin\Hospital\UpdateHospitalRequest;
 use App\Models\Hospital;
-use Illuminate\Http\Request;
+use App\Services\Web\HospitalService;
 
 class HospitalController extends Controller
 {
+    public function __construct(protected HospitalService $hospitalService)
+    {
+    }
+
     /**
      * Display a listing of hospitals.
      */
@@ -31,16 +37,9 @@ class HospitalController extends Controller
     /**
      * Store a newly created hospital.
      */
-    public function store(Request $request)
+    public function store(StoreHospitalRequest $request)
     {
-        $validated = $request->validate([
-            'name'      => ['required', 'string', 'max:255'],
-            'address'   => ['required', 'string', 'max:255'],
-            'latitude'  => ['nullable', 'numeric', 'between:-90,90'],
-            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
-        ]);
-
-        Hospital::create($validated);
+        $this->hospitalService->create($request->validated());
 
         return redirect()
             ->route('admin.hospitals.index')
@@ -54,7 +53,7 @@ class HospitalController extends Controller
     {
         $hospital->load([
             'doctorProfiles.user',
-            'doctorProfiles.specialization'
+            'doctorProfiles.specialization',
         ]);
 
         return view('admin.hospitals.show', compact('hospital'));
@@ -71,16 +70,9 @@ class HospitalController extends Controller
     /**
      * Update the specified hospital.
      */
-    public function update(Request $request, Hospital $hospital)
+    public function update(UpdateHospitalRequest $request, Hospital $hospital)
     {
-        $validated = $request->validate([
-            'name'      => ['required', 'string', 'max:255'],
-            'address'   => ['required', 'string', 'max:255'],
-            'latitude'  => ['nullable', 'numeric', 'between:-90,90'],
-            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
-        ]);
-
-        $hospital->update($validated);
+        $this->hospitalService->update($hospital, $request->validated());
 
         return redirect()
             ->route('admin.hospitals.index')
@@ -92,15 +84,12 @@ class HospitalController extends Controller
      */
     public function destroy(Hospital $hospital)
     {
-        if ($hospital->doctorProfiles()->exists()) {
-
+        if (! $this->hospitalService->delete($hospital)) {
             return back()->with(
                 'error',
                 'لا يمكن حذف المستشفى لوجود أطباء مرتبطين بها.'
             );
         }
-
-        $hospital->delete();
 
         return redirect()
             ->route('admin.hospitals.index')

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Conversation;
+use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -10,18 +11,22 @@ class ConversationSeeder extends Seeder
 {
     public function run(): void
     {
-        $patients = User::where("role", "patient")->get();
-        $doctors = User::where("role", "doctor")->get();
+        $patients = Patient::all();
 
-        if ($patients->isEmpty()) {
-            $patients = User::factory()->count(5)->state(["role" => "patient"])->create();
+        $doctors = User::where('role', 'doctor')->get();
+
+        if ($patients->isEmpty() || $doctors->isEmpty()) {
+            $this->command->warn('Patients or doctors not found.');
+            return;
         }
 
         foreach ($patients as $patient) {
+
             Conversation::factory()->create([
-                "patient_id" => $patient->id,
-                "doctor_id" => $doctors->random()->id,
+                'patient_id' => $patient->id,
+                'doctor_id' => $doctors->random()->id,
             ]);
+
         }
     }
 }

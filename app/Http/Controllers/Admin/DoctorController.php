@@ -1,45 +1,36 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Mail\DoctorAccountCreatedMail;
-use App\Models\DoctorProfile;
+use App\Http\Requests\Web\Admin\Doctor\StoreDoctorRequest;
+use App\Http\Requests\Web\Admin\Doctor\UpdateDoctorRequest;
 use App\Models\Hospital;
 use App\Models\Specialization;
 use App\Models\User;
+use App\Services\Web\DoctorAccountService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\View\View;
 
 class DoctorController extends Controller
 {
+    public function __construct(protected DoctorAccountService $doctorAccountService)
+    {
+    }
+
     public function index(Request $request)
     {
         $doctors = User::where('role', 'doctor')
-            ->with([
-                'doctorProfile.specialization',
-                'doctorProfile.hospital',
-            ])
+            ->with([ 'doctorProfile.specialization','doctorProfile.hospital', ])
             ->withCount(['bookingsAsDoctor', 'reviews'])
             ->withAvg('reviews', 'rating')
             ->when($request->specialization_id, function ($q) use ($request) {
-                $q->whereHas('doctorProfile', function ($q) use ($request) {
-                    $q->where('specialization_id', $request->specialization_id);
-                });
-            })
-            ->when($request->search, function ($q) use ($request) {
-                $q->where('name', 'like', "%{$request->search}%");
-            })
-            ->paginate(10);
+                $q->whereHas('doctorProfile', function ($q) use ($request) { 
+                     $q->where('specialization_id', $request->specialization_id); 
+                });  
+            })->when($request->search, function ($q) use ($request) {$q->where('name', 'like', "%{$request->search}%");})->paginate(10);
 
         $specializations = Specialization::all();
-
-        return view('admin.doctors.index', compact(
-            'doctors',
-            'specializations'
-        ));
+        return view('admin.doctors.index', compact(  'doctors',  'specializations'  ));
     }
 
     public function show(User $doctor)
@@ -59,40 +50,9 @@ class DoctorController extends Controller
         ));
     }
 
-    public function store(Request $request)
+    public function store(StoreDoctorRequest $request)
     {
-        $validated = $request->validate([
-            'name'              => ['required', 'string', 'max:255'],
-            'email'             => ['required', 'email', 'unique:users,email'],
-            'password'          => ['required', 'confirmed', 'min:8'],
-
-            'specialization_id' => ['required', 'exists:specializations,id'],
-            'hospital_id'       => ['required', 'exists:hospitals,id'],
-        ]);
-
-        DB::transaction(function () use ($validated) {
-
-            $doctor = User::create([
-                'name'     => $validated['name'],
-                'email'    => $validated['email'],
-                'password' => Hash::make($validated['password']),
-                'role'     => 'doctor',
-            ]);
-
-            DoctorProfile::create([
-                'user_id'           => $doctor->id,
-                'specialization_id' => $validated['specialization_id'],
-                'hospital_id'       => $validated['hospital_id'],
-            ]);
-
-            Mail::to($doctor->email)->send(
-                new DoctorAccountCreatedMail(
-                    $doctor,
-                    $validated['password']
-                )
-            );
-
-        });
+        $this->doctorAccountService->createDoctor($request->validated());
 
         return redirect()
             ->route('admin.doctors.index')
@@ -111,22 +71,9 @@ class DoctorController extends Controller
         ));
     }
 
-    public function update(Request $request, User $doctor)
+    public function update(UpdateDoctorRequest $request, User $doctor)
     {
-        $validated = $request->validate([
-            'specialization_id' => ['nullable', 'exists:specializations,id'],
-            'hospital_id'       => ['nullable', 'exists:hospitals,id'],
-            'is_active'         => ['required', 'boolean'],
-        ]);
-
-        $doctor->doctorProfile()->updateOrCreate(
-            ['user_id' => $doctor->id],
-            [
-                'specialization_id' => $validated['specialization_id'],
-                'hospital_id'       => $validated['hospital_id'],
-                'is_active'         => $validated['is_active'],
-            ]
-        );
+        $this->doctorAccountService->updateDoctor($doctor, $request->validated());
 
         return redirect()
             ->route('admin.doctors.index')
@@ -135,12 +82,15 @@ class DoctorController extends Controller
 
     public function destroy(User $doctor)
     {
-        $doctor->delete();
+        if (! $this->doctorAccountService->deleteDoctor($doctor)) {
+            return back()->with(
+                'error',
+                $this->doctorAccountService->deletionBlockReason($doctor)
+            );
+        }
 
         return redirect()
             ->route('admin.doctors.index')
             ->with('success', 'تم حذف الطبيب بنجاح.');
     }
-
-   
 }
