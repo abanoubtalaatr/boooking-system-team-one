@@ -24,7 +24,7 @@ it('requires authentication for private favorites search history and review writ
 it('uses the authenticated patient as the favorite owner', function (): void {
     $patient = Patient::factory()->create();
     $otherPatient = Patient::factory()->create();
-    $doctor = User::factory()->create(['role' => 'doctor']);
+    $doctor = User::factory()->doctor()->create();
     Favorite::query()->create(['user_id' => $otherPatient->id, 'doctor_id' => $doctor->id]);
 
     Sanctum::actingAs($patient, ['*'], 'patient');
@@ -40,7 +40,7 @@ it('uses the authenticated patient as the favorite owner', function (): void {
 it('prevents a patient from changing another patients review', function (): void {
     $owner = Patient::factory()->create();
     $otherPatient = Patient::factory()->create();
-    $doctor = User::factory()->create(['role' => 'doctor']);
+    $doctor = User::factory()->doctor()->create();
     $review = Review::query()->create([
         'user_id' => $doctor->id,
         'patient_id' => $owner->id,
@@ -56,12 +56,12 @@ it('prevents a patient from changing another patients review', function (): void
 });
 
 it('limits search history to its authenticated user', function (): void {
-    $user = User::factory()->create(['role' => 'doctor']);
-    $otherUser = User::factory()->create(['role' => 'doctor']);
+    $user = Patient::factory()->create();
+    $otherUser = Patient::factory()->create();
     SearchHistory::query()->create(['user_id' => $user->id, 'query' => 'Mine', 'source' => 'search']);
     SearchHistory::query()->create(['user_id' => $otherUser->id, 'query' => 'Theirs', 'source' => 'search']);
 
-    Sanctum::actingAs($user);
+    Sanctum::actingAs($user, ['*'], 'patient');
 
     $this->getJson('/api/search-history')
         ->assertOk()

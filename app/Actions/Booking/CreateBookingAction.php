@@ -5,7 +5,6 @@ namespace App\Actions\Booking;
 use App\Enums\BookingStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\SlotReservationStatus;
-use App\Enums\UserRole;
 use App\Models\AvailabilitySlot;
 use App\Models\Booking;
 use App\Models\User;
@@ -63,7 +62,7 @@ class CreateBookingAction
 
             $doctor = User::query()->with('doctorProfile')->findOrFail($data['doctor_id']);
 
-            if (! $doctor->doctorProfile || $doctor->role !== UserRole::Doctor) {
+            if (! $doctor->doctorProfile || ! $doctor->isDoctor()) {
                 throw ValidationException::withMessages(['doctor_id' => 'Doctor profile not found.']);
             }
 

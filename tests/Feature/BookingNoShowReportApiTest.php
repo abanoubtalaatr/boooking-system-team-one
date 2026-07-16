@@ -49,7 +49,7 @@ it('prevents early reports and reports for another doctor booking', function ():
         'reason' => 'المريض لم يحضر الموعد ولم يرد على الاتصال.',
     ])->assertConflict()->assertJsonPath('error.code', 'report_too_early');
 
-    Sanctum::actingAs(User::factory()->create(['role' => 'doctor']));
+    Sanctum::actingAs(User::factory()->doctor()->create());
     $this->postJson("/api/doctor/bookings/{$booking->id}/no-show-reports", [
         'reason' => 'محاولة تقديم بلاغ على حجز طبيب آخر.',
     ])->assertForbidden();
@@ -59,7 +59,7 @@ it('restores a collected cash commission exactly once when admin approves', func
     Notification::fake();
     $this->travelTo('2026-07-15 12:00:00');
     [$doctor, $booking, $slot] = noShowEligibleBooking();
-    $admin = User::factory()->create(['role' => 'admin']);
+    $admin = User::factory()->admin()->create();
     $payment = Payment::factory()->create([
         'booking_id' => $booking->id,
         'patient_id' => $booking->patient_id,
@@ -110,7 +110,7 @@ it('refunds a successful card payment when admin approves', function (): void {
     Notification::fake();
     $this->travelTo('2026-07-15 12:00:00');
     [$doctor, $booking] = noShowEligibleBooking();
-    $admin = User::factory()->create(['role' => 'admin']);
+    $admin = User::factory()->admin()->create();
     $payment = Payment::factory()->create([
         'booking_id' => $booking->id,
         'patient_id' => $booking->patient_id,
@@ -152,7 +152,7 @@ it('keeps the booking unchanged when admin rejects the report', function (): voi
     Notification::fake();
     $this->travelTo('2026-07-15 12:00:00');
     [$doctor, $booking] = noShowEligibleBooking();
-    $admin = User::factory()->create(['role' => 'admin']);
+    $admin = User::factory()->admin()->create();
     $report = BookingNoShowReport::factory()->create([
         'booking_id' => $booking->id,
         'doctor_id' => $doctor->id,
@@ -172,7 +172,7 @@ it('keeps the booking unchanged when admin rejects the report', function (): voi
  */
 function noShowEligibleBooking(): array
 {
-    $doctor = User::factory()->create(['role' => 'doctor']);
+    $doctor = User::factory()->doctor()->create();
     $patient = Patient::factory()->create();
     $slot = AvailabilitySlot::factory()->create([
         'doctor_id' => $doctor->id,

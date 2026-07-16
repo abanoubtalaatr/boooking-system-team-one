@@ -10,11 +10,25 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Cure Admin',
-            'email' => 'admin@cure.test',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-        ]);
+        $superAdmin = User::query()->updateOrCreate(
+            ['email' => 'camila.herman@example.net'],
+            [
+                'name' => 'Camila Herman',
+                'status' => 'active',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+            ],
+        );
+
+        User::query()->updateOrCreate(
+            ['email' => 'admin@cure.test'],
+            [
+                'name' => 'مدير المنصة التجريبي',
+                'status' => 'active',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'created_by' => $superAdmin->id,
+            ],
+        );
     }
 }

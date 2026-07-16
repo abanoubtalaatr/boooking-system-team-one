@@ -10,8 +10,8 @@ uses(LazilyRefreshDatabase::class);
 
 it('shows only the authenticated doctor conversations', function (): void {
     $this->withoutVite();
-    $doctor = User::factory()->create(['role' => 'doctor']);
-    $otherDoctor = User::factory()->create(['role' => 'doctor']);
+    $doctor = User::factory()->doctor()->create();
+    $otherDoctor = User::factory()->doctor()->create();
     $patient = Patient::factory()->create(['name' => 'Own Patient']);
     $otherPatient = Patient::factory()->create(['name' => 'Other Patient']);
     $conversation = Conversation::factory()->create([
@@ -36,8 +36,8 @@ it('shows only the authenticated doctor conversations', function (): void {
 });
 
 it('forbids a doctor from opening another doctor conversation', function (): void {
-    $doctor = User::factory()->create(['role' => 'doctor']);
-    $otherDoctor = User::factory()->create(['role' => 'doctor']);
+    $doctor = User::factory()->doctor()->create();
+    $otherDoctor = User::factory()->doctor()->create();
     $conversation = Conversation::factory()->create([
         'doctor_id' => $otherDoctor->id,
     ]);

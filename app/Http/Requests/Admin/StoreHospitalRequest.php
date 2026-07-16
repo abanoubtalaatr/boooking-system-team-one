@@ -8,15 +8,15 @@ class StoreHospitalRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->role === "admin";
+        return $this->user()?->can('clinics.create') ?? false;
     }
 
     public function rules(): array
     {
         return [
-            "name" => ["required", "string", "max:255"],
-            "latitude" => ["nullable", "numeric", "between:-90,90"],
-            "longitude" => ["nullable", "numeric", "between:-180,180"],
+            'name' => ['required', 'string', 'max:255'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
         ];
     }
 }

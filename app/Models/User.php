@@ -2,30 +2,33 @@
 
 namespace App\Models;
 
-use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable, SoftDeletes;
+
+    protected string $guard_name = 'web';
+
+    protected $attributes = [
+        'status' => UserStatus::Active->value,
+    ];
 
     protected $fillable = [
         'created_by',
         'name',
         'email',
-        'phone',
         'password',
-        'provider',
-        'provider_id',
-        'role',
         'status',
     ];
 
@@ -36,8 +39,8 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'role' => UserRole::class,
         'status' => UserStatus::class,
+        'password' => 'hashed',
     ];
 
     public function creator(): BelongsTo
@@ -95,6 +98,11 @@ class User extends Authenticatable
         return $this->hasMany(Booking::class, 'doctor_id');
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'user_id');
+    }
+
     public function wallet(): HasOne
     {
         return $this->hasOne(Wallet::class, 'doctor_id')
@@ -124,5 +132,20 @@ class User extends Authenticatable
     public function reviewedBookingNoShowReports(): HasMany
     {
         return $this->hasMany(BookingNoShowReport::class, 'reviewed_by');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasAnyRole(['admin', 'super-admin']);
+    }
+
+    public function isDoctor(): bool
+    {
+        return $this->hasRole('doctor');
+    }
+
+    public function isSuspended(): bool
+    {
+        return $this->status === UserStatus::Suspended;
     }
 }

@@ -15,7 +15,7 @@ uses(LazilyRefreshDatabase::class);
 
 it('completes only ended pending bookings and notifies their doctor', function (): void {
     $this->travelTo('2026-07-15 12:00:00');
-    $doctor = User::factory()->create(['role' => 'doctor']);
+    $doctor = User::factory()->doctor()->create();
     $patient = Patient::factory()->create();
     $endedSlot = AvailabilitySlot::factory()->create([
         'doctor_id' => $doctor->id,

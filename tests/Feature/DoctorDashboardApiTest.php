@@ -55,7 +55,7 @@ test('doctor dashboard endpoints require authentication and doctor role', functi
     $this->getJson('/api/doctor/dashboard')->assertUnauthorized();
     $this->getJson('/api/doctor/dashboard/payments')->assertUnauthorized();
 
-    Sanctum::actingAs(User::factory()->create(['role' => 'admin']));
+    Sanctum::actingAs(User::factory()->admin()->create());
 
     $this->getJson('/api/doctor/dashboard')->assertForbidden();
     $this->getJson('/api/doctor/dashboard/payments')->assertForbidden();

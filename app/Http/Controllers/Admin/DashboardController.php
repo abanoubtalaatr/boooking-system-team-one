@@ -19,7 +19,7 @@ class DashboardController extends Controller
     public function index()
     {
         $stats = [
-            'total_doctors' => User::where('role', 'doctor')->count(),
+            'total_doctors' => User::role('doctor')->count(),
             'total_patients' => Patient::count(),
             'total_bookings' => Booking::count(),
             'total_hospitals' => Hospital::count(),
@@ -44,7 +44,7 @@ class DashboardController extends Controller
             ->get();
 
         // Top rated doctors
-        $topDoctors = User::where('role', 'doctor')
+        $topDoctors = User::role('doctor')
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')
             ->orderByDesc('reviews_avg_rating')
@@ -78,7 +78,7 @@ class DashboardController extends Controller
      */
     public function doctors(Request $request)
     {
-        $doctors = User::where('role', 'doctor')->with('doctorProfile')
+        $doctors = User::role('doctor')->with('doctorProfile')
            // ->with(['doctorProfile.specialization', 'doctorProfile.hospital'])
             // ->withCount(['bookingsAsDoctor', 'reviews'])
            // ->withAvg('reviews', 'rating')
@@ -96,14 +96,14 @@ class DashboardController extends Controller
     /**
      * All patients listing
      */
-    public function patients(Request $request)
+    public function patients()
     {
-        $patients = Patient::withCount('bookings')
-            ->when($request->search, fn ($q) => $q->where('name', 'like', "%{$request->search}%"))
-            ->latest()
-            ->paginate(15);
+        return view('admin.patients.index');
+    }
 
-        return view('admin.patients.index', compact('patients'));
+    public function patientProfile(Patient $patient)
+    {
+        return view('admin.patients.show', compact('patient'));
     }
 
     /**
@@ -111,7 +111,7 @@ class DashboardController extends Controller
      */
     public function specialties()
     {
-        $specializations = Specialization::withCount('doctorProfiles')->paginate(15);
+        $specializations = Specialization::withCount('doctors')->latest()->paginate(15);
 
         return view('admin.specialties.index', compact('specializations'));
     }
@@ -121,7 +121,7 @@ class DashboardController extends Controller
      */
     public function clinics()
     {
-        $hospitals = Hospital::withCount('doctorProfiles')->paginate(15);
+        $hospitals = Hospital::withCount('doctorProfiles')->latest()->paginate(15);
 
         return view('admin.clinics.index', compact('hospitals'));
     }
@@ -144,31 +144,9 @@ class DashboardController extends Controller
     /**
      * Reports: revenue + booking trends
      */
-    public function reports(Request $request)
+    public function reports()
     {
-        $from = $request->date('from', now()->subMonth());
-        $to = $request->date('to', now());
-
-        $revenueByMonth = Booking::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(price) as total')
-            ->where('payment_status', 'paid')
-            ->whereBetween('created_at', [$from, $to])
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
-
-        $bookingsByStatus = Booking::selectRaw('status, COUNT(*) as total')
-            ->whereBetween('created_at', [$from, $to])
-            ->groupBy('status')
-            ->get();
-
-        $topSpecializations = Specialization::withCount('doctorProfiles')
-            ->orderByDesc('doctor_profiles_count')
-            ->take(5)
-            ->get();
-
-        return view('admin.reports.index', compact(
-            'revenueByMonth', 'bookingsByStatus', 'topSpecializations', 'from', 'to'
-        ));
+        return view('admin.reports.index');
     }
 
     /**
@@ -176,19 +154,11 @@ class DashboardController extends Controller
      */
     public function users(Request $request)
     {
-        $users = User::when($request->role, fn ($q) => $q->where('role', $request->role))
+        $users = User::role(['admin', 'super-admin'])
             ->when($request->search, fn ($q) => $q->where('name', 'like', "%{$request->search}%"))
             ->latest()
             ->paginate(15);
 
         return view('admin.users.index', compact('users'));
-    }
-
-    /**
-     * Platform settings
-     */
-    public function settings()
-    {
-        return view('admin.settings.index');
     }
 }

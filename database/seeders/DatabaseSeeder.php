@@ -2,11 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\DoctorProfile;
-use App\Models\Patient;
-use App\Models\Promotion;
-use App\Models\Specialization;
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,35 +12,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            AdminUserSeeder::class,
+            RolesAndPermissionsSeeder::class,
             SettingSeeder::class,
-            SpecializationSeeder::class,
-            FaqCategorySeeder::class,
-            FaqSeeder::class,
-            PolicySeeder::class,
-            HospitalSeeder::class,
-            DoctorSeeder::class,
-            PatientSeeder::class,
-            ReviewSeeder::class,
-            AvailabilitySlotSeeder::class,
-            FavoriteSeeder::class,
-            BookingSeeder::class,
+            PlatformDemoSeeder::class,
+            NoShowReportsDemoSeeder::class,
         ]);
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
-        $users = User::factory(10)->create();
-
-        foreach ($users as $user) {
-            DoctorProfile::factory()->create([
-                'user_id' => $user->id,
-                'specialization_id' => Specialization::inRandomOrder()->first()?->id,
-            ]);
-        }
-
-        Patient::factory()->count(20)->create();
-        Promotion::factory()->count(5)->create();
     }
 }

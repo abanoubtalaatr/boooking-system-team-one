@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Hospital extends Model
 {
@@ -20,8 +21,8 @@ class Hospital extends Model
 
     }
 
-    public function doctors()
+    public function doctorProfiles(): HasMany
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(DoctorProfile::class);
     }
 }

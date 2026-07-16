@@ -58,7 +58,7 @@ function something()
 
 function createBookableSlot(): array
 {
-    $doctor = User::factory()->create(['role' => 'doctor']);
+    $doctor = User::factory()->doctor()->create();
     $specialization = Specialization::factory()->create(['name' => fake()->unique()->jobTitle()]);
     $hospital = Hospital::factory()->create();
     DoctorProfile::factory()->create([

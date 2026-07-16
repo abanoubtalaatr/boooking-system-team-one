@@ -8,7 +8,7 @@ class AssignSpecialtiesRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->role === 'doctor';
+        return $this->user()?->isDoctor() ?? false;
     }
 
     public function rules(): array

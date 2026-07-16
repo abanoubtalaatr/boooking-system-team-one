@@ -44,11 +44,15 @@ class LoginController extends Controller
     protected function redirectByRole($user)
     {
 
-        return match ($user->role->value) {
-            'admin' => redirect()->route('admin.dashboard'),
-            'doctor' => redirect()->route('doctor.dashboard'),
-            default => redirect()->route('login'),
-        };
+        if ($user->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        if ($user->isDoctor()) {
+            return redirect()->route('doctor.dashboard');
+        }
+
+        return redirect()->route('login');
     }
 
     /**

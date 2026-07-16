@@ -79,15 +79,15 @@
                         <td>
                             @if ($withdrawal->status === WalletWithdrawalStatus::PendingReview)
                                 <div class="withdrawal-actions">
-                                    <form method="POST" action="{{ route('web.admin.withdrawals.complete', $withdrawal) }}">
+                                    @can('withdrawals.complete')<form method="POST" action="{{ route('web.admin.withdrawals.complete', $withdrawal) }}">
                                         @csrf @method('PATCH')
                                         <button class="withdrawal-button withdrawal-button--approve" type="submit">قبول وخصم</button>
-                                    </form>
-                                    <form class="withdrawal-cancel-form" method="POST" action="{{ route('web.admin.withdrawals.cancel', $withdrawal) }}">
+                                    </form>@endcan
+                                    @can('withdrawals.cancel')<form class="withdrawal-cancel-form" method="POST" action="{{ route('web.admin.withdrawals.cancel', $withdrawal) }}">
                                         @csrf @method('PATCH')
                                         <input name="rejection_reason" type="text" minlength="3" maxlength="500" placeholder="سبب الرفض" required>
                                         <button class="withdrawal-button withdrawal-button--cancel" type="submit">رفض</button>
-                                    </form>
+                                    </form>@endcan
                                 </div>
                             @else
                                 {{ $withdrawal->rejection_reason ?? ($withdrawal->status === WalletWithdrawalStatus::Completed ? 'تم الخصم بنجاح' : '—') }}

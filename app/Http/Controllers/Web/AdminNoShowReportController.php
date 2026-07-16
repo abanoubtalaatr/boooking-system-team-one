@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Web;
 use App\Actions\Booking\ApproveBookingNoShowReportAction;
 use App\Actions\Booking\GetAdminNoShowDashboardAction;
 use App\Actions\Booking\RejectBookingNoShowReportAction;
-use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ReviewBookingNoShowReportRequest;
 use App\Http\Requests\NoShow\AdminNoShowReportIndexRequest;
@@ -27,7 +26,7 @@ class AdminNoShowReportController extends Controller
         return view('admin.no-show-reports', [
             ...$this->dashboard->handle($request->validated()),
             'doctors' => User::query()
-                ->where('role', UserRole::Doctor)
+                ->role('doctor')
                 ->orderBy('name')
                 ->get(['id', 'name', 'email']),
         ]);

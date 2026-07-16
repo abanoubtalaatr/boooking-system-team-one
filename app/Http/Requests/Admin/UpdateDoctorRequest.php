@@ -8,15 +8,15 @@ class UpdateDoctorRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->role === "admin";
+        return $this->user()?->can('doctors.update') ?? false;
     }
 
     public function rules(): array
     {
         return [
-            "bio" => ["sometimes", "nullable", "string"],
-            "consultation_price" => ["sometimes", "nullable", "numeric", "min:0"],
-            "is_approved" => ["sometimes", "boolean"],
+            'bio' => ['sometimes', 'nullable', 'string'],
+            'consultation_price' => ['sometimes', 'nullable', 'numeric', 'min:0'],
+            'is_approved' => ['sometimes', 'boolean'],
         ];
     }
 }

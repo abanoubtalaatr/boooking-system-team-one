@@ -13,7 +13,7 @@ class AdminConversationController extends Controller
      */
     public function index(User $doctor)
     {
-        abort_unless($doctor->role->value === 'doctor', 404);
+        abort_unless($doctor->isDoctor(), 404);
 
         $conversations = Conversation::query()
             ->where('doctor_id', $doctor->id)

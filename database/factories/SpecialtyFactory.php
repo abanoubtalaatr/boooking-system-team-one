@@ -13,10 +13,10 @@ class SpecialtyFactory extends Factory
     public function definition(): array
     {
         return [
-            "admin_id" => User::factory()->state(["role" => "admin"]),
-            "name" => fake()->unique()->randomElement([
-                "Cardiology", "Dermatology", "Pediatrics", "Neurology",
-                "Orthopedics", "Psychiatry", "Radiology", "Oncology",
+            'admin_id' => User::factory()->admin(),
+            'name' => fake()->unique()->randomElement([
+                'Cardiology', 'Dermatology', 'Pediatrics', 'Neurology',
+                'Orthopedics', 'Psychiatry', 'Radiology', 'Oncology',
             ]),
         ];
     }

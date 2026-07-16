@@ -109,7 +109,7 @@ it('allows only the booking doctor to mark cash as collected', function (): void
         ->postJson("/api/bookings/{$bookingId}/checkout", ['method' => 'cash'])
         ->assertSuccessful();
 
-    Sanctum::actingAs(User::factory()->create(['role' => 'doctor']));
+    Sanctum::actingAs(User::factory()->doctor()->create());
     $this->postJson("/api/doctor/bookings/{$bookingId}/cash-collected")->assertForbidden();
 
     Sanctum::actingAs($doctor);

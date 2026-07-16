@@ -23,7 +23,7 @@ class WalletWithdrawalFactory extends Factory
     {
         return [
             'uuid' => (string) Str::uuid(),
-            'doctor_id' => User::factory()->state(['role' => 'doctor']),
+            'doctor_id' => User::factory()->doctor(),
             'wallet_id' => fn (array $attributes) => Wallet::factory()->create(['doctor_id' => $attributes['doctor_id']])->id,
             'amount_cents' => 10000,
             'currency' => 'EGP',
