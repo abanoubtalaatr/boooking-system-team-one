@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,11 +11,19 @@ class Conversation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['patient_id', 'doctor_id', 'status', 'last_message_at'];
-
-    protected $casts = [
-        'last_message_at' => 'datetime',
+    protected $fillable = [
+        'patient_id',
+        'doctor_id',
+        'status',
+        'last_message_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'last_message_at' => 'datetime',
+        ];
+    }
 
     public function patient(): BelongsTo
     {
@@ -43,8 +50,8 @@ class Conversation extends Model
     {
         return match ($type) {
             'patient' => $this->patient_id === $id,
-            'doctor' => $this->doctor_id === $id,
-            default => false,
+            'doctor'  => $this->doctor_id === $id,
+            default   => false,
         };
     }
 }

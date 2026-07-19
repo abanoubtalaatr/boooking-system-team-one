@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
             AvailabilitySlotSeeder::class,
             FavoriteSeeder::class,
             BookingSeeder::class,
+            ConversationSeeder::class,
+            MessageSeeder::class
         ]);
 
         User::factory()->create([

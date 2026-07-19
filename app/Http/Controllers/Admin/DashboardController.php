@@ -7,9 +7,11 @@ use App\Models\AvailabilitySlot;
 use App\Models\Booking;
 use App\Models\Hospital;
 use App\Models\Patient;
+use App\Models\Payment;
 use App\Models\Specialization;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -18,7 +20,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $stats = [
+        $summary = [
             'total_doctors' => User::where('role', 'doctor')->count(),
             'total_patients' => Patient::count(),
             'total_bookings' => Booking::count(),
@@ -28,6 +30,7 @@ class DashboardController extends Controller
             'completed_bookings' => Booking::where('status', 'completed')->count(),
             'cancelled_bookings' => Booking::where('status', 'cancelled')->count(),
             'total_revenue' => Booking::where('payment_status', 'paid')->sum('price'),
+            'total_transactions'=>Payment::count(),
         ];
 
         // Bookings over the last 7 days (for a chart)
@@ -52,7 +55,7 @@ class DashboardController extends Controller
             ->get();
 
         return view('admin.dashboard', compact(
-            'stats', 'bookingsPerDay', 'recentBookings', 'topDoctors'
+            'summary', 'bookingsPerDay', 'recentBookings', 'topDoctors'
         ));
     }
 
@@ -73,25 +76,7 @@ class DashboardController extends Controller
         return view('admin.bookings.index', compact('bookings'));
     }
 
-    /**
-     * All doctors listing
-     */
-    public function doctors(Request $request)
-    {
-        $doctors = User::where('role', 'doctor')->with('doctorProfile')
-           // ->with(['doctorProfile.specialization', 'doctorProfile.hospital'])
-            // ->withCount(['bookingsAsDoctor', 'reviews'])
-           // ->withAvg('reviews', 'rating')
-            // ->when($request->specialization_id, function ($q) use ($request) {
-            //    $q->whereHas('doctorProfile', fn ($q) => $q->where('specialization_id', $request->specialization_id));
-           // })
-            // ->when($request->search, fn ($q) => $q->where('name', 'like', "%{$request->search}%"))
-            ->paginate(10);
-
-        // $specializations = Specialization::all();
-
-        return view('admin.doctors.index', compact('doctors')); // , 'specializations'));
-    }
+    
 
     /**
      * All patients listing
@@ -144,32 +129,42 @@ class DashboardController extends Controller
     /**
      * Reports: revenue + booking trends
      */
-    public function reports(Request $request)
-    {
-        $from = $request->date('from', now()->subMonth());
-        $to = $request->date('to', now());
 
-        $revenueByMonth = Booking::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(price) as total')
-            ->where('payment_status', 'paid')
-            ->whereBetween('created_at', [$from, $to])
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
+public function reports(Request $request)
+{
+    $from = $request->filled('from')
+        ? Carbon::parse($request->input('from'))->startOfDay()
+        : now()->subMonth()->startOfDay();
 
-        $bookingsByStatus = Booking::selectRaw('status, COUNT(*) as total')
-            ->whereBetween('created_at', [$from, $to])
-            ->groupBy('status')
-            ->get();
+    $to = $request->filled('to')
+        ? Carbon::parse($request->input('to'))->endOfDay()
+        : now()->endOfDay();
 
-        $topSpecializations = Specialization::withCount('doctorProfiles')
-            ->orderByDesc('doctor_profiles_count')
-            ->take(5)
-            ->get();
+    $revenueByMonth = Booking::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(price) as total')
+        ->where('payment_status', 'paid')
+        ->whereBetween('created_at', [$from, $to])
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
 
-        return view('admin.reports.index', compact(
-            'revenueByMonth', 'bookingsByStatus', 'topSpecializations', 'from', 'to'
-        ));
-    }
+    $bookingsByStatus = Booking::selectRaw('status, COUNT(*) as total')
+        ->whereBetween('created_at', [$from, $to])
+        ->groupBy('status')
+        ->get();
+
+    $topSpecializations = Specialization::withCount('doctors')
+        ->orderByDesc('doctors_count')
+        ->take(5)
+        ->get();
+
+    return view('admin.reports.index', compact(
+        'revenueByMonth',
+        'bookingsByStatus',
+        'topSpecializations',
+        'from',
+        'to'
+    ));
+}
 
     /**
      * Users & permissions management (admin/doctor accounts)

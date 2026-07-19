@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Enums\NoShowReportStatus;
@@ -14,13 +13,19 @@ class BookingNoShowReport extends Model
     use HasFactory;
 
     protected $fillable = [
-        'booking_id', 'doctor_id', 'status', 'reason', 'reviewed_by', 'review_note', 'reviewed_at',
+        'booking_id',
+        'doctor_id',
+        'status',
+        'reason',
+        'reviewed_by',
+        'review_note',
+        'reviewed_at',
     ];
 
     protected function casts(): array
     {
         return [
-            'status' => NoShowReportStatus::class,
+            'status'      => NoShowReportStatus::class,
             'reviewed_at' => 'datetime',
         ];
     }

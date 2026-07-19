@@ -20,6 +20,11 @@
         @case('chevron') <path d="m6 9 6 6 6-6"/> @break
         @case('star') <path d="m12 2.5 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3-5.8 3 1.1-6.5-4.7-4.6 6.5-.9L12 2.5Z"/> @break
         @case('consultation') <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z"/><path d="M8 9h8M8 13h5"/> @break
+        @case('plus') <path d="M12 5v14"/><path d="M5 12h14"/>@break
+        @case('eye')<path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="3"/> @break
+        @case('edit')<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4 11.5-11.5Z"/>@break
+        @case('chat')<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/><path d="M8 9h8"/><path d="M8 13h5"/> @break
+        @case('trash') <path d="M3 6h18"/> <path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 10v6"/> <path d="M14 10v6"/>@break
         @default <circle cx="12" cy="12" r="9"/> <path d="M12 8v8M8 12h8"/>
     @endswitch
 </svg>
