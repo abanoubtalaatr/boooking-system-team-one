@@ -8,7 +8,12 @@ use App\Models\Specialization;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
+use Tests\DuskTestCase;
 use Tests\TestCase;
+
+pest()->extend(DuskTestCase::class)
+//  ->use(Illuminate\Foundation\Testing\DatabaseMigrations::class)
+    ->in('Browser');
 
 /*
 |--------------------------------------------------------------------------
