@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 it('allows exactly one of two concurrent patients to hold the same slot', function (): void {
-    $doctor = User::factory()->create(['role' => 'doctor']);
+    $doctor = User::factory()->doctor()->create();
     $specialization = Specialization::factory()->create(['name' => 'Concurrency '.Str::uuid()]);
     $hospital = Hospital::factory()->create();
     DoctorProfile::factory()->create([

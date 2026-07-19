@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Web;
 use App\Actions\Wallet\CancelWalletWithdrawalAction;
 use App\Actions\Wallet\CompleteWalletWithdrawalAction;
 use App\Actions\Wallet\ListAdminWithdrawalsAction;
-use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Wallet\AdminWithdrawalIndexRequest;
 use App\Http\Requests\Wallet\CancelWalletWithdrawalRequest;
@@ -28,7 +27,7 @@ class AdminWalletWithdrawalController extends Controller
         return view('admin.withdrawals', [
             ...$this->listWithdrawals->handle($request->validated()),
             'doctors' => User::query()
-                ->where('role', UserRole::Doctor)
+                ->role('doctor')
                 ->orderBy('name')
                 ->get(['id', 'name', 'email']),
         ]);

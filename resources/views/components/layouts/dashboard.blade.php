@@ -1,39 +1,38 @@
 @props(['title', 'role' => 'admin'])
 
 @php
-    $isDoctor = $role === 'doctor';
-    $dashboardRoute = $isDoctor ? route('web.doctor.dashboard') : route('web.admin.dashboard');
+    $authenticatedUser = auth()->user();
+    $isDoctor = $authenticatedUser->isDoctor();
+    $dashboardRoute = $isDoctor ? route('web.doctor.dashboard') : route('admin.dashboard');
     $navigation = $isDoctor
         ? [
-            ['الرئيسية والمدفوعات', 'home', $dashboardRoute, request()->routeIs('web.doctor.dashboard')],
-            ['المحفظة والسحب', 'report', route('web.doctor.wallet.index'), request()->routeIs('web.doctor.wallet.*')],
-            ['بلاغات عدم الحضور', 'calendar', route('web.doctor.no-show-reports.index'), request()->routeIs('web.doctor.no-show-reports.*')],
-            ['حجوزاتي', 'bookings', route('doctor.bookings'), request()->routeIs('doctor.bookings')],
-            ['جدول المواعيد', 'clock', route('doctor.availability-slots.index'), request()->routeIs('doctor.availability-slots.*')],
-            ['المرضى', 'users', route('doctor.patients'), request()->routeIs('doctor.patients')],
-            ['الاستشارات', 'consultation', route('doctor.conversations'), request()->routeIs('doctor.conversations*')],
-            ['التقييمات', 'star', route('doctor.reviews'), request()->routeIs('doctor.reviews')],
-            ['الملف المهني', 'doctor', route('doctor.profile'), request()->routeIs('doctor.profile')],
+            ['الرئيسية والمدفوعات', 'home', $dashboardRoute, request()->routeIs('web.doctor.dashboard'), null],
+            ['المحفظة والسحب', 'report', route('web.doctor.wallet.index'), request()->routeIs('web.doctor.wallet.*'), null],
+            ['بلاغات عدم الحضور', 'calendar', route('web.doctor.no-show-reports.index'), request()->routeIs('web.doctor.no-show-reports.*'), null],
+            ['حجوزاتي', 'bookings', route('doctor.bookings'), request()->routeIs('doctor.bookings'), null],
+            ['جدول المواعيد', 'clock', route('doctor.availability-slots.index'), request()->routeIs('doctor.schedule') || request()->routeIs('doctor.availability-slots.*'), null],
+            ['المرضى', 'users', route('doctor.patients'), request()->routeIs('doctor.patients'), null],
+            ['الاستشارات', 'consultation', route('doctor.conversations'), request()->routeIs('doctor.conversations*'), null],
+            ['التقييمات', 'star', route('doctor.reviews'), request()->routeIs('doctor.reviews'), null],
+            ['الملف المهني', 'doctor', route('doctor.profile'), request()->routeIs('doctor.profile'), null],
         ]
         : [
-            ['لوحة المدفوعات', 'home', $dashboardRoute, request()->routeIs('web.admin.dashboard')],
-            ['لوحة التحكم', 'home', route('admin.dashboard'), request()->routeIs('admin.dashboard')],
-            ['حجوزاتي', 'bookings', route('admin.bookings'), request()->routeIs('admin.bookings')],
-            ['الأطباء', 'doctor', route('admin.doctors.index'), request()->routeIs('admin.doctors')],
-            ['المرضى', 'users', route('admin.patients'), request()->routeIs('admin.patients')],
-            ['المفضلة لدى المرضى', 'star', route('admin.patient-favorites'), request()->routeIs('admin.patient-favorites*')],
-            ['سجل البحث', 'search', route('admin.search-history'), request()->routeIs('admin.search-history*')],
-            ['التخصصات', 'specialty', route('admin.specialties'), request()->routeIs('admin.specialties')],
-            ['العيادات', 'clinic', route('admin.hospitals.index'), request()->routeIs('admin.hospitals*')],
-            ['المواعيد', 'clock', route('admin.availability-slots.index'), request()->routeIs('admin.availability-slots*')],
-            ['التقارير', 'report', route('admin.reports'), request()->routeIs('admin.reports')],
-            ['المستخدمون والصلاحيات', 'shield', route('admin.users'), request()->routeIs('admin.users')],
-            ['بلاغات عدم الحضور', 'calendar', route('web.admin.no-show-reports.index'), request()->routeIs('web.admin.no-show-reports.*')],
-            ['طلبات السحب', 'report', route('web.admin.withdrawals.index'), request()->routeIs('web.admin.withdrawals.*')],
-            ['إعدادات العمولات', 'settings', route('web.admin.payment-settings.edit'), request()->routeIs('web.admin.payment-settings.*')],
-            ['إعدادات المنصة', 'settings', route('admin.settings'), request()->routeIs('admin.settings')],
+            ['لوحة التحكم', 'home', $dashboardRoute, request()->routeIs('admin.dashboard'), 'dashboard.view'],
+            ['الحجوزات', 'bookings', route('admin.bookings'), request()->routeIs('admin.bookings*'), 'bookings.view'],
+            ['الأطباء', 'doctor', route('admin.doctors'), request()->routeIs('admin.doctors*'), 'doctors.view'],
+            ['المرضى', 'users', route('admin.patients'), request()->routeIs('admin.patients*'), 'patients.view'],
+            ['المفضلة لدى المرضى', 'star', route('admin.patient-favorites'), request()->routeIs('admin.patient-favorites*'), 'patients.favorites.view'],
+            ['سجل البحث', 'search', route('admin.search-history'), request()->routeIs('admin.search-history*'), 'patients.search-history.view'],
+            ['التخصصات', 'specialty', route('admin.specialties'), request()->routeIs('admin.specialties'), 'specialties.view'],
+            ['العيادات', 'clinic', route('admin.hospitals.index'), request()->routeIs('admin.clinics') || request()->routeIs('admin.hospitals.*'), 'clinics.view'],
+            ['المواعيد', 'clock', route('admin.availability-slots.index'), request()->routeIs('admin.appointments') || request()->routeIs('admin.availability-slots.*'), 'appointments.view'],
+            ['التقارير', 'report', route('admin.reports'), request()->routeIs('admin.reports'), 'reports.view'],
+            ['المستخدمون والصلاحيات', 'shield', route('admin.users.index'), request()->routeIs('admin.users.*'), 'admins.view'],
+            ['بلاغات عدم الحضور', 'calendar', route('web.admin.no-show-reports.index'), request()->routeIs('web.admin.no-show-reports.*'), 'no-show-reports.view'],
+            ['طلبات السحب', 'report', route('web.admin.withdrawals.index'), request()->routeIs('web.admin.withdrawals.*'), 'withdrawals.view'],
+            ['إعدادات المنصة', 'settings', route('admin.settings'), request()->routeIs('admin.settings*'), 'settings.view'],
         ];
-    $authenticatedUser = auth()->user();
+    $navigation = array_values(array_filter($navigation, fn (array $item): bool => $item[4] === null || $authenticatedUser->can($item[4])));
     $personName = $isDoctor ? 'د. '.$authenticatedUser->name : $authenticatedUser->name;
     $personRole = $isDoctor ? 'طبيب استشاري' : 'مدير المنصة';
     $avatar = collect(preg_split('/\s+/u', $authenticatedUser->name, -1, PREG_SPLIT_NO_EMPTY))
@@ -60,18 +59,12 @@
         </div>
         <nav class="sidebar-nav">
             <div class="nav-label">القائمة الرئيسية</div>
-            @foreach ($navigation as [$label, $icon, $href, $active])
+            @foreach ($navigation as [$label, $icon, $href, $active, $permission])
                 <a class="nav-link {{ $active ? 'is-active' : '' }}" href="{{ $href }}" @if($active) aria-current="page" @endif>
                     <span class="nav-icon"><x-ui-icon :name="$icon" /></span><span class="sidebar-copy">{{ $label }}</span>
                 </a>
             @endforeach
         </nav>
-        <div class="sidebar-footer">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button class="nav-link nav-button" type="submit"><span class="nav-icon"><x-ui-icon name="logout" /></span><span class="sidebar-copy">تسجيل الخروج</span></button>
-            </form>
-        </div>
     </aside>
 
     <button class="overlay" data-overlay type="button" aria-label="إغلاق القائمة"></button>
@@ -92,9 +85,11 @@
                         <span class="profile-copy"><span class="profile-name">{{ $personName }}</span><span class="profile-role">{{ $personRole }}</span></span>
                         <x-ui-icon name="chevron" />
                     </button>
-                    <div class="profile-menu" id="profile-menu" data-profile-menu>
-                        <a href="#">الملف الشخصي</a><a href="#">الإعدادات</a>
-                        <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit">تسجيل الخروج</button></form>
+                    <div class="profile-menu" id="profile-menu" data-profile-menu role="menu" aria-label="قائمة الحساب" hidden>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" role="menuitem"><x-ui-icon name="logout" /> تسجيل الخروج</button>
+                        </form>
                     </div>
                 </div>
             </div>

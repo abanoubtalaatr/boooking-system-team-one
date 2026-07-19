@@ -1,8 +1,8 @@
-<x-layouts.dashboard title="لوحة مدفوعات الإدارة" role="admin">
-    <div class="breadcrumb">الرئيسية / المدفوعات</div>
+<x-layouts.dashboard title="لوحة التحكم" role="admin">
+    <div class="breadcrumb">الرئيسية / لوحة التحكم</div>
     <div class="page-head">
         <div>
-            <h1 class="page-title">إدارة كل المدفوعات</h1>
+            <h1 class="page-title">لوحة التحكم</h1>
             <p class="page-description">متابعة عمليات الفيزا والكاش والعمولات ومستحقات الأطباء من مكان واحد.</p>
         </div>
         <span class="dashboard-live-indicator"><i></i> بيانات مباشرة من النظام</span>
@@ -38,7 +38,7 @@
             <span class="results-count">{{ number_format($payments->total()) }} نتيجة</span>
         </div>
 
-        <x-payment-dashboard.filters :action="route('web.admin.dashboard')" :doctors="$doctors" show-doctor />
+        <x-payment-dashboard.filters :action="route('admin.dashboard')" :doctors="$doctors" show-doctor />
         <x-payment-dashboard.table :payments="$payments" show-doctor />
     </section>
 </x-layouts.dashboard>

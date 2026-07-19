@@ -8,6 +8,7 @@ use App\Models\AvailabilitySlot;
 use App\Models\Conversation;
 use App\Models\DoctorProfile;
 use App\Models\Message;
+use App\Models\User;
 use App\Policies\AvailabilitySlotPolicy;
 use App\Policies\ConversationPolicy;
 use App\Policies\DoctorPolicy;
@@ -33,6 +34,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        
+        Gate::before(fn (User $user): ?bool => $user->hasRole('super-admin') ? true : null);
+
+        Gate::policy(DoctorProfile::class, DoctorPolicy::class);
+        Gate::policy(AvailabilitySlot::class, AvailabilitySlotPolicy::class);
+        Gate::policy(Conversation::class, ConversationPolicy::class);
+        Gate::policy(Message::class, MessagePolicy::class);
     }
 }

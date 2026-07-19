@@ -9,7 +9,7 @@ class AvailabilitySlotPolicy
 {
     public function update(User $user, AvailabilitySlot $slot): bool
     {
-        return $user->role === "doctor" && $user->id === $slot->doctor->user_id;
+        return $user->isDoctor() && $user->id === $slot->doctor_id;
     }
 
     public function delete(User $user, AvailabilitySlot $slot): bool

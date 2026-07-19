@@ -19,7 +19,7 @@ test('admin payment list requires admin authentication', function () {
 });
 
 test('admin sees all payments and can filter them by doctor and payment state', function () {
-    $admin = User::factory()->create(['role' => 'admin']);
+    $admin = User::factory()->admin()->create();
     [$firstDoctor] = createBookableSlot();
     [$secondDoctor] = createBookableSlot();
     $patient = Patient::factory()->create();
@@ -57,7 +57,7 @@ test('admin sees all payments and can filter them by doctor and payment state', 
 });
 
 test('dashboard payment filters are validated', function () {
-    $admin = User::factory()->create(['role' => 'admin']);
+    $admin = User::factory()->admin()->create();
     Sanctum::actingAs($admin);
 
     $this->getJson('/api/admin/payments?status=unknown&per_page=101&date_from=2026-07-14&date_to=2026-07-13')

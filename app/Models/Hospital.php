@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,16 +20,10 @@ class Hospital extends Model
     protected function casts(): array
     {
         return [
-            'latitude'  => 'decimal:7',
+            'latitude' => 'decimal:7',
             'longitude' => 'decimal:7',
         ];
-
     }
-
-    /*public function doctors()
-    {
-        return $this->hasMany(User::class);
-    }*/
 
     public function doctorProfiles(): HasMany
     {

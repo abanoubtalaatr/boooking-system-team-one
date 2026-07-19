@@ -10,11 +10,11 @@ class SpecialtySeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = User::where("role", "admin")->first() ?? User::factory()->create(["role" => "admin"]);
+        $admin = User::role(['admin', 'super-admin'])->first() ?? User::factory()->admin()->create();
 
         Specialty::factory()
             ->count(8)
-            ->state(["admin_id" => $admin->id])
+            ->state(['admin_id' => $admin->id])
             ->create();
     }
 }

@@ -7,7 +7,6 @@ use App\Enums\ConsultationType;
 use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
 use App\Enums\SlotReservationStatus;
-use App\Enums\UserRole;
 use App\Enums\WalletTransactionType;
 use App\Models\AvailabilitySlot;
 use App\Models\Booking;
@@ -21,18 +20,20 @@ use App\Models\WalletTransaction;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 
 class NoShowScenarioSeeder extends Seeder
 {
     public function run(): void
     {
         DB::transaction(function (): void {
+            $appointmentDay = now()->subDays(2)->toDateString();
             $admin = User::query()->updateOrCreate(
                 ['email' => 'demo.admin@cure.test'],
                 [
                     'name' => 'Demo Admin',
                     'password' => Hash::make('password'),
-                    'role' => UserRole::Admin,
+                    'status' => 'active',
                 ],
             );
             $doctor = User::query()->updateOrCreate(
@@ -40,9 +41,17 @@ class NoShowScenarioSeeder extends Seeder
                 [
                     'name' => 'د. أحمد - سيناريو عدم الحضور',
                     'password' => Hash::make('password'),
-                    'role' => UserRole::Doctor,
+                    'status' => 'active',
                 ],
             );
+            $admin->syncRoles(['admin']);
+            $permissions = collect([
+                'no-show-reports.view',
+                'no-show-reports.approve',
+                'no-show-reports.reject',
+            ])->map(fn (string $permission) => Permission::findOrCreate($permission, 'web'));
+            $admin->syncPermissions($permissions);
+            $doctor->syncRoles(['doctor']);
             DoctorProfile::query()->updateOrCreate(
                 ['user_id' => $doctor->id],
                 [
@@ -63,13 +72,13 @@ class NoShowScenarioSeeder extends Seeder
             );
             $slot = AvailabilitySlot::query()
                 ->where('doctor_id', $doctor->id)
-                ->whereDate('day', '2026-07-14')
+                ->whereDate('day', $appointmentDay)
                 ->whereTime('start_time', '10:00:00')
                 ->whereTime('end_time', '11:00:00')
                 ->first() ?? new AvailabilitySlot;
             $slot->fill([
                 'doctor_id' => $doctor->id,
-                'day' => '2026-07-14',
+                'day' => $appointmentDay,
                 'start_time' => '10:00:00',
                 'end_time' => '11:00:00',
                 'is_booked' => true,
@@ -82,7 +91,7 @@ class NoShowScenarioSeeder extends Seeder
                     'patient_id' => $patient->id,
                     'doctor_id' => $doctor->id,
                     'availability_slot_id' => $slot->id,
-                    'booking_date' => '2026-07-14',
+                    'booking_date' => $appointmentDay,
                     'booking_time' => '10:00:00',
                     'consultation_type' => ConsultationType::Clinic,
                     'status' => BookingStatus::Completed,

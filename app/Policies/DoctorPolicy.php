@@ -14,11 +14,11 @@ class DoctorPolicy
 
     public function update(User $user, DoctorProfile $profile): bool
     {
-        return $user->role === "admin" || $user->id === $profile->user_id;
+        return $user->can('doctors.update') || $user->id === $profile->user_id;
     }
 
     public function manage(User $user): bool
     {
-        return $user->role === "admin";
+        return $user->can('doctors.update');
     }
 }

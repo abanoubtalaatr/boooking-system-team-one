@@ -89,16 +89,16 @@
                         <td>
                             @if ($report->status === NoShowReportStatus::PendingReview)
                                 <div class="no-show-review-actions">
-                                    <form method="POST" action="{{ route('web.admin.no-show-reports.approve', $report) }}">
+                                    @can('no-show-reports.approve')<form method="POST" action="{{ route('web.admin.no-show-reports.approve', $report) }}">
                                         @csrf @method('PATCH')
                                         <input name="review_note" type="text" maxlength="2000" placeholder="ملاحظة الموافقة (اختياري)">
                                         <button class="no-show-button no-show-button--approve" type="submit">قبول وتسوية</button>
-                                    </form>
-                                    <form method="POST" action="{{ route('web.admin.no-show-reports.reject', $report) }}">
+                                    </form>@endcan
+                                    @can('no-show-reports.reject')<form method="POST" action="{{ route('web.admin.no-show-reports.reject', $report) }}">
                                         @csrf @method('PATCH')
                                         <input name="review_note" type="text" maxlength="2000" placeholder="سبب الرفض" required>
                                         <button class="no-show-button no-show-button--reject" type="submit">رفض البلاغ</button>
-                                    </form>
+                                    </form>@endcan
                                 </div>
                             @else
                                 {{ $report->review_note ?? 'تمت المراجعة دون ملاحظة' }}

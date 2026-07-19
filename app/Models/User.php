@@ -9,13 +9,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable, SoftDeletes;
+
+    protected string $guard_name = 'web';
+
+    protected $attributes = [
+        'status' => UserStatus::Active->value,
+    ];
 
     protected $fillable = [
         'created_by',
@@ -34,14 +42,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'role' => UserRole::class,
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'role' => UserRole::class,
+        'status' => UserStatus::class,
+        'password' => 'hashed',
+    ];
 
     public function creator(): BelongsTo
     {
@@ -98,6 +104,11 @@ class User extends Authenticatable
         return $this->hasMany(Booking::class, 'doctor_id');
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'user_id');
+    }
+
     public function wallet(): HasOne
     {
         return $this->hasOne(Wallet::class, 'doctor_id')
@@ -129,12 +140,22 @@ class User extends Authenticatable
         return $this->hasMany(BookingNoShowReport::class, 'reviewed_by');
     }
 
-     public function reviews(): HasMany
+    public function isAdmin(): bool
     {
-        return $this->hasMany(Review::class);
+        return $this->hasAnyRole(['admin', 'super-admin']);
     }
 
-    public function averageRating()
+    public function isDoctor(): bool
+    {
+        return $this->hasRole('doctor');
+    }
+
+    public function isSuspended(): bool
+    {
+        return $this->status === UserStatus::Suspended;
+    }
+
+    public function averageRating(): ?float
     {
         return $this->reviews()->avg('rating');
     }

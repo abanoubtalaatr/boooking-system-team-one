@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 class AdminConversationController extends Controller
 {
     private const CONVERSATIONS_PER_PAGE = 10;
+
     private const MESSAGES_PER_PAGE = 20;
 
     /**
@@ -17,9 +18,7 @@ class AdminConversationController extends Controller
      */
     public function index(User $doctor): View
     {
-        // {doctor} is a plain User route-model-bind, so any user id works
-        // here unless we confirm the role — reject anything that isn't a doctor.
-        abort_unless($doctor->role->value === 'doctor', 404);
+        abort_unless($doctor->isDoctor(), 404);
 
         $conversations = Conversation::query()
             ->where('doctor_id', $doctor->id)

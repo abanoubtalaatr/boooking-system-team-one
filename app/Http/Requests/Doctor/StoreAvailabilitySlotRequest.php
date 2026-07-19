@@ -8,15 +8,15 @@ class StoreAvailabilitySlotRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->role === "doctor";
+        return $this->user()?->isDoctor() ?? false;
     }
 
     public function rules(): array
     {
         return [
-            "day" => ["required", "date", "after_or_equal:today"],
-            "start_time" => ["required", "date_format:H:i"],
-            "end_time" => ["required", "date_format:H:i", "after:start_time"],
+            'day' => ['required', 'date', 'after_or_equal:today'],
+            'start_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
         ];
     }
 }

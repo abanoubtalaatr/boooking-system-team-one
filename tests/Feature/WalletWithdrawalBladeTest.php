@@ -36,16 +36,16 @@ test('wallet withdrawal pages require authentication and the correct role', func
     $this->get('/doctor/wallet')->assertRedirect(route('login'));
     $this->get('/admin/withdrawals')->assertRedirect(route('login'));
 
-    $doctor = User::factory()->create(['role' => 'doctor']);
-    $admin = User::factory()->create(['role' => 'admin']);
+    $doctor = User::factory()->doctor()->create();
+    $admin = User::factory()->admin()->create();
 
     $this->actingAs($doctor)->get('/admin/withdrawals')->assertForbidden();
     $this->actingAs($admin)->get('/doctor/wallet')->assertForbidden();
 });
 
 test('doctor wallet page shows available balance after pending requests and only own history', function () {
-    $doctor = User::factory()->create(['role' => 'doctor', 'name' => 'طبيب المحفظة']);
-    $otherDoctor = User::factory()->create(['role' => 'doctor', 'name' => 'طبيب آخر']);
+    $doctor = User::factory()->doctor()->create(['name' => 'طبيب المحفظة']);
+    $otherDoctor = User::factory()->doctor()->create(['name' => 'طبيب آخر']);
     $wallet = createWithdrawalWallet($doctor, 100000);
     $otherWallet = createWithdrawalWallet($otherDoctor, 200000);
 
@@ -64,7 +64,7 @@ test('doctor wallet page shows available balance after pending requests and only
 });
 
 test('doctor creates a pending withdrawal without immediately deducting wallet balance', function () {
-    $doctor = User::factory()->create(['role' => 'doctor']);
+    $doctor = User::factory()->doctor()->create();
     $wallet = createWithdrawalWallet($doctor, 100000);
     $idempotencyKey = (string) Str::uuid();
 
@@ -86,7 +86,7 @@ test('doctor creates a pending withdrawal without immediately deducting wallet b
 });
 
 test('pending requests prevent a doctor from requesting more than available balance', function () {
-    $doctor = User::factory()->create(['role' => 'doctor']);
+    $doctor = User::factory()->doctor()->create();
     $wallet = createWithdrawalWallet($doctor, 100000);
     createPendingWithdrawal($doctor, $wallet, 60000);
 
@@ -104,9 +104,9 @@ test('pending requests prevent a doctor from requesting more than available bala
 });
 
 test('admin sees withdrawal requests for all doctors', function () {
-    $admin = User::factory()->create(['role' => 'admin']);
-    $firstDoctor = User::factory()->create(['role' => 'doctor', 'name' => 'الطبيب الأول']);
-    $secondDoctor = User::factory()->create(['role' => 'doctor', 'name' => 'الطبيب الثاني']);
+    $admin = User::factory()->admin()->create();
+    $firstDoctor = User::factory()->doctor()->create(['name' => 'الطبيب الأول']);
+    $secondDoctor = User::factory()->doctor()->create(['name' => 'الطبيب الثاني']);
     createPendingWithdrawal($firstDoctor, createWithdrawalWallet($firstDoctor), 20000);
     createPendingWithdrawal($secondDoctor, createWithdrawalWallet($secondDoctor), 30000);
 
@@ -120,8 +120,8 @@ test('admin sees withdrawal requests for all doctors', function () {
 });
 
 test('admin approval deducts wallet once and creates one debit transaction', function () {
-    $admin = User::factory()->create(['role' => 'admin']);
-    $doctor = User::factory()->create(['role' => 'doctor']);
+    $admin = User::factory()->admin()->create();
+    $doctor = User::factory()->doctor()->create();
     $wallet = createWithdrawalWallet($doctor, 100000);
     $withdrawal = createPendingWithdrawal($doctor, $wallet, 40000);
     $url = route('web.admin.withdrawals.complete', $withdrawal);
@@ -144,8 +144,8 @@ test('admin approval deducts wallet once and creates one debit transaction', fun
 });
 
 test('admin cancellation keeps wallet balance and stores rejection reason', function () {
-    $admin = User::factory()->create(['role' => 'admin']);
-    $doctor = User::factory()->create(['role' => 'doctor']);
+    $admin = User::factory()->admin()->create();
+    $doctor = User::factory()->doctor()->create();
     $wallet = createWithdrawalWallet($doctor, 100000);
     $withdrawal = createPendingWithdrawal($doctor, $wallet, 40000);
 

@@ -11,17 +11,16 @@ use App\Models\Payment;
 use App\Models\Specialization;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     /**
-     * Main dashboard overview
+     * Main dashboard overview.
      */
     public function index()
     {
-        $summary = [
-            'total_doctors' => User::where('role', 'doctor')->count(),
+        $stats = [
+            'total_doctors' => User::role('doctor')->count(),
             'total_patients' => Patient::count(),
             'total_bookings' => Booking::count(),
             'total_hospitals' => Hospital::count(),
@@ -30,24 +29,21 @@ class DashboardController extends Controller
             'completed_bookings' => Booking::where('status', 'completed')->count(),
             'cancelled_bookings' => Booking::where('status', 'cancelled')->count(),
             'total_revenue' => Booking::where('payment_status', 'paid')->sum('price'),
-            'total_transactions'=>Payment::count(),
+            'total_transactions' => Payment::count(),
         ];
 
-        // Bookings over the last 7 days (for a chart)
         $bookingsPerDay = Booking::selectRaw('DATE(created_at) as date, COUNT(*) as total')
             ->where('created_at', '>=', now()->subDays(7))
             ->groupBy('date')
             ->orderBy('date')
             ->get();
 
-        // Latest bookings for a quick table on the dashboard
         $recentBookings = Booking::with(['patient', 'doctor.doctorProfile'])
             ->latest()
             ->take(5)
             ->get();
 
-        // Top rated doctors
-        $topDoctors = User::where('role', 'doctor')
+        $topDoctors = User::role('doctor')
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')
             ->orderByDesc('reviews_avg_rating')
@@ -55,20 +51,23 @@ class DashboardController extends Controller
             ->get();
 
         return view('admin.dashboard', compact(
-            'summary', 'bookingsPerDay', 'recentBookings', 'topDoctors'
+            'stats',
+            'bookingsPerDay',
+            'recentBookings',
+            'topDoctors'
         ));
     }
 
     /**
-     * All bookings with filters
+     * All bookings with filters.
      */
     public function bookings(Request $request)
     {
         $bookings = Booking::with(['patient', 'doctor.doctorProfile', 'slot'])
-            ->when($request->status, fn ($q) => $q->where('status', $request->status))
-            ->when($request->payment_status, fn ($q) => $q->where('payment_status', $request->payment_status))
-            ->when($request->search, function ($q) use ($request) {
-                $q->whereHas('patient', fn ($q) => $q->where('name', 'like', "%{$request->search}%"));
+            ->when($request->status, fn ($query) => $query->where('status', $request->status))
+            ->when($request->payment_status, fn ($query) => $query->where('payment_status', $request->payment_status))
+            ->when($request->search, function ($query) use ($request): void {
+                $query->whereHas('patient', fn ($patientQuery) => $patientQuery->where('name', 'like', "%{$request->search}%"));
             })
             ->latest()
             ->paginate(15);
@@ -76,49 +75,59 @@ class DashboardController extends Controller
         return view('admin.bookings.index', compact('bookings'));
     }
 
-    
-
     /**
-     * All patients listing
+     * All doctors listing.
      */
-    public function patients(Request $request)
+    public function doctors(Request $request)
     {
-        $patients = Patient::withCount('bookings')
-            ->when($request->search, fn ($q) => $q->where('name', 'like', "%{$request->search}%"))
-            ->latest()
-            ->paginate(15);
+        $doctors = User::role('doctor')
+            ->with('doctorProfile')
+            ->paginate(10);
 
-        return view('admin.patients.index', compact('patients'));
+        return view('admin.doctors.index', compact('doctors'));
     }
 
     /**
-     * Specializations CRUD listing
+     * All patients listing.
+     */
+    public function patients()
+    {
+        return view('admin.patients.index');
+    }
+
+    public function patientProfile(Patient $patient)
+    {
+        return view('admin.patients.show', compact('patient'));
+    }
+
+    /**
+     * Specializations listing.
      */
     public function specialties()
     {
-        $specializations = Specialization::withCount('doctorProfiles')->paginate(15);
+        $specializations = Specialization::withCount('doctors')->latest()->paginate(15);
 
         return view('admin.specialties.index', compact('specializations'));
     }
 
     /**
-     * Hospitals/clinics listing
+     * Hospitals/clinics listing.
      */
     public function clinics()
     {
-        $hospitals = Hospital::withCount('doctorProfiles')->paginate(15);
+        $hospitals = Hospital::withCount('doctorProfiles')->latest()->paginate(15);
 
         return view('admin.clinics.index', compact('hospitals'));
     }
 
     /**
-     * Appointments / availability slots overview
+     * Appointments / availability slots overview.
      */
     public function appointments(Request $request)
     {
         $slots = AvailabilitySlot::with('doctor.doctorProfile')
-            ->when($request->date, fn ($q) => $q->whereDate('day', $request->date))
-            ->when($request->doctor_id, fn ($q) => $q->where('doctor_id', $request->doctor_id))
+            ->when($request->date, fn ($query) => $query->whereDate('day', $request->date))
+            ->when($request->doctor_id, fn ($query) => $query->where('doctor_id', $request->doctor_id))
             ->orderBy('day')
             ->orderBy('start_time')
             ->paginate(20);
@@ -127,63 +136,10 @@ class DashboardController extends Controller
     }
 
     /**
-     * Reports: revenue + booking trends
+     * Reports page.
      */
-
-public function reports(Request $request)
-{
-    $from = $request->filled('from')
-        ? Carbon::parse($request->input('from'))->startOfDay()
-        : now()->subMonth()->startOfDay();
-
-    $to = $request->filled('to')
-        ? Carbon::parse($request->input('to'))->endOfDay()
-        : now()->endOfDay();
-
-    $revenueByMonth = Booking::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(price) as total')
-        ->where('payment_status', 'paid')
-        ->whereBetween('created_at', [$from, $to])
-        ->groupBy('month')
-        ->orderBy('month')
-        ->get();
-
-    $bookingsByStatus = Booking::selectRaw('status, COUNT(*) as total')
-        ->whereBetween('created_at', [$from, $to])
-        ->groupBy('status')
-        ->get();
-
-    $topSpecializations = Specialization::withCount('doctors')
-        ->orderByDesc('doctors_count')
-        ->take(5)
-        ->get();
-
-    return view('admin.reports.index', compact(
-        'revenueByMonth',
-        'bookingsByStatus',
-        'topSpecializations',
-        'from',
-        'to'
-    ));
-}
-
-    /**
-     * Users & permissions management (admin/doctor accounts)
-     */
-    public function users(Request $request)
+    public function reports()
     {
-        $users = User::when($request->role, fn ($q) => $q->where('role', $request->role))
-            ->when($request->search, fn ($q) => $q->where('name', 'like', "%{$request->search}%"))
-            ->latest()
-            ->paginate(15);
-
-        return view('admin.users.index', compact('users'));
-    }
-
-    /**
-     * Platform settings
-     */
-    public function settings()
-    {
-        return view('admin.settings.index');
+        return view('admin.reports.index');
     }
 }

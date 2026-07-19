@@ -8,14 +8,14 @@ class AssignHospitalsRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->role === "doctor";
+        return $this->user()?->isDoctor() ?? false;
     }
 
     public function rules(): array
     {
         return [
-            "hospital_ids" => ["required", "array", "min:1"],
-            "hospital_ids.*" => ["required", "uuid", "exists:hospitals,id"],
+            'hospital_ids' => ['required', 'array', 'min:1'],
+            'hospital_ids.*' => ['required', 'uuid', 'exists:hospitals,id'],
         ];
     }
 }

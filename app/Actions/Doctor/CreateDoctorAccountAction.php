@@ -13,8 +13,7 @@ class CreateDoctorAccountAction
 {
     public function __construct(
         private readonly DoctorProfileRepositoryInterface $doctorProfiles,
-    ) {
-    }
+    ) {}
 
     /**
      * Admin creates the users row + an empty doctor_profiles row in one transaction.
@@ -23,16 +22,16 @@ class CreateDoctorAccountAction
     {
         return DB::transaction(function () use ($data, $admin) {
             $user = User::create([
-                "name" => $data["name"],
-                "email" => $data["email"],
-                "password" => Hash::make($data["password"]),
-                "role" => "doctor",
-                "status" => UserStatus::PendingProfile,
-                "created_by" => $admin->id,
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'status' => UserStatus::PendingProfile,
+                'created_by' => $admin->id,
             ]);
+            $user->assignRole('doctor');
 
             return $this->doctorProfiles->create([
-                "user_id" => $user->id,
+                'user_id' => $user->id,
             ]);
         });
     }

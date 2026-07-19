@@ -11,22 +11,22 @@ class ConversationSeeder extends Seeder
 {
     public function run(): void
     {
-        $patients = Patient::all();
+        $patients = Patient::query()->get();
+        $doctors = User::role('doctor')->get();
 
-        $doctors = User::where('role', 'doctor')->get();
+        if ($patients->isEmpty()) {
+            $patients = Patient::factory()->count(5)->create();
+        }
 
-        if ($patients->isEmpty() || $doctors->isEmpty()) {
-            $this->command->warn('Patients or doctors not found.');
-            return;
+        if ($doctors->isEmpty()) {
+            $doctors = User::factory()->doctor()->count(5)->create();
         }
 
         foreach ($patients as $patient) {
-
             Conversation::factory()->create([
                 'patient_id' => $patient->id,
                 'doctor_id' => $doctors->random()->id,
             ]);
-
         }
     }
 }
