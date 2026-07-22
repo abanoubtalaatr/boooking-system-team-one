@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\PatientFavoriteDoctorsController;
 use App\Http\Controllers\Admin\PatientSearchHistoryController;
+use App\Http\Controllers\Admin\SpecializationController;
 use App\Http\Controllers\Doctor\ConversationController;
 use App\Http\Controllers\Doctor\DashboardController as DoctorDashboardController;
 use App\Http\Controllers\Web\AdminNoShowReportController;
@@ -98,6 +99,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         ->name('bookings');
     Route::get('/bookings/{booking}', [BookingController::class, 'show'])
         ->name('bookings.show');
+
+    // Route::get('/specializations',[SpecializationController::class, 'index'])
+        // ->name('specializations.index');
+    Route::resource('specializations', SpecializationController::class);
 });
 
 Route::middleware(['auth', 'role:doctor'])

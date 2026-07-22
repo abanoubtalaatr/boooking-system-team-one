@@ -1,0 +1,402 @@
+.specializations-page{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:28px;
+
+}
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.page-label{
+
+    color:#3b82f6;
+
+    font-weight:600;
+
+}
+
+.page-header h1{
+
+    margin:8px 0;
+
+    font-size:32px;
+
+}
+
+.page-header p{
+
+    color:#64748b;
+
+}
+
+.primary-button{
+
+    background:#2563eb;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    padding:12px 22px;
+
+    border-radius:12px;
+
+    font-weight:600;
+
+    transition:.2s;
+
+}
+
+.primary-button:hover{
+
+    background:#1d4ed8;
+
+}
+
+.summary-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+}
+
+.summary-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:24px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.06);
+
+}
+
+.summary-card span{
+
+    color:#64748b;
+
+}
+
+.summary-card h2{
+
+    margin-top:12px;
+
+    font-size:34px;
+
+}
+
+.toolbar{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+}
+
+.search-form{
+
+    width:320px;
+
+    display:flex;
+
+    align-items:center;
+
+    background:white;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+
+}
+
+.search-form input{
+
+    flex:1;
+
+    border:none;
+
+    padding:14px;
+
+    outline:none;
+
+}
+
+.search-form button{
+
+    border:none;
+
+    background:none;
+
+    padding:14px;
+
+    cursor:pointer;
+
+}
+
+.table-wrapper{
+
+    background:white;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.06);
+
+}
+
+.table-wrapper table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.table-wrapper th{
+
+    background:#f8fafc;
+
+    padding:18px;
+
+    text-align:center;
+
+    font-weight:700;
+
+}
+
+.table-wrapper td{
+
+    padding:18px;
+
+    border-top:1px solid #edf2f7;
+
+    text-align:center;
+
+}
+
+.table-wrapper tbody tr{
+
+    transition:.2s;
+
+}
+
+.table-wrapper tbody tr:hover{
+
+    background:#f8fbff;
+
+}
+
+.specialization-image{
+
+    width:50px;
+
+    height:50px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+}
+
+.doctor-badge{
+
+    background:#e0ecff;
+
+    color:#2563eb;
+
+    padding:6px 12px;
+
+    border-radius:50px;
+
+    font-weight:700;
+
+}
+
+.actions{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+}
+
+.edit-btn{
+
+    background:#eff6ff;
+
+    color:#2563eb;
+
+    text-decoration:none;
+
+    padding:8px 16px;
+
+    border-radius:8px;
+
+}
+
+.delete-btn{
+
+    background:#fef2f2;
+
+    color:#dc2626;
+
+    border:none;
+
+    padding:8px 16px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+.empty-state{
+
+    padding:60px;
+
+}
+
+.empty-state h3{
+
+    margin-bottom:10px;
+
+}
+
+.empty-state p{
+
+    color:#64748b;
+
+}
+
+.pagination{
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+/* Create page */
+
+.form-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+
+}
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:24px;
+
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.form-group label{
+
+    font-weight:600;
+
+}
+
+.form-group input{
+
+    padding:14px;
+
+    border:1px solid #dbe2ea;
+
+    border-radius:10px;
+
+    outline:none;
+
+}
+
+.form-group input:focus{
+
+    border-color:#2563eb;
+
+}
+.form-group .img{
+    cursor:pointer;
+}
+
+.image-preview{
+
+    margin-top:30px;
+
+}
+
+.image-preview img{
+
+    width:140px;
+
+    height:140px;
+
+    border-radius:16px;
+
+    object-fit:cover;
+
+    border:1px solid #e5e7eb;
+
+}
+
+.form-actions{
+
+    margin-top:30px;
+
+}
+
+.secondary-button{
+
+    padding:12px 20px;
+
+    border-radius:12px;
+
+    background:#fff;
+
+    color:#334155;
+
+    border:1px solid #dbe2ea;
+
+    text-decoration:none;
+
+}
+
+.error{
+
+    color:#dc2626;
+
+    font-size:13px;
+
+}

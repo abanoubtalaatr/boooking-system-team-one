@@ -23,7 +23,7 @@
             ['المرضى', 'users', route('admin.patients'), request()->routeIs('admin.patients')],
             ['المفضلة لدى المرضى', 'star', route('admin.patient-favorites'), request()->routeIs('admin.patient-favorites*')],
             ['سجل البحث', 'search', route('admin.search-history'), request()->routeIs('admin.search-history*')],
-            ['التخصصات', 'specialty', route('admin.specialties'), request()->routeIs('admin.specialties')],
+            ['التخصصات', 'specialty', route('admin.specializations.index'), request()->routeIs('admin.specializations.index')],
             ['العيادات', 'clinic', route('admin.clinics'), request()->routeIs('admin.clinics')],
             ['المواعيد', 'clock', route('admin.appointments'), request()->routeIs('admin.appointments')],
             ['التقارير', 'report', route('admin.reports'), request()->routeIs('admin.reports')],
