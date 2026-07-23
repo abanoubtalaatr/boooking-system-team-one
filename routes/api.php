@@ -96,19 +96,19 @@ Route::get('/payments/paymob/return', PaymobReturnController::class)
     ->name('payments.paymob.return');
 
 Route::post('/doctor/bookings/{booking}/cash-collected', MarkCashCollectedController::class)
-    ->middleware(['auth:sanctum', 'role:doctor'])
+    ->middleware(['auth:sanctum', 'active', 'role:doctor'])
     ->name('doctor.payments.cash_collected');
 
 Route::post('/doctor/bookings/{booking}/no-show-reports', StoreBookingNoShowReportController::class)
-    ->middleware(['auth:sanctum', 'role:doctor'])
+    ->middleware(['auth:sanctum', 'active', 'role:doctor'])
     ->name('doctor.no-show-reports.store');
 
 Route::get('/doctor/dashboard', DoctorDashboardController::class)
-    ->middleware(['auth:sanctum', 'role:doctor'])
+    ->middleware(['auth:sanctum', 'active', 'role:doctor'])
     ->name('api.doctor.dashboard');
 
 Route::get('/doctor/dashboard/payments', DoctorPaymentIndexController::class)
-    ->middleware(['auth:sanctum', 'role:doctor'])
+    ->middleware(['auth:sanctum', 'active', 'role:doctor'])
     ->name('api.doctor.dashboard.payments');
 
 Route::middleware('auth:sanctum')->get('/me', function (Request $request) {

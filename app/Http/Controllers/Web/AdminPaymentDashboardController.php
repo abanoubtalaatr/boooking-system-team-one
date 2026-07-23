@@ -22,7 +22,7 @@ class AdminPaymentDashboardController extends Controller
             'payments' => $this->payments->handle($request->validated()),
             'summary' => $this->summary->handle(),
             'doctors' => User::query()
-                ->where('role', 'doctor')
+                ->role('doctor')
                 ->orderBy('name')
                 ->get(['id', 'name']),
         ]);

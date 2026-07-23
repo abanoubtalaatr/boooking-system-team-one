@@ -8,7 +8,12 @@ use App\Models\Specialization;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
+use Tests\DuskTestCase;
 use Tests\TestCase;
+
+pest()->extend(DuskTestCase::class)
+//  ->use(Illuminate\Foundation\Testing\DatabaseMigrations::class)
+    ->in('Browser');
 
 /*
 |--------------------------------------------------------------------------
@@ -58,7 +63,7 @@ function something()
 
 function createBookableSlot(): array
 {
-    $doctor = User::factory()->create(['role' => 'doctor']);
+    $doctor = User::factory()->doctor()->create();
     $specialization = Specialization::factory()->create(['name' => fake()->unique()->jobTitle()]);
     $hospital = Hospital::factory()->create();
     DoctorProfile::factory()->create([

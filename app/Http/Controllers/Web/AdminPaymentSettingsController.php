@@ -19,7 +19,7 @@ class AdminPaymentSettingsController extends Controller
 
     public function edit(): View
     {
-        return view('admin.payment-settings', [
+        return view('admin.settings', [
             'cardCommissionPercentage' => $this->commission->formattedPercentage(PaymentMethod::Card),
             'cashCommissionPercentage' => $this->commission->formattedPercentage(PaymentMethod::Cash),
         ]);
@@ -29,6 +29,7 @@ class AdminPaymentSettingsController extends Controller
     {
         $this->updateSettings->handle($request->validated());
 
-        return back()->with('success', 'تم تحديث نسب عمولة الفيزا والكاش بنجاح.');
+        return redirect()->route('admin.settings')
+            ->with('success', 'تم تحديث إعدادات المنصة بنجاح.');
     }
 }

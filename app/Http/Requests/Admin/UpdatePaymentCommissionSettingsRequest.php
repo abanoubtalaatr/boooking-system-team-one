@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Admin;
 
-use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePaymentCommissionSettingsRequest extends FormRequest
@@ -12,7 +11,7 @@ class UpdatePaymentCommissionSettingsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()?->role === UserRole::Admin;
+        return $this->user()?->can('settings.update') ?? false;
     }
 
     /**

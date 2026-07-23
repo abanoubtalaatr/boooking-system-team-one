@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
 use App\Models\DoctorProfile;
 use App\Models\Favorite;
@@ -10,7 +10,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class DoctorRepository implements DoctorRepositoryInterface
+class EloquentDoctorRepository implements DoctorRepositoryInterface
 {
     public function paginate(Request $request, ?Patient $patient = null): LengthAwarePaginator
     {

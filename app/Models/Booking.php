@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Enums\BookingStatus;
@@ -33,15 +32,19 @@ class Booking extends Model
         'hold_expires_at',
     ];
 
-    protected $casts = [
-        'booking_date' => 'date',
-        'booking_time' => 'datetime:H:i',
-        'status' => BookingStatus::class,
-        'price' => 'decimal:2',
-        'payment_status' => PaymentStatus::class,
-        'consultation_type' => ConsultationType::class,
-        'hold_expires_at' => 'datetime',
-    ];
+
+    protected function casts(): array
+    {
+        return [
+            'booking_date'      => 'date',
+            'booking_time'      => 'datetime:H:i',
+            'status'            => BookingStatus::class,
+            'price'             => 'decimal:2',
+            'payment_status'    => PaymentStatus::class,
+            'consultation_type' => ConsultationType::class,
+            'hold_expires_at'   => 'datetime',
+        ];
+    }
 
     public function patient(): BelongsTo
     {

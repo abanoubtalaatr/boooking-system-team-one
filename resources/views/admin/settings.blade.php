@@ -1,18 +1,18 @@
-<x-layouts.dashboard title="إعدادات العمولات" role="admin">
-    <div class="breadcrumb">الرئيسية / إعدادات المنصة / العمولات</div>
+<x-layouts.dashboard title="إعدادات المنصة" role="admin">
+    <div class="breadcrumb">الرئيسية / إعدادات المنصة</div>
     <div class="page-head">
         <div>
-            <h1 class="page-title">إعدادات عمولات الحجوزات</h1>
-            <p class="page-description">حدد نسبة المنصة بشكل مستقل لمدفوعات الفيزا والحجوزات المدفوعة كاش.</p>
+            <h1 class="page-title">إعدادات المنصة</h1>
+            <p class="page-description">إدارة إعدادات المنصة ونسب عمولات الحجوزات من مكان واحد.</p>
         </div>
-        <a class="secondary-button" href="{{ route('web.admin.dashboard') }}">العودة للمدفوعات</a>
+        <a class="secondary-button" href="{{ route('admin.dashboard') }}">العودة للوحة التحكم</a>
     </div>
 
     @if (session('success'))
         <div class="settings-alert settings-alert--success" role="status">{{ session('success') }}</div>
     @endif
 
-    <form class="commission-settings" method="POST" action="{{ route('web.admin.payment-settings.update') }}">
+    <form class="commission-settings" method="POST" action="{{ route('admin.settings.update') }}">
         @csrf
         @method('PUT')
 
@@ -66,8 +66,8 @@
         </aside>
 
         <div class="settings-actions">
-            <button class="primary-button" type="submit">حفظ نسب العمولات</button>
-            <a class="secondary-button" href="{{ route('web.admin.payment-settings.edit') }}">إلغاء التعديلات</a>
+            @can('settings.update')<button class="primary-button" type="submit">حفظ نسب العمولات</button>@endcan
+            <a class="secondary-button" href="{{ route('admin.settings') }}">إلغاء التعديلات</a>
         </div>
     </form>
 </x-layouts.dashboard>

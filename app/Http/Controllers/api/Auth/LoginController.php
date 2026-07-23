@@ -24,7 +24,7 @@ class LoginController extends Controller
     {
         $user = User::where("email", $request->validated("email"))->first();
 
-        if (! $user || ! Hash::check($request->validated("password"), $user->password)) {
+        if (! $user || $user->isSuspended() || ! Hash::check($request->validated("password"), $user->password)) {
             throw ValidationException::withMessages([
                 "email" => ["The provided credentials are incorrect."],
             ]);
@@ -40,7 +40,7 @@ class LoginController extends Controller
                 "id" => $user->id,
                 "name" => $user->name,
                 "email" => $user->email,
-                "role" => $user->role,
+                "roles" => $user->getRoleNames(),
                 "status" => $user->status,
             ],
         ], "Logged in.");

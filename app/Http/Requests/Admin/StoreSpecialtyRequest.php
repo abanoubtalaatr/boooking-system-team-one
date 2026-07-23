@@ -8,13 +8,13 @@ class StoreSpecialtyRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->role === "admin";
+        return $this->user()?->can('specialties.create') ?? false;
     }
 
     public function rules(): array
     {
         return [
-            "name" => ["required", "string", "max:255", "unique:specialties,name"],
+            'name' => ['required', 'string', 'max:255', 'unique:specialties,name'],
         ];
     }
 }

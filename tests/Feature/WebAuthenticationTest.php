@@ -2,7 +2,6 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 uses(RefreshDatabase::class);
@@ -31,18 +30,61 @@ test('web assets use forwarded https scheme behind the local ngrok proxy', funct
 });
 
 test('admin is redirected to the admin payment dashboard after login', function () {
-    $admin = User::factory()->create(['role' => 'admin']);
+    $admin = User::factory()->admin()->create();
 
     $this->post(route('login.store'), [
         'email' => $admin->email,
         'password' => 'password',
-    ])->assertRedirect(route('web.admin.dashboard'));
+    ])->assertRedirect(route('admin.dashboard'));
 
     $this->assertAuthenticatedAs($admin);
 });
 
+test('dashboard header contains an accessible logout dropdown', function () {
+    $admin = User::factory()->admin()->create();
+
+    $this->actingAs($admin)
+        ->get(route('admin.dashboard'))
+        ->assertOk()
+        ->assertSee('data-profile-toggle', false)
+        ->assertSee('data-profile-menu', false)
+        ->assertSee('aria-expanded="false"', false)
+        ->assertSee('action="'.route('logout').'"', false)
+        ->assertSee('تسجيل الخروج');
+});
+
+test('restricted admin is redirected to the first page they can access', function () {
+    $admin = User::factory()->restrictedAdmin()->create();
+    $admin->givePermissionTo('doctors.view');
+
+    $this->post(route('login.store'), [
+        'email' => $admin->email,
+        'password' => 'password',
+    ])->assertRedirect(route('admin.doctors'));
+});
+
+test('admin without permissions is redirected to the no access page', function () {
+    $admin = User::factory()->restrictedAdmin()->create();
+
+    $this->post(route('login.store'), [
+        'email' => $admin->email,
+        'password' => 'password',
+    ])->assertRedirect(route('admin.no-access'));
+});
+
+test('suspended users cannot start a web session', function () {
+    $admin = User::factory()->admin()->create(['status' => 'suspended']);
+
+    $this->from(route('login'))->post(route('login.store'), [
+        'email' => $admin->email,
+        'password' => 'password',
+    ])->assertRedirect(route('login'))->assertSessionHasErrors('email');
+
+    $this->assertGuest();
+});
+
 test('doctor is redirected to the doctor payment dashboard after login', function () {
-    $doctor = User::factory()->create(['role' => 'doctor']);
+    $doctor = User::factory()->doctor()->create();
 
     $this->post(route('login.store'), [
         'email' => $doctor->email,
@@ -64,14 +106,12 @@ test('invalid web credentials are rejected', function () {
 });
 
 test('users outside the supported web roles cannot log in', function () {
-    DB::table('users')->insert([
+    $user = User::factory()->create([
         'name' => 'Unsupported User',
         'email' => 'unsupported@example.test',
         'password' => Hash::make('password'),
-        'role' => 'patient',
-        'created_at' => now(),
-        'updated_at' => now(),
     ]);
+    $user->syncRoles([]);
 
     $this->from(route('login'))->post(route('login.store'), [
         'email' => 'unsupported@example.test',

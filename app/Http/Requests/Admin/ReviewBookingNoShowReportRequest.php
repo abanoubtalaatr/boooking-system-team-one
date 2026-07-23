@@ -12,7 +12,11 @@ class ReviewBookingNoShowReportRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $permission = $this->routeIs('web.admin.no-show-reports.approve', 'admin.no-show-reports.approve')
+            ? 'no-show-reports.approve'
+            : 'no-show-reports.reject';
+
+        return $this->user()?->can($permission) ?? false;
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Wallet;
 
-use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreWalletWithdrawalRequest extends FormRequest
@@ -12,7 +11,7 @@ class StoreWalletWithdrawalRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()?->role === UserRole::Doctor;
+        return $this->user()?->isDoctor() ?? false;
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Wallet;
 
-use App\Enums\UserRole;
 use App\Enums\WalletWithdrawalStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -14,7 +13,7 @@ class AdminWithdrawalIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()?->role === UserRole::Admin;
+        return $this->user()?->can('withdrawals.view') ?? false;
     }
 
     /**

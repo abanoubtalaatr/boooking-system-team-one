@@ -7,6 +7,7 @@ use App\Models\AvailabilitySlot;
 use App\Models\Booking;
 use App\Models\Patient;
 use App\Models\Payment;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -45,18 +46,18 @@ function createBladeDashboardPayment(
 }
 
 test('payment Blade dashboards require authentication and the correct role', function () {
-    $this->get('/admin')->assertRedirect(route('login'));
+    $this->get('/admin/dashboard')->assertRedirect(route('login'));
     $this->get('/doctor')->assertRedirect(route('login'));
 
     [$doctor] = createBookableSlot();
-    $this->actingAs($doctor)->get('/admin')->assertForbidden();
+    $this->actingAs($doctor)->get('/admin/dashboard')->assertForbidden();
 
-    $admin = User::factory()->create(['role' => 'admin']);
+    $admin = User::factory()->admin()->create();
     $this->actingAs($admin)->get('/doctor')->assertForbidden();
 });
 
 test('admin Blade dashboard displays payments for every doctor and real financial totals', function () {
-    $admin = User::factory()->create(['role' => 'admin', 'name' => 'مدير المنصة']);
+    $admin = User::factory()->admin()->create(['name' => 'مدير المنصة']);
     [$firstDoctor] = createBookableSlot();
     [$secondDoctor] = createBookableSlot();
     $firstDoctor->update(['name' => 'الطبيب الأول']);
@@ -67,20 +68,51 @@ test('admin Blade dashboard displays payments for every doctor and real financia
     createBladeDashboardPayment($secondDoctor, $patient, PaymentMethod::Cash, PaymentStatus::CashCollected, 30000);
 
     $this->actingAs($admin)
-        ->get('/admin')
+        ->get('/admin/dashboard')
         ->assertOk()
         ->assertViewIs('admin.dashboard')
         ->assertViewHas('summary', fn (array $summary): bool => $summary['total_transactions'] === 2
             && $summary['gross_collected_cents'] === 80000
             && $summary['platform_fees_cents'] === 8000)
-        ->assertSeeText('إدارة كل المدفوعات')
+        ->assertSeeText('لوحة التحكم')
         ->assertSeeText('الطبيب الأول')
         ->assertSeeText('الطبيب الثاني')
         ->assertSeeText('مريض الاختبار');
 });
 
+test('admin dashboard has one canonical route and menu entry', function () {
+    $admin = User::factory()->admin()->create();
+
+    $this->actingAs($admin)->get('/admin')->assertNotFound();
+
+    $this->actingAs($admin)
+        ->get('/admin/dashboard')
+        ->assertOk()
+        ->assertViewIs('admin.dashboard')
+        ->assertViewHasAll(['payments', 'summary', 'doctors'])
+        ->assertSeeText('لوحة التحكم', false)
+        ->assertDontSeeText('لوحة المدفوعات');
+});
+
+test('doctor reviews can be aggregated from the user model', function () {
+    $doctor = User::factory()->doctor()->create();
+
+    Review::factory()->create([
+        'user_id' => $doctor->id,
+        'rating' => 5,
+    ]);
+
+    $doctorWithReviews = User::query()
+        ->withAvg('reviews', 'rating')
+        ->withCount('reviews')
+        ->findOrFail($doctor->id);
+
+    expect($doctorWithReviews->reviews_count)->toBe(1)
+        ->and((float) $doctorWithReviews->reviews_avg_rating)->toBe(5.0);
+});
+
 test('admin Blade dashboard payment filters are applied', function () {
-    $admin = User::factory()->create(['role' => 'admin']);
+    $admin = User::factory()->admin()->create();
     [$firstDoctor] = createBookableSlot();
     [$secondDoctor] = createBookableSlot();
     $firstDoctor->update(['name' => 'طبيب الفيزا']);
@@ -91,7 +123,7 @@ test('admin Blade dashboard payment filters are applied', function () {
     createBladeDashboardPayment($secondDoctor, $patient, PaymentMethod::Cash, PaymentStatus::CashCollected, 30000);
 
     $this->actingAs($admin)
-        ->get("/admin?doctor_id={$firstDoctor->id}&method=card&status=succeeded")
+        ->get("/admin/dashboard?doctor_id={$firstDoctor->id}&method=card&status=succeeded")
         ->assertOk()
         ->assertViewHas('payments', fn ($payments): bool => $payments->total() === 1
             && $payments->first()->doctor_id === $firstDoctor->id)
